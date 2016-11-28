@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Oct 12 11:52:44 2016 Thomas Billot
-// Last update Mon Nov 28 10:54:53 2016 bogard_t
+// Last update Mon Nov 28 19:41:27 2016 bogard_t
 //
 
 #include	<cstdio>
@@ -34,8 +34,9 @@ int		main(int , char **)
       	}
       if (win->buttonLeftIsClicked())
 	{
-	  std::cout << "[clicked on] x : " << win->getMouseX() << std::endl;
-	  std::cout << "[clicked on] y : " << win->getMouseY() << std::endl;
+	  win->setTextureAt("./sprites/white.png", win->getMouseX()-600, win->getMouseY()-300, 0.5);
+	  std::cout << "[clicked on] x : " << win->getMouseX()
+		    << " and y : " << win->getMouseY() << std::endl;
 	}
       win->writeAt("SCORE J1 :", 100, 550, 1);
       win->writeAt("SCORE J2 :", 550, 550, 1);
