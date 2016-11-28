@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:07:01 2016 Thomas Billot
-// Last update Mon Nov 28 17:02:25 2016 bogard_t
+// Last update Mon Nov 28 10:54:24 2016 bogard_t
 //
 
 #ifndef		__MSFML__WINDOW__HPP__
@@ -18,7 +18,7 @@
 # include	"mSFML.hpp"
 # include	"IWindow.hpp"
 # include	"TextureManager.hpp"
-// # include "SFML/String.hpp"
+
 class		mSFML_Window : public IWindow
 {
 
@@ -35,9 +35,21 @@ public:
   virtual void		update(void);
   virtual void		display(void);
   virtual void		clear(void);
+  virtual bool		isAlive(void);
+
+  /*
+  ** Keyboard Events methods
+  */
   virtual IWindow::Key	getKey(void) const;
   virtual void		handleEvents(void);
-  virtual bool		isAlive(void);
+
+  /*
+  ** Mouse Event
+  */
+  virtual unsigned int	getMouseX() const;
+  virtual unsigned int	getMouseY() const;
+  virtual bool	        buttonLeftIsClicked() const;
+  virtual bool	        buttonRightIsClicked() const;
 
   /*
   ** Font methods
@@ -50,20 +62,20 @@ public:
   ** Texture methods
   */
   virtual void	        setTextureAt(const std::string &path,
-				     const float x, const float y);
+				     const float x, const float y,
+				     const float scale);
 
 private:
   sf::RenderWindow	_window;
   sf::Font		_font;
-  sf::Texture		_texture;
-  sf::Text		_string;
+  sf::Text		_text;
+  sf::Sprite		_sprite;
   TextureManager	_manager;
-
   const int		_winX;
   const int		_winY;
   IWindow::Key		_current_key;
-
   std::map<sf::Keyboard::Key, IWindow::Key> _key_map;
+  sf::Mouse		_mouse;
 
   /*
   ** Private methods

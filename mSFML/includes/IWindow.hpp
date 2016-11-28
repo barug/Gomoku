@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 16:16:14 2016 Thomas Billot
-// Last update Mon Nov 28 17:02:39 2016 bogard_t
+// Last update Mon Nov 28 10:53:18 2016 bogard_t
 //
 
 #ifndef			__IWINDOW__HPP__
@@ -60,8 +60,20 @@ public:
   virtual void		display(void) = 0;
   virtual void		clear(void) = 0;
   virtual bool		isAlive(void) = 0;
+
+  /*
+  ** Keyboard Events methods
+  */
   virtual IWindow::Key 	getKey(void) const = 0;
   virtual void	       	handleEvents(void) = 0;
+
+  /*
+  ** Mouse Event
+  */
+  virtual unsigned int	getMouseX() const = 0;
+  virtual unsigned int	getMouseY() const = 0;
+  virtual bool		buttonLeftIsClicked() const = 0;
+  virtual bool		buttonRightIsClicked() const = 0;
 
   /*
   ** Font methods
@@ -75,7 +87,8 @@ public:
   ** Font methods
   */
   virtual void	        setTextureAt(const std::string &path,
-				     const float x, const float y) = 0;
+				     const float x, const float y,
+				     const float scale) = 0;
 };
 
 #endif			/* __IWINDOW__HPP__ */

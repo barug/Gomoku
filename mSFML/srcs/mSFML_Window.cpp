@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:14:22 2016 Thomas Billot
-// Last update Mon Nov 28 17:24:12 2016 bogard_t
+// Last update Mon Nov 28 10:52:28 2016 bogard_t
 //
 
 #include <iostream>
@@ -48,6 +48,9 @@ mSFML_Window::mSFML_Window(const std::string &windowName,
 
 mSFML_Window::~mSFML_Window() {}
 
+/*
+** Window
+*/
 void			mSFML_Window::update(void) {}
 
 bool			mSFML_Window::isAlive(void)
@@ -57,7 +60,6 @@ bool			mSFML_Window::isAlive(void)
 
 void			mSFML_Window::display(void)
 {
-  this->_window.draw(this->_string);
   _window.display();
 }
 
@@ -66,7 +68,9 @@ void			mSFML_Window::clear(void)
   _window.clear(sf::Color::Black);
 }
 
-// Event
+/*
+** Keyboard Event
+*/
 void			mSFML_Window::handleEvents(void)
 {
   sf::Event		event;
@@ -129,7 +133,30 @@ IWindow::Key	        mSFML_Window::getKey(void) const
 }
 
 /*
-** Font mSFML
+** Mouse Events
+*/
+unsigned int		mSFML_Window::getMouseX() const
+{
+  return (this->_mouse.getPosition().x);
+}
+
+unsigned int		mSFML_Window::getMouseY() const
+{
+  return (this->_mouse.getPosition().y);
+}
+
+bool			mSFML_Window::buttonLeftIsClicked() const
+{
+  return (this->_mouse.isButtonPressed(sf::Mouse::Button::Left));
+}
+
+bool			mSFML_Window::buttonRightIsClicked() const
+{
+  return (this->_mouse.isButtonPressed(sf::Mouse::Button::Right));
+}
+
+/*
+** Font
 */
 void			mSFML_Window::loadFont(const std::string &path)
 {
@@ -138,24 +165,27 @@ void			mSFML_Window::loadFont(const std::string &path)
 
 void			mSFML_Window::writeAt(const std::string &msg,
 					      const float x, const float y,
-					      const float size)
+					      const float scale)
 {
-  this->_string.setFont(this->_font);
-  this->_string.setString(msg);
-  this->_string.setColor(sf::Color(255, 255, 255));
-  this->_string.setScale(size, size);
-  this->_string.setPosition(x, y);
+  this->_text.setFont(this->_font);
+  this->_text.setString(msg);
+  this->_text.setColor(sf::Color(0, 0, 0));
+  this->_text.setScale(scale, scale);
+  this->_text.setPosition(x, y);
+  this->_window.draw(this->_text);
 }
 
 /*
-** Textures mSFML
+** Textures
 */
 void			mSFML_Window::setTextureAt(const std::string &path,
-						   const float x, const float y)
+						   const float x, const float y,
+						   const float scale)
 {
   sf::Sprite		sprite(*_manager.load(path));
 
+  sprite.setTexture(*_manager.load(path));
   sprite.setPosition(x, y);
-  // sprite.setScale(1., 1.);
+  sprite.setScale(scale, scale);
   this->_window.draw(sprite);
 }

@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Oct 12 11:52:44 2016 Thomas Billot
-// Last update Mon Nov 28 17:24:24 2016 bogard_t
+// Last update Mon Nov 28 10:54:53 2016 bogard_t
 //
 
 #include	<cstdio>
@@ -18,29 +18,27 @@
 int		main(int , char **)
 {
   IWindow	*win = new mSFML_Window(std::string("test"), 800, 600);
-  // TextureManager _manager;
 
-  // printf("Pointer [%p]\n", _manager.load("../sprites/r-typesheet10.gif"));
-  // printf("Pointer [%p]\n", _manager.load("../sprites/r-typesheet12.gif"));
-  // printf("Pointer [%p]\n", _manager.load("../sprites/r-typesheet13.gif"));
-  // printf("Pointer [%p]\n", _manager.load("../sprites/r-typesheet10.gif"));
-  // printf("Pointer [%p]\n", _manager.load("../sprites/r-typesheet12.gif"));
-  // printf("Pointer [%p]\n", _manager.load("../sprites/r-typesheet13.gif"));
-
-  win->loadFont("./digital.otf");
+  win->loadFont("./font/digital.otf");
   while (win->isAlive())
     {
       win->clear();
       win->handleEvents();
-      for (unsigned int i = 0; i < 30; i++)
-	{
-	  for (unsigned int j = 0; j < 20; j++)
-	    {
-	      win->setTextureAt("./texture.gif", i * 20, j * 20);
-	    }
-	}
 
-      win->writeAt("SCORE :", 300, 550, 1.);
+      for (unsigned int i = 0; i < 10; i++)
+      	{
+      	  for (unsigned int j = 0; j < 10; j++)
+      	    {
+      	      win->setTextureAt("./sprites/wood.png", i * 80, j * 80, 0.8);
+      	    }
+      	}
+      if (win->buttonLeftIsClicked())
+	{
+	  std::cout << "[clicked on] x : " << win->getMouseX() << std::endl;
+	  std::cout << "[clicked on] y : " << win->getMouseY() << std::endl;
+	}
+      win->writeAt("SCORE J1 :", 100, 550, 1);
+      win->writeAt("SCORE J2 :", 550, 550, 1);
       win->display();
     }
   return (0);
