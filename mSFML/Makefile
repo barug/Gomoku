@@ -5,7 +5,7 @@
 ## Login   <mikaz3@epitech.net>
 ## 
 ## Started on  Wed Oct 12 12:28:14 2016 Thomas Billot
-## Last update Wed Nov 30 12:54:40 2016 Thomas Billot
+## Last update Wed Nov 30 13:05:51 2016 Thomas Billot
 ##
 
 CXX 	= g++
@@ -15,6 +15,7 @@ RM	= rm -f
 SRCS	= srcs/main.cpp 		\
 	  srcs/mSFML_Window.cpp		\
 	  srcs/mSFML_Audio.cpp		\
+	  srcs/Case.cpp			\
 	  srcs/TextureManager.cpp	\
 	  srcs/Map.cpp			\
 
@@ -27,11 +28,8 @@ SFMLFLAGS += -lsfml-system
 SFMLFLAGS += -lsfml-window
 SFMLFLAGS += -lsfml-audio
 
-BOOSTFLAGS += -lboost_system
-
 CXXFLAGS += -W -Wall -Wextra # -Werror
 CXXFLAGS += $(SFMLFLAGS)
-CXXFLAGS += $(BOOSTFLAGS)
 CXXFLAGS += -Iincludes/
 CXXFLAGS += -std=c++11
 CXXFLAGS += -g -ggdb -g3
