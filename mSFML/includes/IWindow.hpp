@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 16:16:14 2016 Thomas Billot
-// Last update Mon Nov 28 10:53:18 2016 bogard_t
+// Last update Tue Nov 29 18:24:07 2016 bogard_t
 //
 
 #ifndef			__IWINDOW__HPP__
@@ -70,25 +70,54 @@ public:
   /*
   ** Mouse Event
   */
-  virtual unsigned int	getMouseX() const = 0;
-  virtual unsigned int	getMouseY() const = 0;
-  virtual bool		buttonLeftIsClicked() const = 0;
-  virtual bool		buttonRightIsClicked() const = 0;
+  virtual unsigned int	getMouseX(void) const = 0;
+  virtual unsigned int	getMouseY(void) const = 0;
+  virtual bool		buttonLeftIsClicked(void) const = 0;
+  virtual bool		buttonRightIsClicked(void) const = 0;
 
   /*
   ** Font methods
   */
   virtual void		loadFont(const std::string &path) = 0;
-  virtual void		writeAt(const std::string &msg,
+  virtual void	        writeAt(const std::string  &msg,
 				const float x, const float y,
-				const float size) = 0;
+				const unsigned int hexaColorCode = 0x000000,
+				const float scale = 1.) = 0;
 
   /*
-  ** Font methods
+  ** Texture methods
   */
   virtual void	        setTextureAt(const std::string &path,
 				     const float x, const float y,
-				     const float scale) = 0;
+				     const float scale = 1.) = 0;
+  virtual void	        fillRec(const unsigned int x,
+				const unsigned int y,
+				const unsigned int i,
+				const unsigned int j,
+				const unsigned int hexaColorCode = 0x000000,
+				const unsigned int alpha = 255) = 0;
+
+  /*
+  ** Color converter
+  */
+  inline const std::vector<unsigned int> hexaToRgb(const unsigned int hexcode)
+  {
+    const std::vector<unsigned int> rgb =
+      {
+	(hexcode >> 16) & 0xFF,
+	(hexcode >> 8) & 0xFF,
+	(hexcode & 0xFF)
+      };
+    return (rgb);
+  }
+
+  inline unsigned int			rgbToHexa(const unsigned int r,
+						  const unsigned int g,
+						  const unsigned int b)
+  {
+    return ((r << 16) + (g << 8) + b);
+  }
+
 };
 
 #endif			/* __IWINDOW__HPP__ */
