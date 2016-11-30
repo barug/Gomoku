@@ -5,7 +5,7 @@
 ## Login   <mikaz3@epitech.net>
 ## 
 ## Started on  Wed Oct 12 12:28:14 2016 Thomas Billot
-## Last update Mon Nov 28 15:08:35 2016 bogard_t
+## Last update Mon Nov 28 20:08:37 2016 bogard_t
 ##
 
 CXX 	= g++
@@ -28,7 +28,7 @@ SFMLFLAGS += -lsfml-audio
 
 BOOSTFLAGS += -lboost_system
 
-CXXFLAGS += -W -Wall -Wextra -Werror
+CXXFLAGS += -W -Wall -Wextra # -Werror
 CXXFLAGS += $(SFMLFLAGS)
 CXXFLAGS += $(BOOSTFLAGS)
 CXXFLAGS += -Iincludes/

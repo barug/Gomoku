@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:07:01 2016 Thomas Billot
-// Last update Mon Nov 28 10:54:24 2016 bogard_t
+// Last update Wed Nov 30 03:02:07 2016 bogard_t
 //
 
 #ifndef		__MSFML__WINDOW__HPP__
@@ -16,10 +16,10 @@
 # include	<SFML/Graphics/Font.hpp>
 
 # include	"mSFML.hpp"
-# include	"IWindow.hpp"
+# include	"IGui.hpp"
 # include	"TextureManager.hpp"
 
-class		mSFML_Window : public IWindow
+class		mSFML_Window : public IGui
 {
 
 public:
@@ -40,16 +40,16 @@ public:
   /*
   ** Keyboard Events methods
   */
-  virtual IWindow::Key	getKey(void) const;
+  virtual IGui::Key	getKey(void) const;
   virtual void		handleEvents(void);
 
   /*
   ** Mouse Event
   */
-  virtual unsigned int	getMouseX() const;
-  virtual unsigned int	getMouseY() const;
-  virtual bool	        buttonLeftIsClicked() const;
-  virtual bool	        buttonRightIsClicked() const;
+  virtual unsigned int	getMouseX(void) const;
+  virtual unsigned int	getMouseY(void) const;
+  virtual bool	        buttonLeftIsClicked(void) const;
+  virtual bool	        buttonRightIsClicked(void) const;
 
   /*
   ** Font methods
@@ -57,13 +57,20 @@ public:
   virtual void		loadFont(const std::string &path);
   virtual void	        writeAt(const std::string  &msg,
 				const float x, const float y,
-				const float size);
+				const unsigned int hexaColorCode = 0x000000,
+				const float scale = 1.);
   /*
   ** Texture methods
   */
   virtual void	        setTextureAt(const std::string &path,
 				     const float x, const float y,
-				     const float scale);
+				     const float scale = 1.);
+  virtual void	        fillRec(const unsigned int x,
+				const unsigned int y,
+				const unsigned int i,
+				const unsigned int j,
+				const unsigned int hexaColorCode = 0x000000,
+				const unsigned int alpha = 255);
 
 private:
   sf::RenderWindow	_window;
@@ -73,15 +80,10 @@ private:
   TextureManager	_manager;
   const int		_winX;
   const int		_winY;
-  IWindow::Key		_current_key;
-  std::map<sf::Keyboard::Key, IWindow::Key> _key_map;
+  IGui::Key		_current_key;
+  std::map<sf::Keyboard::Key, IGui::Key> _key_map;
   sf::Mouse		_mouse;
 
-  /*
-  ** Private methods
-  */
-  bool			_keyPressed(sf::Event event);
-  void			_keyReleased(sf::Event event);
 };
 
 #endif		/* __MSFML__WINDOW__HPP__ */

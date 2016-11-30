@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:14:22 2016 Thomas Billot
-// Last update Mon Nov 28 10:52:28 2016 bogard_t
+// Last update Wed Nov 30 03:01:25 2016 bogard_t
 //
 
 #include <iostream>
@@ -18,22 +18,22 @@ mSFML_Window::mSFML_Window(const std::string &windowName,
 					     _winY(winY),
 					     _current_key(NONE),
 					     _key_map(
-					   {{sf::Keyboard::Unknown,	IWindow::NONE},
-					    {sf::Keyboard::Space,	IWindow::SPACE},
-					    {sf::Keyboard::Right,	IWindow::RIGHT},
-					    {sf::Keyboard::Left,	IWindow::LEFT},
-					    {sf::Keyboard::Up,		IWindow::UP},
-					    {sf::Keyboard::Down,	IWindow::DOWN},
-					    {sf::Keyboard::Num0,	IWindow::K_0},
-					    {sf::Keyboard::Num1,	IWindow::K_1},
-					    {sf::Keyboard::Num2,	IWindow::K_2},
-					    {sf::Keyboard::Num3,	IWindow::K_3},
-					    {sf::Keyboard::Num4,	IWindow::K_4},
-					    {sf::Keyboard::Num5,	IWindow::K_5},
-					    {sf::Keyboard::Num6,	IWindow::K_6},
-					    {sf::Keyboard::Num7,	IWindow::K_7},
-					    {sf::Keyboard::Num8,	IWindow::K_8},
-					    {sf::Keyboard::Num9,	IWindow::K_9}})
+					   {{sf::Keyboard::Unknown,	IGui::NONE},
+					    {sf::Keyboard::Space,	IGui::SPACE},
+					    {sf::Keyboard::Right,	IGui::RIGHT},
+					    {sf::Keyboard::Left,	IGui::LEFT},
+					    {sf::Keyboard::Up,		IGui::UP},
+					    {sf::Keyboard::Down,	IGui::DOWN},
+					    {sf::Keyboard::Num0,	IGui::K_0},
+					    {sf::Keyboard::Num1,	IGui::K_1},
+					    {sf::Keyboard::Num2,	IGui::K_2},
+					    {sf::Keyboard::Num3,	IGui::K_3},
+					    {sf::Keyboard::Num4,	IGui::K_4},
+					    {sf::Keyboard::Num5,	IGui::K_5},
+					    {sf::Keyboard::Num6,	IGui::K_6},
+					    {sf::Keyboard::Num7,	IGui::K_7},
+					    {sf::Keyboard::Num8,	IGui::K_8},
+					    {sf::Keyboard::Num9,	IGui::K_9}})
 
 {
   sf::VideoMode		size(winX, winY);
@@ -85,11 +85,26 @@ void			mSFML_Window::handleEvents(void)
 	  this->_window.close();
 	  break;
 	case sf::Event::KeyPressed:
-	  if (!this->_keyPressed(event))
-	    this->_window.close();
+	  if (event.key.code == sf::Keyboard::Escape)
+	    {
+	      if (DEBUG)
+		std::cout << "[Window::handlemSFML_Keyboards] Closed window event" << std::endl;
+	      this->_window.close();
+	    }
+	  else if (event.key.code)
+	    {
+	      if ((this->_current_key = this->_key_map[event.key.code]) == NONE)
+		std::cout << "[key pressed] => code : [" << event.key.code
+			  << "] /!\\ hasnt been found /!\\" << std::endl;
+	    }
 	  break;
 	case sf::Event::KeyReleased:
-	  this->_keyReleased(event);
+	  switch (event.key.code)
+	    {
+	    default:
+	      this->_current_key = NONE;
+	      break;
+	    }
 	  break;
 	default:
 	  break;
@@ -97,37 +112,7 @@ void			mSFML_Window::handleEvents(void)
     }
 }
 
-bool		        mSFML_Window::_keyPressed(sf::Event event)
-{
-  if (event.key.code == sf::Keyboard::Escape)
-    {
-      if (DEBUG)
-  	std::cout << "[Window::handlemSFML_Keyboards] Closed window event" << std::endl;
-      return (false);
-    }
-  else if (event.key.code)
-    {
-      auto search = this->_key_map.find(event.key.code);
-      if (search != this->_key_map.end())
-  	this->_current_key = search->second;
-      else
-  	std::cout << "[key pressed] => code : [" << event.key.code
-  		  << "] /!\\ hasnt been found /!\\" << std::endl;
-    }
-  return (true);
-}
-
-void		        mSFML_Window::_keyReleased(sf::Event event)
-{
-  switch (event.key.code)
-    {
-    default:
-      this->_current_key = NONE;
-      break;
-    }
-}
-
-IWindow::Key	        mSFML_Window::getKey(void) const
+IGui::Key	        mSFML_Window::getKey(void) const
 {
   return (this->_current_key);
 }
@@ -135,22 +120,22 @@ IWindow::Key	        mSFML_Window::getKey(void) const
 /*
 ** Mouse Events
 */
-unsigned int		mSFML_Window::getMouseX() const
+unsigned int		mSFML_Window::getMouseX(void) const
 {
-  return (this->_mouse.getPosition().x);
+  return (this->_mouse.getPosition(this->_window).x);
 }
 
-unsigned int		mSFML_Window::getMouseY() const
+unsigned int		mSFML_Window::getMouseY(void) const
 {
-  return (this->_mouse.getPosition().y);
+  return (this->_mouse.getPosition(this->_window).y);
 }
 
-bool			mSFML_Window::buttonLeftIsClicked() const
+bool			mSFML_Window::buttonLeftIsClicked(void) const
 {
   return (this->_mouse.isButtonPressed(sf::Mouse::Button::Left));
 }
 
-bool			mSFML_Window::buttonRightIsClicked() const
+bool			mSFML_Window::buttonRightIsClicked(void) const
 {
   return (this->_mouse.isButtonPressed(sf::Mouse::Button::Right));
 }
@@ -165,14 +150,18 @@ void			mSFML_Window::loadFont(const std::string &path)
 
 void			mSFML_Window::writeAt(const std::string &msg,
 					      const float x, const float y,
+					      const unsigned int hexaColorCode,
 					      const float scale)
 {
-  this->_text.setFont(this->_font);
-  this->_text.setString(msg);
-  this->_text.setColor(sf::Color(0, 0, 0));
-  this->_text.setScale(scale, scale);
-  this->_text.setPosition(x, y);
-  this->_window.draw(this->_text);
+  std::vector<unsigned int> rgb = hexaToRgb(hexaColorCode);
+  sf::Text text;
+
+  text.setFont(this->_font);
+  text.setString(msg);
+  text.setColor(sf::Color(rgb[0], rgb[1], rgb[2]));
+  text.setScale(scale, scale);
+  text.setPosition(x, y);
+  this->_window.draw(text);
 }
 
 /*
@@ -188,4 +177,23 @@ void			mSFML_Window::setTextureAt(const std::string &path,
   sprite.setPosition(x, y);
   sprite.setScale(scale, scale);
   this->_window.draw(sprite);
+}
+
+/*
+** Fill Rectangle
+*/
+void			mSFML_Window::fillRec(const unsigned int x,
+					      const unsigned int y,
+					      const unsigned int i,
+					      const unsigned int j,
+					      const unsigned int hexaColorCode,
+					      const unsigned int alpha)
+{
+  std::vector<unsigned int> rgb = hexaToRgb(hexaColorCode);
+  sf::RectangleShape rectangle;
+
+  rectangle.setPosition(sf::Vector2f(x, y));
+  rectangle.setSize(sf::Vector2f(i, j));
+  rectangle.setFillColor(sf::Color(rgb[0], rgb[1], rgb[2], alpha));
+  this->_window.draw(rectangle);
 }
