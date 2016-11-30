@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:07:01 2016 Thomas Billot
-// Last update Tue Nov 29 18:24:15 2016 bogard_t
+// Last update Wed Nov 30 03:02:07 2016 bogard_t
 //
 
 #ifndef		__MSFML__WINDOW__HPP__
@@ -16,10 +16,10 @@
 # include	<SFML/Graphics/Font.hpp>
 
 # include	"mSFML.hpp"
-# include	"IWindow.hpp"
+# include	"IGui.hpp"
 # include	"TextureManager.hpp"
 
-class		mSFML_Window : public IWindow
+class		mSFML_Window : public IGui
 {
 
 public:
@@ -40,7 +40,7 @@ public:
   /*
   ** Keyboard Events methods
   */
-  virtual IWindow::Key	getKey(void) const;
+  virtual IGui::Key	getKey(void) const;
   virtual void		handleEvents(void);
 
   /*
@@ -80,8 +80,8 @@ private:
   TextureManager	_manager;
   const int		_winX;
   const int		_winY;
-  IWindow::Key		_current_key;
-  std::map<sf::Keyboard::Key, IWindow::Key> _key_map;
+  IGui::Key		_current_key;
+  std::map<sf::Keyboard::Key, IGui::Key> _key_map;
   sf::Mouse		_mouse;
 
 };

@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:14:22 2016 Thomas Billot
-// Last update Tue Nov 29 22:18:42 2016 bogard_t
+// Last update Wed Nov 30 03:01:25 2016 bogard_t
 //
 
 #include <iostream>
@@ -18,22 +18,22 @@ mSFML_Window::mSFML_Window(const std::string &windowName,
 					     _winY(winY),
 					     _current_key(NONE),
 					     _key_map(
-					   {{sf::Keyboard::Unknown,	IWindow::NONE},
-					    {sf::Keyboard::Space,	IWindow::SPACE},
-					    {sf::Keyboard::Right,	IWindow::RIGHT},
-					    {sf::Keyboard::Left,	IWindow::LEFT},
-					    {sf::Keyboard::Up,		IWindow::UP},
-					    {sf::Keyboard::Down,	IWindow::DOWN},
-					    {sf::Keyboard::Num0,	IWindow::K_0},
-					    {sf::Keyboard::Num1,	IWindow::K_1},
-					    {sf::Keyboard::Num2,	IWindow::K_2},
-					    {sf::Keyboard::Num3,	IWindow::K_3},
-					    {sf::Keyboard::Num4,	IWindow::K_4},
-					    {sf::Keyboard::Num5,	IWindow::K_5},
-					    {sf::Keyboard::Num6,	IWindow::K_6},
-					    {sf::Keyboard::Num7,	IWindow::K_7},
-					    {sf::Keyboard::Num8,	IWindow::K_8},
-					    {sf::Keyboard::Num9,	IWindow::K_9}})
+					   {{sf::Keyboard::Unknown,	IGui::NONE},
+					    {sf::Keyboard::Space,	IGui::SPACE},
+					    {sf::Keyboard::Right,	IGui::RIGHT},
+					    {sf::Keyboard::Left,	IGui::LEFT},
+					    {sf::Keyboard::Up,		IGui::UP},
+					    {sf::Keyboard::Down,	IGui::DOWN},
+					    {sf::Keyboard::Num0,	IGui::K_0},
+					    {sf::Keyboard::Num1,	IGui::K_1},
+					    {sf::Keyboard::Num2,	IGui::K_2},
+					    {sf::Keyboard::Num3,	IGui::K_3},
+					    {sf::Keyboard::Num4,	IGui::K_4},
+					    {sf::Keyboard::Num5,	IGui::K_5},
+					    {sf::Keyboard::Num6,	IGui::K_6},
+					    {sf::Keyboard::Num7,	IGui::K_7},
+					    {sf::Keyboard::Num8,	IGui::K_8},
+					    {sf::Keyboard::Num9,	IGui::K_9}})
 
 {
   sf::VideoMode		size(winX, winY);
@@ -112,7 +112,7 @@ void			mSFML_Window::handleEvents(void)
     }
 }
 
-IWindow::Key	        mSFML_Window::getKey(void) const
+IGui::Key	        mSFML_Window::getKey(void) const
 {
   return (this->_current_key);
 }

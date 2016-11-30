@@ -1,21 +1,21 @@
 //
-// IWindow.hpp for mSFML in /home/mikaz3/Tek3/B5/AdvancedCpp/cpp_rtype/mSFML
+// IGui.hpp for mSFML in /home/mikaz3/Tek3/B5/AdvancedCpp/cpp_rtype/mSFML
 //
 // Made by Thomas Billot
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 16:16:14 2016 Thomas Billot
-// Last update Tue Nov 29 18:24:07 2016 bogard_t
+// Last update Wed Nov 30 03:01:52 2016 bogard_t
 //
 
-#ifndef			__IWINDOW__HPP__
-# define		__IWINDOW__HPP__
+#ifndef			__IGUI__HPP__
+# define		__IGUI__HPP__
 
 # define		DEFAULT_WINDOW_X (800)
 # define		DEFAULT_WINDOW_Y (600)
 # define		DEFAULT_WINDOW_NAME ("This is a mSFML demo")
 
-class		IWindow
+class		IGui
 {
 
 public:
@@ -49,7 +49,7 @@ public:
   ** Dtor
   */
 
-  virtual ~IWindow() {}
+  virtual ~IGui() {}
 
   /** Public Member Functions **/
 
@@ -64,7 +64,7 @@ public:
   /*
   ** Keyboard Events methods
   */
-  virtual IWindow::Key 	getKey(void) const = 0;
+  virtual IGui::Key 	getKey(void) const = 0;
   virtual void	       	handleEvents(void) = 0;
 
   /*

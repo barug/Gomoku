@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Oct 12 11:52:44 2016 Thomas Billot
-// Last update Wed Nov 30 02:54:38 2016 bogard_t
+// Last update Wed Nov 30 03:05:17 2016 bogard_t
 //
 
 #include	<cstdio>
@@ -103,7 +103,7 @@ static bool		magnetTile(const unsigned int mouseX,
 
 int			main(int , char **)
 {
-  IWindow		*win = new mSFML_Window(std::string("Gomoku"), 800, 600);
+  IGui		*win = new mSFML_Window(std::string("Gomoku"), 800, 600);
   bool			initVec = false;
   std::vector<Case*>	vec_case;
 
@@ -115,7 +115,8 @@ int			main(int , char **)
 
       // background
       win->fillRec(0, 0, 800, 600, 0xffffff);
-      win->fillRec(0, 0, 190, 600);
+      win->fillRec(0, 0, 190, 600, 0x000000);
+      win->fillRec(0, 300, 200, 10, 0xffffff);
       win->setTextureAt("./sprites/wood.jpg", 200, 0, 1.);
 
       // up
@@ -126,7 +127,6 @@ int			main(int , char **)
       win->fillRec(790, 0, 10, 800, 0xffffff);
       // left
       win->fillRec(0, 0, 10, 600, 0xffffff);
-      win->fillRec(0, 300, 200, 10, 0xffffff);
 
       // map updating
       for (unsigned int x = 0; x < 19; x++)
@@ -143,8 +143,8 @@ int			main(int , char **)
 	    }
 	}
       initVec = true;
-      win->fillRec(230 + (18 * 30), 20 + (0 * 30), 2, 30*18, 0x000000);
-      win->fillRec(230 + (0 * 30), 20 + (18 * 30), 30*18, 2, 0x000000);
+      win->fillRec(230 + (18 * 30), 20 + (0 * 30), 2, (30 * 18), 0x000000);
+      win->fillRec(230 + (0 * 30), 20 + (18 * 30), (30 * 18), 2, 0x000000);
 
       for (auto it : vec_case)
 	{
@@ -158,9 +158,7 @@ int			main(int , char **)
 				it->getXSfml()-9,
 				it->getYSfml()-9,
 				0.1);
-
 	    }
-
 	  if (it->getColorSlot() == Case::ColorSlot::WHITE)
 	    {
 	      win->setTextureAt("./sprites/white.png",
@@ -175,9 +173,7 @@ int			main(int , char **)
 				it->getYSfml()-9,
 				0.1);
 	    }
-
 	}
-
 
 
       if (win->buttonLeftIsClicked())
