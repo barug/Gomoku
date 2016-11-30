@@ -5,7 +5,7 @@
 ## Login   <mikaz3@epitech.net>
 ## 
 ## Started on  Wed Oct 12 12:28:14 2016 Thomas Billot
-## Last update Wed Nov 30 12:59:31 2016 bogard_t
+## Last update Wed Nov 30 14:37:10 2016 bogard_t
 ##
 
 CXX 	= g++
@@ -13,6 +13,7 @@ CXX 	= g++
 RM	= rm -f
 
 SRCS	= srcs/main.cpp 		\
+	  srcs/Gomoku.cpp			\
 	  srcs/mSFML_Window.cpp		\
 	  srcs/mSFML_Audio.cpp		\
 	  srcs/Case.cpp			\
