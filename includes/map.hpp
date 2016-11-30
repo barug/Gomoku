@@ -23,7 +23,7 @@ public:
   Map();
   ~Map();
 
-  void				setCaseAt(const unsigned int &xxo,
+  void				setCaseAt(const unsigned int &x,
 					  const unsigned int &y,
 					  const Map::CaseState &state);
   const Map::CaseState		&getCaseAt(const unsigned int &x,

@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Wed Nov 30 15:01:16 2016 bogard_t
+// Last update Wed Nov 30 15:17:49 2016 Thomas Billot
 //
 
 #ifndef		__GOMOKU_HPP__
@@ -24,7 +24,7 @@ class		Gomoku
 public:
   Gomoku();
   ~Gomoku();
-  void		start();
+  int		start();
 
 private:
   /*

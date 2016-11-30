@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:14:22 2016 Thomas Billot
-// Last update Wed Nov 30 13:05:14 2016 Thomas Billot
+// Last update Wed Nov 30 15:28:07 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -158,7 +158,7 @@ void			mSFML_Window::writeAt(const std::string &msg,
 
   text.setFont(this->_font);
   text.setString(msg);
-  text.setColor(sf::Color(rgb[0], rgb[1], rgb[2]));
+  text.setFillColor(sf::Color(rgb[0], rgb[1], rgb[2]));
   text.setScale(scale, scale);
   text.setPosition(x, y);
   this->_window.draw(text);

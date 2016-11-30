@@ -5,31 +5,34 @@
 ## Login   <mikaz3@epitech.net>
 ## 
 ## Started on  Wed Oct 12 12:28:14 2016 Thomas Billot
-## Last update Sat Nov 19 15:56:05 2016 Thomas Billot
+## Last update Wed Nov 30 15:17:09 2016 Thomas Billot
 ##
 
 CXX 	= g++
 
 RM	= rm -f
 
-SRCS	= main.cpp 		\
-	  TextureManager.cpp	\
-	  mSFML_Textures.cpp	\
+SRCS	= srcs/Main.cpp 		\
+	  srcs/Gomoku.cpp		\
+	  srcs/mSFML_Window.cpp		\
+	  srcs/mSFML_Audio.cpp		\
+	  srcs/Case.cpp			\
+	  srcs/TextureManager.cpp	\
+	  srcs/map.cpp			\
 
 OBJS	= $(SRCS:.cpp=.o)
 
-BIN	= TextureManagerTest
+BIN	= Gomoku
 
 SFMLFLAGS += -lsfml-graphics
-SFMLFLAGS += -lsfml-audio
 SFMLFLAGS += -lsfml-system
-SFMLFLAGS += -lsfml-graphics
+SFMLFLAGS += -lsfml-window
+SFMLFLAGS += -lsfml-audio
 
 CXXFLAGS += -W -Wall -Wextra -Werror
 CXXFLAGS += $(SFMLFLAGS)
-CXXFLAGS += -I.
+CXXFLAGS += -Iincludes/
 CXXFLAGS += -std=c++11
-CXXFLAGS += -g -ggdb -g3
 
 all: $(BIN)
 

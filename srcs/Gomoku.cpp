@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Wed Nov 30 15:00:30 2016 bogard_t
+// Last update Wed Nov 30 15:17:34 2016 Thomas Billot
 //
 
 # include	<cstdio>
@@ -161,7 +161,7 @@ void		Gomoku::_checkIfClicked()
 
 }
 
-void		Gomoku::start()
+int		Gomoku::start()
 {
   while (_gui->isAlive())
     {
@@ -178,4 +178,5 @@ void		Gomoku::start()
       _displayPlayerInfo();
       _gui->display();
     }
+  return 0;
 }
