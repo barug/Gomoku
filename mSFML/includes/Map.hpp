@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Wed Nov 30 12:34:16 2016 Thomas Billot
-// Last update Wed Nov 30 13:01:06 2016 Thomas Billot
+// Last update Wed Nov 30 13:10:48 2016 Thomas Billot
 //
 
 #ifndef					_MAP_HPP_
@@ -13,6 +13,8 @@
 
 # include				<memory>
 # include				<vector>
+
+# include				"Case.hpp"
 
 class					Map
 {
