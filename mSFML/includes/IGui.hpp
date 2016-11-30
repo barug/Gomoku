@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 16:16:14 2016 Thomas Billot
-// Last update Wed Nov 30 03:01:52 2016 bogard_t
+// Last update Wed Nov 30 14:35:42 2016 bogard_t
 //
 
 #ifndef			__IGUI__HPP__
@@ -14,6 +14,9 @@
 # define		DEFAULT_WINDOW_X (800)
 # define		DEFAULT_WINDOW_Y (600)
 # define		DEFAULT_WINDOW_NAME ("This is a mSFML demo")
+
+# include		<string>
+# include		<vector>
 
 class		IGui
 {

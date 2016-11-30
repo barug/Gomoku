@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:14:22 2016 Thomas Billot
-// Last update Wed Nov 30 03:01:25 2016 bogard_t
+// Last update Wed Nov 30 13:05:14 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -171,7 +171,7 @@ void			mSFML_Window::setTextureAt(const std::string &path,
 						   const float x, const float y,
 						   const float scale)
 {
-  sf::Sprite		sprite(*_manager.load(path));
+  sf::Sprite		sprite;
 
   sprite.setTexture(*_manager.load(path));
   sprite.setPosition(x, y);
