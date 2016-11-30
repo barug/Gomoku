@@ -3,13 +3,13 @@
 
 # include <vector>
 
-# define MAP_WIDTH	(19)
-# define MAP_SIZE	(MAP_WIDTH * MAP_WIDTH)
+# define MAP_WIDTH			(19)
+# define MAP_SIZE			(MAP_WIDTH * MAP_WIDTH)
 
-class			Map
+class					Map
 {
 public:
-  enum			CaseState
+  enum					CaseState : char
     {
       EMPTY,
       WHITE,
@@ -17,18 +17,18 @@ public:
     };
 
 private:
-  std::vector<char>	_mapData;
+  std::vector<Map::CaseState>		_mapData;
   
 public:
   Map();
   ~Map();
 
-  void				setCaseAt(const unsigned int &x,
-					  const unsigned int &y,
-					  const Map::CaseState &state);
-  const Map::CaseState		&getCaseAt(const unsigned int &x,
-					   const unsigned int &y);
-  const std::vector<char>	&getMapData();
+  void					setCaseAt(const unsigned int &x,
+						  const unsigned int &y,
+						  const Map::CaseState &state);
+  const Map::CaseState			&getCaseAt(const unsigned int &x,
+						   const unsigned int &y);
+  const std::vector<Map::CaseState>	&getMapData();
 };
 
 #endif /* GOMOKU_MAP_HPP */
