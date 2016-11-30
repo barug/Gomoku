@@ -5,66 +5,14 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Oct 12 11:52:44 2016 Thomas Billot
-// Last update Wed Nov 30 03:05:17 2016 bogard_t
+// Last update Wed Nov 30 13:00:08 2016 bogard_t
 //
 
 #include	<cstdio>
 #include	<iostream>
 #include	"mSFML_Window.hpp"
 #include	"mSFML_Audio.hpp"
-
-class Case
-{
-public:
-  Case() : _color_slot(NONE) {}
-  Case(const unsigned int x, const unsigned int y,
-       const unsigned int xSf, const unsigned int ySf) : _x(x),
-							 _y(y),
-							 _x_sfml(xSf),
-							 _y_sfml(ySf),
-							 _color_slot(NONE)
-  {
-  }
-
-  ~Case() {}
-
-  enum ColorSlot
-    {
-      NONE = 0,
-      BLACK = 1,
-      WHITE = 2
-    };
-
-  unsigned int		getX() const {
-    return (_x);
-  }
-  unsigned int		getY() const {
-    return (_y);
-  }
-
-  unsigned int		getXSfml() const {
-    return (_x_sfml);
-  }
-  unsigned int		getYSfml() const {
-    return (_y_sfml);
-  }
-
-  void			setColorSlot(const ColorSlot slot) {
-    _color_slot = slot;
-  }
-
-  ColorSlot		getColorSlot() const {
-    return (_color_slot);
-  }
-
-private:
-  unsigned int		_x;
-  unsigned int		_y;
-  unsigned int		_x_sfml;
-  unsigned int		_y_sfml;
-  ColorSlot		_color_slot;
-};
-
+#include	"Case.hpp"
 
 static bool		magnetTile(const unsigned int mouseX,
 				   const unsigned int mouseY,
@@ -103,7 +51,7 @@ static bool		magnetTile(const unsigned int mouseX,
 
 int			main(int , char **)
 {
-  IGui		*win = new mSFML_Window(std::string("Gomoku"), 800, 600);
+  IGui			*win = new mSFML_Window(std::string("Gomoku"), 800, 600);
   bool			initVec = false;
   std::vector<Case*>	vec_case;
 
@@ -152,25 +100,25 @@ int			main(int , char **)
 	    {
 	      std::cout << "case x : " << it->getX() << "\ty : " << it->getY()<< std::endl;
 	    }
-	  if (magnetTile(win->getMouseX(), win->getMouseY(), it->getXSfml(), it->getYSfml()))
+	  if (magnetTile(win->getMouseX(), win->getMouseY(), it->getXPixel(), it->getYPixel()))
 	    {
 	      win->setTextureAt("./sprites/cercle_vert.png",
-				it->getXSfml()-9,
-				it->getYSfml()-9,
+				it->getXPixel()-9,
+				it->getYPixel()-9,
 				0.1);
 	    }
 	  if (it->getColorSlot() == Case::ColorSlot::WHITE)
 	    {
 	      win->setTextureAt("./sprites/white.png",
-				it->getXSfml()-9,
-				it->getYSfml()-9,
+				it->getXPixel()-9,
+				it->getYPixel()-9,
 				0.1);
 	    }
 	  else if (it->getColorSlot() == Case::ColorSlot::BLACK)
 	    {
 	      win->setTextureAt("./sprites/black.png",
-				it->getXSfml()-9,
-				it->getYSfml()-9,
+				it->getXPixel()-9,
+				it->getYPixel()-9,
 				0.1);
 	    }
 	}
@@ -180,7 +128,7 @@ int			main(int , char **)
 	{
 	  for (auto it : vec_case)
 	    {
-	      if (magnetTile(win->getMouseX(), win->getMouseY(), it->getXSfml(), it->getYSfml()))
+	      if (magnetTile(win->getMouseX(), win->getMouseY(), it->getXPixel(), it->getYPixel()))
 		{
 		  it->setColorSlot(Case::ColorSlot::WHITE);
 		  std::cout << "[clicked on] x : " << win->getMouseX()

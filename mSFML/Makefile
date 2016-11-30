@@ -5,7 +5,7 @@
 ## Login   <mikaz3@epitech.net>
 ## 
 ## Started on  Wed Oct 12 12:28:14 2016 Thomas Billot
-## Last update Mon Nov 28 20:08:37 2016 bogard_t
+## Last update Wed Nov 30 12:59:31 2016 bogard_t
 ##
 
 CXX 	= g++
@@ -15,6 +15,7 @@ RM	= rm -f
 SRCS	= srcs/main.cpp 		\
 	  srcs/mSFML_Window.cpp		\
 	  srcs/mSFML_Audio.cpp		\
+	  srcs/Case.cpp			\
 	  srcs/TextureManager.cpp	\
 
 OBJS	= $(SRCS:.cpp=.o)
