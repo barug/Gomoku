@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Wed Nov 30 12:34:04 2016 Thomas Billot
+// Last update Wed Nov 30 15:05:32 2016 Thomas Billot
 //
 
 #ifndef			_REFEREE_HPP_
@@ -20,7 +20,7 @@ public:
 
   Referee();
   ~Referee();
-  void			onClick(const unsigned int CoordX, const unsigned int CoordY);
+  void			OnTileAt(const unsigned int &CoordX, const unsigned int &CoordY);
 };
 
 #endif			/* _REFEREE_HPP_ */
