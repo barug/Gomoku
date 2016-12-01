@@ -1,30 +1,30 @@
 //
-// Gomoku.hpp for Gomoku in /home/bogard_t/rendu/tek3/Gomoku/mSFML/srcs
+// BoardGame.hpp for BoardGame in /home/bogard_t/rendu/tek3/BoardGame/mSFML/srcs
 //
 // Made by bogard_t
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Thu Dec  1 02:11:47 2016 bogard_t
+// Last update Thu Dec  1 14:13:49 2016 bogard_t
 //
 
-#ifndef		__GOMOKU_HPP__
-# define	__GOMOKU_HPP__
+#ifndef		__BOARD_GAME_HPP__
+# define	__BOARD_GAME_HPP__
 
 # include	"IGui.hpp"
 # include	"IReferee.hpp"
-# include	"map.hpp"
+# include	"Map.hpp"
 # include	<memory>
 
-class		Gomoku
+class		BoardGame
 {
   IGui		*_gui;
   IReferee	*_referee;
   Map		*_map;
 
 public:
-  Gomoku();
-  ~Gomoku();
+  BoardGame();
+  ~BoardGame();
 
   int		start();
 
@@ -47,4 +47,4 @@ private:
 
 };
 
-#endif		// __GOMOKU_HPP__
+#endif		// __BOARD_GAME_HPP__

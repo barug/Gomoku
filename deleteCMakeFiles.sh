@@ -9,3 +9,6 @@ fi
 if [ -f cmake_install.cmake ]; then
     rm cmake_install.cmake;
 fi
+if [ -f Makefile ]; then
+    rm Makefile
+fi

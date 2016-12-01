@@ -18,6 +18,7 @@ public:
 
   struct				Coordinates
   {
+  public:
     Coordinates(const unsigned int &x, const unsigned int &y);
     int					x;
     int					y;
@@ -25,7 +26,7 @@ public:
 
 private:
   std::vector<Map::CaseState>		_mapData;
-  
+
 public:
   Map();
   ~Map();
