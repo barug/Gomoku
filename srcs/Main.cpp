@@ -5,14 +5,14 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Oct 12 11:52:44 2016 Thomas Billot
-// Last update Wed Nov 30 15:13:16 2016 Thomas Billot
+// Last update Thu Dec  1 14:15:42 2016 bogard_t
 //
 
-# include		"Gomoku.hpp"
+# include		"BoardGame.hpp"
 
 int			main(void)
 {
-  Gomoku		gomoku;
-  
-  return gomoku.start();
+  BoardGame	        game;
+
+  return game.start();
 }

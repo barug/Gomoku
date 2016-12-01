@@ -9,7 +9,7 @@ cmake_minimum_required(VERSION 3.5)
 project(Gomoku)
 
 add_executable(Gomoku
-  srcs/Gomoku.cpp
+  srcs/BoardGame.cpp
   srcs/Main.cpp
   srcs/TextureManager.cpp
   srcs/mSFML_Audio.cpp
