@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Thu Dec  1 02:08:56 2016 bogard_t
+// Last update Thu Dec  1 13:27:10 2016 bogard_t
 //
 
 # include	<cstdio>
@@ -20,7 +20,7 @@ Gomoku::Gomoku() : _gui(new mSFML_Window(std::string("Gomoku"), 800, 600)),
   _gui->loadFont("./font/digital.otf");
   for (unsigned int x = 0; x < 19; x++)
     for (unsigned int y = 0; y < 19; y++)
-      _map->setCaseAt(x, y, Map::CaseState::EMPTY);
+      _map->setCaseAt(Map::Coordinates(x, y), Map::CaseState::EMPTY);
 }
 
 Gomoku::~Gomoku()
@@ -121,29 +121,32 @@ void		Gomoku::_updateMap()
 {
   for (unsigned int i = 0; i < _map->getMapData().size(); i++)
     {
-      if (_map->getCaseAt(i % Map::mapSize, i / Map::mapSize) == Map::CaseState::WHITE)
+      if (_map->getCaseAt(Map::Coordinates(i % Map::mapSize, i / Map::mapSize))
+	  == Map::CaseState::WHITE)
 	{
   	  _gui->setTextureAt("./sprites/white.png",
   			     Map::offsetMapX + ((i % Map::mapSize) * Map::offsetX) - 9,
   			     Map::offsetMapY + ((i / Map::mapSize) * Map::offsetY) - 9, 0.1);
   	}
-      else if (_map->getCaseAt(i % Map::mapSize, i / Map::mapSize) == Map::CaseState::BLACK)
+      else if (_map->getCaseAt(Map::Coordinates(i % Map::mapSize, i / Map::mapSize))
+	       == Map::CaseState::BLACK)
 	{
 	  _gui->setTextureAt("./sprites/black.png",
   			     Map::offsetMapX + ((i % Map::mapSize) * Map::offsetX) - 9,
   			     Map::offsetMapY + ((i / Map::mapSize) * Map::offsetY) - 9, 0.1);
   	}
       if (_magnetTile(_gui->getMouseX(), _gui->getMouseY(),
-  		      Map::offsetMapX + ((i % Map::mapSize) * Map::offsetY),
-		      Map::offsetMapY + ((i / Map::mapSize) * Map::offsetX)))
+      		      Map::offsetMapX + ((i % Map::mapSize) * Map::offsetY),
+      		      Map::offsetMapY + ((i / Map::mapSize) * Map::offsetX)))
   	{
-	  (_map->getCaseAt(i % Map::mapSize, i / Map::mapSize) == Map::CaseState::EMPTY) ?
-	    _gui->setTextureAt("./sprites/cercle_vert.png",
-			       Map::offsetMapX + ((i % Map::mapSize) * Map::offsetX) - 9,
-			       Map::offsetMapY + ((i / Map::mapSize) * Map::offsetY) - 9, 0.1) :
-	    _gui->setTextureAt("./sprites/cercle_rouge.png",
-			       Map::offsetMapX + ((i % Map::mapSize) * Map::offsetX) - 9,
-			       Map::offsetMapY + ((i / Map::mapSize) * Map::offsetY) - 9, 0.1);
+	  (_map->getCaseAt(Map::Coordinates(i % Map::mapSize, i / Map::mapSize))
+			   == Map::CaseState::EMPTY) ?
+	   _gui->setTextureAt("./sprites/cercle_vert.png",
+			      Map::offsetMapX + ((i % Map::mapSize) * Map::offsetX) - 9,
+			      Map::offsetMapY + ((i / Map::mapSize) * Map::offsetY) - 9, 0.1) :
+	   _gui->setTextureAt("./sprites/cercle_rouge.png",
+			      Map::offsetMapX + ((i % Map::mapSize) * Map::offsetX) - 9,
+			      Map::offsetMapY + ((i / Map::mapSize) * Map::offsetY) - 9, 0.1);
   	}
     }
 }
@@ -155,13 +158,15 @@ void		Gomoku::_checkIfClicked()
       for (unsigned int i = 0; i < _map->getMapData().size(); i++)
 	{
       	  if (_magnetTile(_gui->getMouseX(), _gui->getMouseY(),
-			  Map::offsetMapX + ((i % Map::mapSize) * Map::offsetX),
-			  Map::offsetMapY + ((i / Map::mapSize) * Map::offsetY)))
+	  		  Map::offsetMapX + ((i % Map::mapSize) * Map::offsetX),
+	  		  Map::offsetMapY + ((i / Map::mapSize) * Map::offsetY)))
 	    {
-	      if (_map->getCaseAt(i % Map::mapSize, i / Map::mapSize) == Map::CaseState::EMPTY)
+	      if (_map->getCaseAt(Map::Coordinates(i % Map::mapSize, i / Map::mapSize))
+				  == Map::CaseState::EMPTY)
 		{
 		  // check if its possible by the referee
-		  _map->setCaseAt(i % Map::mapSize, i / Map::mapSize, Map::CaseState::WHITE);
+		  _map->setCaseAt(Map::Coordinates(i % Map::mapSize, i / Map::mapSize),
+				  Map::CaseState::WHITE);
 		  std::cout << "[DEBUG] => [PIXEL] >> x [" << _gui->getMouseX()
 			    << "] and y [" << _gui->getMouseY()
 			    << "] [REAL--->] x [" << i % Map::mapSize

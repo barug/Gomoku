@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Thu Dec  1 02:11:47 2016 bogard_t
+// Last update Thu Dec  1 13:21:48 2016 bogard_t
 //
 
 #ifndef		__GOMOKU_HPP__
@@ -13,7 +13,7 @@
 
 # include	"IGui.hpp"
 # include	"IReferee.hpp"
-# include	"map.hpp"
+# include	"Map.hpp"
 # include	<memory>
 
 class		Gomoku
