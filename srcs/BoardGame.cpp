@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Thu Dec  1 14:49:19 2016 bogard_t
+// Last update Thu Dec  1 17:43:13 2016 bogard_t
 //
 
 # include	<cstdio>
@@ -14,8 +14,9 @@
 # include	"mSFML_Window.hpp"
 # include	"mSFML_Audio.hpp"
 
-BoardGame::BoardGame() : _gui(new mSFML_Window(std::string("BoardGame"), 800, 600)),
-			 _map(new Map)
+BoardGame::BoardGame() : _gui(new mSFML_Window(std::string("Gomoku - 2016"), 800, 600)),
+			 _map(new Map),
+			 _context(STARTSCREEN)
 {
   _gui->loadFont("./font/digital.otf");
   for (unsigned int x = 0; x < IGui::mapSize; x++)
@@ -29,18 +30,18 @@ BoardGame::~BoardGame()
   delete _map;
 }
 
-bool		BoardGame::_magnetTile(const unsigned int mouseX,
-				       const unsigned int mouseY,
-				       const unsigned int x,
-				       const unsigned int y,
-				       const unsigned int intensity) const
+bool		BoardGame::_magnetTileCircle(const unsigned int mouseX,
+					     const unsigned int mouseY,
+					     const unsigned int x,
+					     const unsigned int y,
+					     const unsigned int intensityX,
+					     const unsigned int intensityY) const
 {
-  for (unsigned int i = 0; i < intensity; i++)
+  for (unsigned int i = 0; i < intensityX; i++)
     {
-      for (unsigned int j = 0; j < intensity; j++)
+      for (unsigned int j = 0; j < intensityY; j++)
 	{
-
-	  // menger square (joke)
+	  // menger sponge (joke)
 	  if ((mouseX + i == x && mouseY + i == y) ||
 	      (mouseX + i == x && mouseY + j == y) ||
 	      (mouseX + j == x && mouseY + j == y) ||
@@ -83,7 +84,7 @@ void		BoardGame::_displayPlayerInfo() const
   _gui->fillRec(40, 470, 75, 1, 0xffffff);
 }
 
-void		BoardGame::_displayBackground() const
+void		BoardGame::_displayInGameBackground() const
 {
   _gui->fillRec(0, 0, 800, 600, 0xffffff);
   _gui->fillRec(0, 0, 190, 600, 0x000000);
@@ -93,6 +94,40 @@ void		BoardGame::_displayBackground() const
   _gui->fillRec(0, 590, 800, 10, 0xffffff);
   _gui->fillRec(790, 0, 10, 800, 0xffffff);
   _gui->fillRec(0, 0, 10, 600, 0xffffff);
+}
+
+void		BoardGame::_displayStartScreen()
+{
+  _gui->setTextureAt("./sprites/background.jpg", 0, 0, 0.5);
+  _gui->setTextureAt("./sprites/gomoku.png", 130, 100, 0.4);
+
+  if (_magnetTileCircle(_gui->getMouseX(), _gui->getMouseY(),
+  			400, 340, 100, 40))
+    {
+      if (_gui->buttonLeftIsClicked())
+	_context = Context::GAME;
+      _gui->fillRec(300, 300, 200, 80, 0xff0000, 180);
+      _gui->writeAt("Player vs Player", 315, 325, 0xffffff, 0.8);
+    }
+  else
+    {
+      _gui->fillRec(300, 300, 200, 80, 0xffffff, 180);
+      _gui->writeAt("Player vs Player", 315, 325, 0x000000, 0.8);
+    }
+
+  if (_magnetTileCircle(_gui->getMouseX(), _gui->getMouseY(),
+  			400, 440, 100, 40))
+    {
+      if (_gui->buttonLeftIsClicked())
+	_context = Context::GAME;
+      _gui->fillRec(300, 400, 200, 80, 0xff0000, 180);
+      _gui->writeAt("Player vs AI", 340, 425, 0xffffff, 0.8);
+    }
+  else
+    {
+      _gui->fillRec(300, 400, 200, 80, 0xffffff, 180);
+      _gui->writeAt("Player vs AI", 340, 425, 0x000000, 0.8);
+    }
 
 }
 
@@ -125,54 +160,51 @@ void		BoardGame::_updateMap()
       if (_map->getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
 	  == Map::CaseState::WHITE)
 	{
-  	  _gui->setTextureAt("./sprites/white.png",
-  			     IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
-  			     IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1);
-  	}
+	  _gui->setTextureAt("./sprites/white.png",
+			     IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
+			     IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1);
+	}
       else if (_map->getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
 	       == Map::CaseState::BLACK)
 	{
 	  _gui->setTextureAt("./sprites/black.png",
-  			     IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
-  			     IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1);
-  	}
-      if (_magnetTile(_gui->getMouseX(), _gui->getMouseY(),
-      		      IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetY),
-      		      IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetX)))
-  	{
+			     IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
+			     IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1);
+	}
+      if (_magnetTileCircle(_gui->getMouseX(), _gui->getMouseY(),
+			    IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetY),
+			    IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetX)))
+	{
 	  (_map->getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
-			   == Map::CaseState::EMPTY) ?
-	   _gui->setTextureAt("./sprites/cercle_vert.png",
-			      IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
-			      IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1) :
-	   _gui->setTextureAt("./sprites/cercle_rouge.png",
-			      IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
-			      IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1);
-  	}
+	   == Map::CaseState::EMPTY) ?
+	    _gui->setTextureAt("./sprites/cercle_vert.png",
+			       IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
+			       IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1) :
+	    _gui->setTextureAt("./sprites/cercle_rouge.png",
+			       IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
+			       IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1);
+	}
     }
 }
 
-void		BoardGame::_checkIfClicked()
+void		BoardGame::_gameInteract()
 {
-  if (_gui->buttonLeftIsClicked())
+  for (unsigned int i = 0; i < _map->getMapData().size(); i++)
     {
-      for (unsigned int i = 0; i < _map->getMapData().size(); i++)
+      if (_magnetTileCircle(_gui->getMouseX(), _gui->getMouseY(),
+			    IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX),
+			    IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY)))
 	{
-      	  if (_magnetTile(_gui->getMouseX(), _gui->getMouseY(),
-	  		  IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX),
-	  		  IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY)))
+	  if (_map->getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
+	      == Map::CaseState::EMPTY)
 	    {
-	      if (_map->getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
-				  == Map::CaseState::EMPTY)
-		{
-		  // check if its possible by the referee
-		  _map->setCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize),
-				  Map::CaseState::WHITE);
-		  std::cout << "[DEBUG] => [PIXEL] >> x [" << _gui->getMouseX()
-			    << "] and y [" << _gui->getMouseY()
-			    << "] [REAL--->] x [" << i % IGui::mapSize
-			    << "] -> y [" << i / IGui::mapSize << "]" << std::endl;
-		}
+	      // check if its possible by the referee
+	      _map->setCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize),
+			      Map::CaseState::WHITE);
+	      std::cout << "[DEBUG] => [PIXEL] >> x [" << _gui->getMouseX()
+			<< "] and y [" << _gui->getMouseY()
+			<< "] [REAL--->] x [" << i % IGui::mapSize
+			<< "] -> y [" << i / IGui::mapSize << "]" << std::endl;
 	    }
 	}
     }
@@ -185,14 +217,19 @@ int		BoardGame::start()
       _gui->clear();
       _gui->handleEvents();
 
-      _displayBackground();
-      _displayGameBoard();
+      if (_context == Context::STARTSCREEN)
+	_displayStartScreen();
 
-      _updateMap();
+      if (_context == Context::GAME || _context == Context::MENU)
+	{
+	  _displayInGameBackground();
+	  _displayGameBoard();
+	  _updateMap();
+	  if (_gui->buttonLeftIsClicked())
+	    _gameInteract();
+	  _displayPlayerInfo();
+	}
 
-      _checkIfClicked();
-
-      _displayPlayerInfo();
       _gui->display();
     }
   return 0;
