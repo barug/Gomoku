@@ -10,6 +10,7 @@ project(Gomoku)
 
 add_executable(Gomoku
   srcs/BoardGame.cpp
+  srcs/Player.cpp
   srcs/Main.cpp
   srcs/TextureManager.cpp
   srcs/mSFML_Audio.cpp
