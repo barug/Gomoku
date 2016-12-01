@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Wed Nov 30 15:17:34 2016 Thomas Billot
+// Last update Thu Dec  1 01:00:18 2016 bogard_t
 //
 
 # include	<cstdio>
@@ -14,12 +14,13 @@
 # include	"mSFML_Window.hpp"
 # include	"mSFML_Audio.hpp"
 
-Gomoku::Gomoku() : _gui(new mSFML_Window(std::string("Gomoku"), 800, 600))
+Gomoku::Gomoku() : _gui(new mSFML_Window(std::string("Gomoku"), 800, 600)),
+		   _map()
 {
   _gui->loadFont("./font/digital.otf");
   for (unsigned int x = 0; x < 19; x++)
     for (unsigned int y = 0; y < 19; y++)
-      _vecCase.push_back(new Case(x, y, 230 + (x * 30), 20 + (y * 30)));
+      _map.setCaseAt(x, y, Map::CaseState::EMPTY);
 }
 
 Gomoku::~Gomoku()
@@ -94,16 +95,12 @@ void		Gomoku::_displayBackground()
 
 void		Gomoku::_displayGameBoard()
 {
-
   for (unsigned int x = 0; x < 18; x++)
     {
       for (unsigned int y = 0; y < 18; y++)
 	{
-	  if (x != 18 && y != 18)
-	    {
-	      _gui->fillRec(230 + (x * 30), 20 + (y * 30), 30, 2, 0x000000);
-	      _gui->fillRec(230 + (x * 30), 20 + (y * 30), 2, 30, 0x000000);
-	    }
+	  _gui->fillRec(230 + (x * 30), 20 + (y * 30), 30, 2, 0x000000);
+	  _gui->fillRec(230 + (x * 30), 20 + (y * 30), 2, 30, 0x000000);
 	}
     }
   _gui->fillRec(230 + (18 * 30), 20 + (0 * 30), 2, (30 * 18) + 2, 0x000000);
@@ -113,33 +110,30 @@ void		Gomoku::_displayGameBoard()
 
 void		Gomoku::_updateMap()
 {
-  for (auto it : _vecCase)
+  for (unsigned int i = 0; i < _map.getMapData().size(); i++)
     {
-      if (it->getColorSlot() != Case::ColorSlot::NONE)
+      if (_map.getCaseAt(i % 19, i / 19) == Map::CaseState::WHITE)
 	{
-	  std::cout << "case x : " << it->getX() << "\ty : " << it->getY()<< std::endl;
-	}
-      if (_magnetTile(_gui->getMouseX(), _gui->getMouseY(), it->getXPixel(), it->getYPixel()))
-	{
-	  _gui->setTextureAt("./sprites/cercle_vert.png",
-			     it->getXPixel()-9,
-			     it->getYPixel()-9,
-			     0.1);
-	}
-      if (it->getColorSlot() == Case::ColorSlot::WHITE)
-	{
-	  _gui->setTextureAt("./sprites/white.png",
-			     it->getXPixel()-9,
-			     it->getYPixel()-9,
-			     0.1);
-	}
-      else if (it->getColorSlot() == Case::ColorSlot::BLACK)
+  	  _gui->setTextureAt("./sprites/white.png",
+  			     230 + ((i % 19) * 30) - 9,
+  			     20 + ((i / 19) * 30) - 9,
+  			     0.1);
+  	}
+      else if (_map.getCaseAt(i % 19, i / 19) == Map::CaseState::BLACK)
 	{
 	  _gui->setTextureAt("./sprites/black.png",
-			     it->getXPixel()-9,
-			     it->getYPixel()-9,
-			     0.1);
-	}
+  			     230 + ((i % 19) * 30) - 9,
+  			     20 + ((i / 19) * 30) - 9,
+  			     0.1);
+  	}
+      if (_magnetTile(_gui->getMouseX(), _gui->getMouseY(),
+  		      230 + ((i % 19) * 30), 20 + ((i / 19) * 30)))
+  	{
+  	  _gui->setTextureAt("./sprites/cercle_vert.png",
+  			     230 + ((i % 19) * 30) - 9,
+  			     20 + ((i / 19) * 30) - 9,
+  			     0.1);
+  	}
     }
 }
 
@@ -147,14 +141,16 @@ void		Gomoku::_checkIfClicked()
 {
   if (_gui->buttonLeftIsClicked())
     {
-      for (auto it : _vecCase)
+      for (unsigned int i = 0; i < _map.getMapData().size(); i++)
 	{
-	  if (_magnetTile(_gui->getMouseX(), _gui->getMouseY(), it->getXPixel(), it->getYPixel()))
+      	  if (_magnetTile(_gui->getMouseX(), _gui->getMouseY(),
+			  230 + ((i % 19) * 30), 20 + ((i / 19) * 30)))
 	    {
-	      it->setColorSlot(Case::ColorSlot::WHITE);
-	      std::cout << "[clicked on] x : " << _gui->getMouseX()
-			<< " and y : " << _gui->getMouseY() << std::endl;
-
+	      _map.setCaseAt(i % 19, i / 19, Map::CaseState::WHITE);
+      	      std::cout << "[clicked on] x : " << _gui->getMouseX()
+      			<< " and y : " << _gui->getMouseY() << std::endl;
+      	      std::cout << "[->] x : [" << i % 19
+      			<< "] -> y [" << i / 19 << "]" << std::endl;
 	    }
 	}
     }

@@ -123,33 +123,6 @@ Gomoku/fast:
 	$(MAKE) -f CMakeFiles/Gomoku.dir/build.make CMakeFiles/Gomoku.dir/build
 .PHONY : Gomoku/fast
 
-srcs/Case.o: srcs/Case.cpp.o
-
-.PHONY : srcs/Case.o
-
-# target to build an object file
-srcs/Case.cpp.o:
-	$(MAKE) -f CMakeFiles/Gomoku.dir/build.make CMakeFiles/Gomoku.dir/srcs/Case.cpp.o
-.PHONY : srcs/Case.cpp.o
-
-srcs/Case.i: srcs/Case.cpp.i
-
-.PHONY : srcs/Case.i
-
-# target to preprocess a source file
-srcs/Case.cpp.i:
-	$(MAKE) -f CMakeFiles/Gomoku.dir/build.make CMakeFiles/Gomoku.dir/srcs/Case.cpp.i
-.PHONY : srcs/Case.cpp.i
-
-srcs/Case.s: srcs/Case.cpp.s
-
-.PHONY : srcs/Case.s
-
-# target to generate assembly for a file
-srcs/Case.cpp.s:
-	$(MAKE) -f CMakeFiles/Gomoku.dir/build.make CMakeFiles/Gomoku.dir/srcs/Case.cpp.s
-.PHONY : srcs/Case.cpp.s
-
 srcs/Gomoku.o: srcs/Gomoku.cpp.o
 
 .PHONY : srcs/Gomoku.o
@@ -321,9 +294,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Gomoku"
-	@echo "... srcs/Case.o"
-	@echo "... srcs/Case.i"
-	@echo "... srcs/Case.s"
 	@echo "... srcs/Gomoku.o"
 	@echo "... srcs/Gomoku.i"
 	@echo "... srcs/Gomoku.s"

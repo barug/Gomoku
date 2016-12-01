@@ -9,7 +9,6 @@ cmake_minimum_required(VERSION 3.5)
 project(Gomoku)
 
 add_executable(Gomoku
-  srcs/Case.cpp
   srcs/Gomoku.cpp
   srcs/Main.cpp
   srcs/TextureManager.cpp
@@ -24,6 +23,6 @@ set(LINK_LIBRARIES
   -lsfml-system
   -lsfml-audio)
 
-message("Libraries linked -- > " ${LINK_LIBRARIES})
+message("-- Libraries linked -- > " ${LINK_LIBRARIES})
 include_directories(./includes)
 target_link_libraries(Gomoku ${LINK_LIBRARIES})

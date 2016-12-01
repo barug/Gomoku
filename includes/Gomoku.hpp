@@ -5,20 +5,20 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Wed Nov 30 15:17:49 2016 Thomas Billot
+// Last update Thu Dec  1 00:57:58 2016 bogard_t
 //
 
 #ifndef		__GOMOKU_HPP__
 # define	__GOMOKU_HPP__
 
 # include	"IGui.hpp"
-# include	"Case.hpp"
 // # include	"IReferee.hpp"
+# include	"map.hpp"
 
 class		Gomoku
 {
-  std::vector<Case*> _vecCase;
   IGui		*_gui;
+  Map		_map;
   // IReferee	*_referee;
 
 public:
