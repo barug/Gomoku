@@ -5,28 +5,31 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Thu Dec  1 00:57:58 2016 bogard_t
+// Last update Thu Dec  1 02:11:47 2016 bogard_t
 //
 
 #ifndef		__GOMOKU_HPP__
 # define	__GOMOKU_HPP__
 
 # include	"IGui.hpp"
-// # include	"IReferee.hpp"
+# include	"IReferee.hpp"
 # include	"map.hpp"
+# include	<memory>
 
 class		Gomoku
 {
   IGui		*_gui;
-  Map		_map;
-  // IReferee	*_referee;
+  IReferee	*_referee;
+  Map		*_map;
 
 public:
   Gomoku();
   ~Gomoku();
+
   int		start();
 
 private:
+
   /*
   ** private methods
   */
@@ -35,10 +38,10 @@ private:
 			    const unsigned int mouseY,
 			    const unsigned int x,
 			    const unsigned int y,
-			    const unsigned int intensity = 8);
-  void		_displayPlayerInfo();
-  void	        _displayBackground();
-  void	        _displayGameBoard();
+			    const unsigned int intensity = 13) const;
+  void		_displayPlayerInfo() const;
+  void	        _displayBackground() const;
+  void	        _displayGameBoard() const;
   void		_updateMap();
   void		_checkIfClicked();
 
