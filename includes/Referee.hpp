@@ -1,11 +1,11 @@
 //
 // Referee.hpp for Gomoku in /home/mikaz3/Tek3/B5/AI/Gomoku/mSFML/includes
-// 
+//
 // Made by Thomas Billot
 // Login   <mikaz3@epitech.net>
-// 
+//
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Wed Nov 30 15:05:32 2016 Thomas Billot
+// Last update Thu Dec  1 17:21:43 2016 Josselin
 //
 
 #ifndef			_REFEREE_HPP_
@@ -15,7 +15,7 @@ class			GomokuReferee : public IReferee
 {
 public:
 
-  enum			direction
+  enum			Direction
     {
       NORTH,
       NORTH_EAST,
@@ -26,10 +26,10 @@ public:
       WEST,
       NORTH_WEST,
     };
-  
-  
+
+
   Map				_map;
-  
+
 public:
 				GomokuReferee();
   virtual			~GomokuReferee();
