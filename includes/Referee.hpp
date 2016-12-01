@@ -11,16 +11,36 @@
 #ifndef			_REFEREE_HPP_
 # define		_REFEREE_HPP_
 
-class			Referee : public IReferee
+class			GomokuReferee : public IReferee
 {
-
-  Map			_map;
-  
 public:
 
-  Referee();
-  ~Referee();
-  void			OnTileAt(const unsigned int &CoordX, const unsigned int &CoordY);
+  enum			direction
+    {
+      NORTH,
+      NORTH_EAST,
+      EAST,
+      SOUTH_EAST,
+      SOUTH,
+      SOUTH_WEST,
+      WEST,
+      NORTH_WEST,
+    };
+  
+  
+  Map				_map;
+  
+public:
+				GomokuReferee();
+  virtual			~GomokuReferee();
+  virtual IReferee::gameState	validatePlayerAction(const unsigned int &CoordX,
+						     const unsigned int &CoordY);
 };
+
+bool				testAlignement(gomokuReferee::direction direction,
+					       const Map &map);
+bool				testCapture(gomokuReferee::direction direction,
+					    const Map &map);
+
 
 #endif			/* _REFEREE_HPP_ */

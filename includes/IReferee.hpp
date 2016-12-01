@@ -13,11 +13,18 @@
 
 class			IReferee
 {
-
 public:
 
-  virtual		~IReferee() {}
-  virtual void	        onClick(const unsigned int CoordX, const unsigned int CoordY) = 0;
+  enum			gameState
+    {
+      ONGOING,
+      P1_WIN,
+      P2_WIN
+    };
+  
+  virtual			~IReferee() {}
+  virtual IReferee::gameState	validatePlayerAction(const unsigned int CoordX,
+						     const unsigned int CoordY) = 0;
 };
 
 #endif			/* _IREFEREE_HPP_ */
