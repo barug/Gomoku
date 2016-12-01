@@ -2,7 +2,6 @@
 # define IARTIFICIAL_INTELIGENCE_HPP
 
 # include "map.hpp"
-# include "Referee.hpp"
 
 class				IArtificialInteligence
 {
