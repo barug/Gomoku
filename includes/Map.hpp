@@ -1,40 +1,38 @@
-//
-// Map.hpp for Gomoku in /home/mikaz3/Tek3/B5/AI/Gomoku/mSFML/includes
-// 
-// Made by Thomas Billot
-// Login   <mikaz3@epitech.net>
-// 
-// Started on  Wed Nov 30 12:34:16 2016 Thomas Billot
-// Last update Wed Nov 30 13:10:48 2016 Thomas Billot
-//
+#ifndef GOMOKU_MAP_HPP
+# define GOMOKU_MAP_HPP
 
-#ifndef					_MAP_HPP_
-# define				_MAP_HPP_
+# include <vector>
 
-# include				<memory>
-# include				<vector>
-
-# include				"Case.hpp"
+# define MAP_WIDTH			(19)
+# define MAP_SIZE			(MAP_WIDTH * MAP_WIDTH)
 
 class					Map
 {
+public:
+  enum					CaseState : char
+    {
+      EMPTY,
+      WHITE,
+      BLACK
+    };
 
-  std::vector<std::unique_ptr<Case*>>	_map;
-  static const int			offsetX;
-  static const int			offsetY;
-  static const int			offsetMapX;
-  static const int			offsetMapY;
-  static const int			mapSize;
+  struct				Coordinates
+  {
+    int					x;
+    int					y;
+  };
+
+private:
+  std::vector<Map::CaseState>		_mapData;
   
 public:
-
   Map();
+  ~Map();
+
+  void					setCaseAt(const Map::Coordinates &coordinates,
+						  const Map::CaseState &state);
+  const Map::CaseState			&getCaseAt(const Map::Coordinates &coordinates);
+  const std::vector<Map::CaseState>	&getMapData();
 };
 
-const int		Map::offsetX = 30;
-const int		Map::offsetY = 30;
-const int		Map::offsetMapX = 230;
-const int		Map::offsetMapY = 20;
-const int		Map::mapSize = 19;
-
-#endif			/* _MAP_HPP_ */
+#endif /* GOMOKU_MAP_HPP */

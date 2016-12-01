@@ -18,7 +18,7 @@ SRCS	= srcs/Main.cpp 		\
 	  srcs/mSFML_Audio.cpp		\
 	  srcs/Case.cpp			\
 	  srcs/TextureManager.cpp	\
-	  srcs/map.cpp			\
+	  srcs/Map.cpp			\
 
 OBJS	= $(SRCS:.cpp=.o)
 

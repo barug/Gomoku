@@ -9,7 +9,7 @@
 //
 
 #include <stdexcept>
-#include "map.hpp"
+#include "Map.hpp"
 
 Map::Map()
   : _mapData(std::vector<Map::CaseState>(MAP_SIZE, Map::EMPTY))
@@ -18,19 +18,17 @@ Map::Map()
 Map::~Map()
 {}
 
-void						Map::setCaseAt(const unsigned int &x,
-							       const unsigned int &y,
+void						Map::setCaseAt(const Map::Coordinates &coordinates,
 							       const Map::CaseState &state)
 {
-  if ((MAP_WIDTH * y + x) > MAP_SIZE)
+  if ((MAP_WIDTH * coordinates.y + coordinates.x) > MAP_SIZE)
     throw std::out_of_range ("Error in Map::setCaseAt");
-  _mapData[MAP_WIDTH * y + x] = state;
+  _mapData[MAP_WIDTH * coordinates.y + coordinates.x] = state;
 }
 
-const Map::CaseState				&Map::getCaseAt(const unsigned int &x,
-								const unsigned int &y)
+const Map::CaseState				&Map::getCaseAt(const Map::Coordinates &coordinates)
 {
-  return _mapData[MAP_WIDTH * y + x];
+  return _mapData[MAP_WIDTH * coordinates.y + coordinates.x];
 }
 
 const std::vector<Map::CaseState>		&Map::getMapData()
