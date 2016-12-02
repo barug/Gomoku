@@ -12,7 +12,7 @@ add_executable(Gomoku
   srcs/BoardGame.cpp
   srcs/Player.cpp
   srcs/Main.cpp
-  srcs/Referee.cpp
+  srcs/GomokuReferee.cpp
   srcs/TextureManager.cpp
   srcs/mSFML_Audio.cpp
   srcs/mSFML_Window.cpp
