@@ -14,14 +14,19 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SFML/include)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Werror")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
-link_directories(${CMAKE_CURRENT_SOURCE_DIR}/SFML/lib)
+if(WIN32)
+  link_directories(${CMAKE_CURRENT_SOURCE_DIR}/SFML/lib/win32)
+else()
+  link_directories(${CMAKE_CURRENT_SOURCE_DIR}/SFML/lib/linux)
+endif()
+
 link_libraries(sfml-graphics sfml-window sfml-system sfml-audio)
 
 add_executable(Gomoku
   srcs/BoardGame.cpp
   srcs/Player.cpp
   srcs/Main.cpp
-  srcs/GomokuReferee.cpp
+  # srcs/GomokuReferee.cpp
   srcs/TextureManager.cpp
   srcs/mSFML_Audio.cpp
   srcs/mSFML_Window.cpp
