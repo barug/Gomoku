@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 16:16:14 2016 Thomas Billot
-// Last update Thu Dec  1 14:08:14 2016 bogard_t
+// Last update Fri Dec  2 14:07:03 2016 bogard_t
 //
 
 #ifndef			__IGUI__HPP__
@@ -45,7 +45,8 @@ public:
       K_Z,
       K_Q,
       K_S,
-      K_D
+      K_D,
+      K_W
     };
 
   static const int 			offsetX = 30;

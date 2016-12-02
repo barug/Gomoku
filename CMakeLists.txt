@@ -8,6 +8,15 @@ cmake_minimum_required(VERSION 3.5)
 
 project(Gomoku)
 
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SFML/include)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Werror")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/SFML/lib)
+link_libraries(sfml-graphics sfml-window sfml-system sfml-audio)
+
 add_executable(Gomoku
   srcs/BoardGame.cpp
   srcs/Player.cpp
@@ -17,13 +26,4 @@ add_executable(Gomoku
   srcs/mSFML_Window.cpp
   srcs/Map.cpp)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Werror")
-set(LINK_LIBRARIES
-  -lsfml-graphics
-  -lsfml-window
-  -lsfml-system
-  -lsfml-audio)
-
-message("-- Libraries linked -- > " ${LINK_LIBRARIES})
-include_directories(./includes)
-target_link_libraries(Gomoku ${LINK_LIBRARIES})
+target_link_libraries(Gomoku)
