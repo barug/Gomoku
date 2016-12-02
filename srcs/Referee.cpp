@@ -1,22 +1,25 @@
-#include "Referee.hpp"
+#include "GomokuReferee.hpp"
 
-GomokuReferee::GomokuReferee()
+GomokuReferee::GomokuReferee(Map &map)
+  : _map(map)
 {}
 
 GomokuReferee::~GomokuReferee()
 {}
 
-IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int &CoordX,
-							    const unsigned int &CoordY)
-{}
+IReferee::gameState	GomokuReferee::validatePlayerAction(__attribute__((unused))const unsigned int &CoordX,
+							    __attribute__((unused))const unsigned int &CoordY)
+{
+  return IReferee::gameState::ONGOING;
+}
 
-int			countAlignement(const Map &map, Map::Coordinates coordinates, int xInc, int yInc)
+int			countAlignement(Map &map, Map::Coordinates coordinates, int xInc, int yInc)
 {
   int			count = 0;
 
-  while (map[MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)] <= MAP_SIZE &&
-	 map[MAP_WIDTH * coordinates.y + coordinates.x] ==
-	 map[MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)])
+  while (MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc) <= MAP_SIZE &&
+	 map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x) ==
+	 map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)))
     {
       xInc = xInc < 0 ? xInc - 1 : xInc > 0 ? xInc + 1 : 0;
       yInc = yInc < 0 ? yInc - 1 : yInc > 0 ? yInc + 1 : 0;
@@ -26,58 +29,36 @@ int			countAlignement(const Map &map, Map::Coordinates coordinates, int xInc, in
 }
 
 int				testAlignement(GomokuReferee::Direction direction,
-					       const Map &map, Map::Coordinates coordinates)
+					       Map &map, Map::Coordinates coordinates)
 {
   int				count;
 
   if (direction == GomokuReferee::Direction::NORTH || direction == GomokuReferee::Direction::SOUTH)
-    count = countAlignement(map, 0, 1) + countAlignement(map, 0, -1);
+    count = countAlignement(map, coordinates, 0, 1) + countAlignement(map, coordinates, 0, -1);
   else if (direction == GomokuReferee::Direction::WEST || direction == GomokuReferee::Direction::EAST)
-    count = countAlignement(map, 1, 0) + countAlignement(map, -1, 0);
+    count = countAlignement(map, coordinates, 1, 0) + countAlignement(map, coordinates, -1, 0);
   else if (direction == GomokuReferee::Direction::NORTH_EAST || direction == GomokuReferee::Direction::SOUTH_WEST)
-    count = countAlignement(map, 1, 1) + countAlignement(map, -1, -1);
+    count = countAlignement(map, coordinates, 1, 1) + countAlignement(map, coordinates, -1, -1);
   else
-    count = countAlignement(map, 1, -1) + countAlignement(map, -1, 1);
+    count = countAlignement(map, coordinates, 1, -1) + countAlignement(map, coordinates, -1, 1);
   return count;
 }
 
-bool				countCapture(const Map &map, Map::Coordinates coordinates, int xInc, int yInc)
+bool				countCapture(Map &map, Map::Coordinates coordinates, int xInc, int yInc)
 {
-  Map::CaseState rivals = map[MAP_WIDTH * coordinates.y + coordinates.x] == Map::CaseState::WHITE ? Map::CaseState::BLACK : Map::CaseState::WHITE;
+  Map::CaseState rivals = map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x) == Map::CaseState::WHITE ? Map::CaseState::BLACK : Map::CaseState::WHITE;
 
-  if (map[MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)] == rivals &&
-      map[MAP_WIDTH * (coordinates.y + (yInc * 2)) + (coordinates.x + (xInc * 2))] == rivals &&
-      map[MAP_WIDTH * (coordinates.y + (yInc * 3)) + (coordinates.x + (xInc * 3))] == map[MAP_WIDTH * coordinates.y + coordinates.x])
+  if (map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)) == rivals &&
+      map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + (yInc * 2)) + (coordinates.x + (xInc * 2))) == rivals &&
+      map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + (yInc * 3)) + (coordinates.x + (xInc * 3))) == map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x))
     return true;
   return false;
 }
-
-std::vector<GomokuReferee::Direction>	testCapture(const Map &map, Map::Coordinates coordinates)
-{
-  std::vector<GomokuReferee::Direction> captureDirection;
-
-  if (testCaptureInDirection(GomokuReferee::Direction::NORTH, map, coordinates))
-    captureDirection.push_back(GomokuReferee::Direction::NORTH);
-  if (testCaptureInDirection(GomokuReferee::Direction::NORTH_EAST, map, coordinates))
-    captureDirection.push_back(GomokuReferee::Direction::NORTH_EAST);
-  if (testCaptureInDirection(GomokuReferee::Direction::EAST, map, coordinates))
-    captureDirection.push_back(GomokuReferee::Direction::EAST);
-  if (testCaptureInDirection(GomokuReferee::Direction::SOUTH_EAST, map, coordinates))
-    captureDirection.push_back(GomokuReferee::Direction::SOUTH_EAST);
-  if (testCaptureInDirection(GomokuReferee::Direction::SOUTH, map, coordinates))
-    captureDirection.push_back(GomokuReferee::Direction::SOUTH);
-  if (testCaptureInDirection(GomokuReferee::Direction::SOUTH_WEST, map, coordinates))
-    captureDirection.push_back(GomokuReferee::Direction::SOUTH_WEST);
-  if (testCaptureInDirection(GomokuReferee::Direction::WEST, map, coordinates))
-    captureDirection.push_back(GomokuReferee::Direction::WEST);
-  if (testCaptureInDirection(GomokuReferee::Direction::NORTH_WEST, map, coordinates))
-    captureDirection.push_back(GomokuReferee::Direction::NORTH_WEST);
-  return captureDirection;
-}
-
 bool				testCaptureInDirection(GomokuReferee::Direction direction,
-					    const Map &map, Map::Coordinates coordinates)
+					    Map &map, Map::Coordinates coordinates)
 {
+  int xInc = 0;
+  int yInc = 0;
   switch (direction)
     {
     case GomokuReferee::Direction::NORTH :
@@ -127,4 +108,27 @@ bool				testCaptureInDirection(GomokuReferee::Direction direction,
   if (MAP_WIDTH * (coordinates.y + (yInc * 3)) + (coordinates.x + (xInc * 3)) > MAP_SIZE)
     return false;
   return countCapture(map, coordinates, xInc, yInc);
+}
+
+std::vector<GomokuReferee::Direction>	testCapture(Map &map, Map::Coordinates coordinates)
+{
+  std::vector<GomokuReferee::Direction> captureDirection;
+
+  if (testCaptureInDirection(GomokuReferee::Direction::NORTH, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::NORTH);
+  if (testCaptureInDirection(GomokuReferee::Direction::NORTH_EAST, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::NORTH_EAST);
+  if (testCaptureInDirection(GomokuReferee::Direction::EAST, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::EAST);
+  if (testCaptureInDirection(GomokuReferee::Direction::SOUTH_EAST, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::SOUTH_EAST);
+  if (testCaptureInDirection(GomokuReferee::Direction::SOUTH, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::SOUTH);
+  if (testCaptureInDirection(GomokuReferee::Direction::SOUTH_WEST, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::SOUTH_WEST);
+  if (testCaptureInDirection(GomokuReferee::Direction::WEST, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::WEST);
+  if (testCaptureInDirection(GomokuReferee::Direction::NORTH_WEST, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::NORTH_WEST);
+  return captureDirection;
 }

@@ -34,6 +34,7 @@ public:
   void					setCaseAt(const Map::Coordinates &coordinates,
 						  const Map::CaseState &state);
   const Map::CaseState			&getCaseAt(const Map::Coordinates &coordinates);
+  const Map::CaseState			&getCaseAtIndex(const int index);
   const std::vector<Map::CaseState>	&getMapData();
 };
 

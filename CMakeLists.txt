@@ -1,4 +1,4 @@
-#  _____ _____ _____ _____ _____ _____ 
+#  _____ _____ _____ _____ _____ _____
 # |   __|     |     |     |  |  |  |  |
 # |  |  |  |  | | | |  |  |    -|  |  |
 # |_____|_____|_|_|_|_____|__|__|_____|
@@ -12,6 +12,7 @@ add_executable(Gomoku
   srcs/BoardGame.cpp
   srcs/Player.cpp
   srcs/Main.cpp
+  srcs/Referee.cpp
   srcs/TextureManager.cpp
   srcs/mSFML_Audio.cpp
   srcs/mSFML_Window.cpp
