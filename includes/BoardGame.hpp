@@ -5,30 +5,37 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Thu Dec  1 17:14:03 2016 bogard_t
+// Last update Fri Dec  2 01:37:23 2016 bogard_t
 //
 
 #ifndef		__BOARD_GAME_HPP__
 # define	__BOARD_GAME_HPP__
 
+# include	<memory>
+# include	<chrono>
 # include	"IGui.hpp"
 # include	"IReferee.hpp"
 # include	"Map.hpp"
-# include	<memory>
+
+# define	TICK_DURATION (500)
 
 class		BoardGame
 {
   enum		Context
     {
       STARTSCREEN = 0,
-      GAME = 1,
-      MENU = 2
+      WAITING = 1,
+      GAME = 2,
+      MENU = 3
     };
 
   IGui		*_gui;
   IReferee	*_referee;
   Map		*_map;
   BoardGame::Context _context;
+  std::chrono::system_clock::time_point _lastTick;
+  std::chrono::system_clock::time_point	_now;
+  bool		_timerFirstToSecondScreen;
 
 public:
   BoardGame();
@@ -53,6 +60,8 @@ private:
   void		_displayPlayerInfo() const;
   void	        _displayInGameBackground() const;
   void	        _displayGameBoard() const;
+  void	        _displayWaiting() const;
+  void	        _displayMenu() const;
   void		_updateMap();
   void		_gameInteract();
 

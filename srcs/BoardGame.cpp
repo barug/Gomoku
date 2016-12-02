@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Thu Dec  1 17:43:13 2016 bogard_t
+// Last update Fri Dec  2 02:35:13 2016 bogard_t
 //
 
 # include	<cstdio>
@@ -16,7 +16,8 @@
 
 BoardGame::BoardGame() : _gui(new mSFML_Window(std::string("Gomoku - 2016"), 800, 600)),
 			 _map(new Map),
-			 _context(STARTSCREEN)
+			 _context(Context::STARTSCREEN),
+			 _timerFirstToSecondScreen(false)
 {
   _gui->loadFont("./font/digital.otf");
   for (unsigned int x = 0; x < IGui::mapSize; x++)
@@ -61,7 +62,9 @@ bool		BoardGame::_magnetTileCircle(const unsigned int mouseX,
 	      (mouseX - i == x && mouseY - j == y) ||
 	      (mouseX - j == x && mouseY - j == y) ||
 	      (mouseX - j == x && mouseY - i == y))
-	    return (true);
+	    {
+	      return (true);
+	    }
 	}
     }
   return (false);
@@ -100,14 +103,15 @@ void		BoardGame::_displayStartScreen()
 {
   _gui->setTextureAt("./sprites/background.jpg", 0, 0, 0.5);
   _gui->setTextureAt("./sprites/gomoku.png", 130, 100, 0.4);
-
+  _gui->writeAt("project for tek3 by : barthe_g, billot_t, bloy_j, bogard_t",
+		230, 560, 0xffffff, 0.5);
   if (_magnetTileCircle(_gui->getMouseX(), _gui->getMouseY(),
-  			400, 340, 100, 40))
+  			400, 340, 40, 40))
     {
       if (_gui->buttonLeftIsClicked())
-	_context = Context::GAME;
-      _gui->fillRec(300, 300, 200, 80, 0xff0000, 180);
-      _gui->writeAt("Player vs Player", 315, 325, 0xffffff, 0.8);
+	_context = Context::WAITING;
+      _gui->fillRec(300, 300, 200, 80, 0x000000, 180);
+      _gui->writeAt("Player vs Player", 315, 325, 0x00ff00, 0.8);
     }
   else
     {
@@ -116,12 +120,12 @@ void		BoardGame::_displayStartScreen()
     }
 
   if (_magnetTileCircle(_gui->getMouseX(), _gui->getMouseY(),
-  			400, 440, 100, 40))
+  			400, 440, 40, 40))
     {
       if (_gui->buttonLeftIsClicked())
-	_context = Context::GAME;
-      _gui->fillRec(300, 400, 200, 80, 0xff0000, 180);
-      _gui->writeAt("Player vs AI", 340, 425, 0xffffff, 0.8);
+	_context = Context::WAITING;
+      _gui->fillRec(300, 400, 200, 80, 0x000000, 180);
+      _gui->writeAt("Player vs AI", 340, 425, 0x00ff00, 0.8);
     }
   else
     {
@@ -171,19 +175,20 @@ void		BoardGame::_updateMap()
 			     IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
 			     IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1);
 	}
-      if (_magnetTileCircle(_gui->getMouseX(), _gui->getMouseY(),
-			    IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetY),
-			    IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetX)))
-	{
-	  (_map->getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
-	   == Map::CaseState::EMPTY) ?
-	    _gui->setTextureAt("./sprites/cercle_vert.png",
-			       IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
-			       IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1) :
-	    _gui->setTextureAt("./sprites/cercle_rouge.png",
-			       IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
-			       IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1);
-	}
+      if (_context == Context::GAME)
+	if (_magnetTileCircle(_gui->getMouseX(), _gui->getMouseY(),
+			      IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetY),
+			      IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetX)))
+	  {
+	    (_map->getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
+	     == Map::CaseState::EMPTY) ?
+	      _gui->setTextureAt("./sprites/cercle_vert.png",
+				 IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
+				 IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1) :
+	      _gui->setTextureAt("./sprites/cercle_rouge.png",
+				 IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
+				 IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1);
+	  }
     }
 }
 
@@ -210,23 +215,97 @@ void		BoardGame::_gameInteract()
     }
 }
 
+void		BoardGame::_displayWaiting() const
+{
+  std::string	dot;
+
+  _gui->fillRec(380, 280, 150, 50, 0x000000, 230);
+  for (unsigned int i = 0; i < std::chrono::duration_cast<std::chrono::milliseconds>(_now - _lastTick).count() / 100; i++)
+    if (i < 3)
+      dot += ".";
+  _gui->writeAt("waiting" + dot, 395, 285, 0x00ff00, 1.2);
+}
+
+void		BoardGame::_displayMenu() const
+{
+  _gui->fillRec(350, 100, 300, 400, 0x000000, 180);
+  _gui->writeAt("MENU", 465, 100, 0x00ff00, 1.2);
+}
+
 int		BoardGame::start()
 {
+  bool		firstScreen = false;
+  bool		waitingMenu = false;
+
+  _lastTick = std::chrono::system_clock::now();
   while (_gui->isAlive())
     {
       _gui->clear();
       _gui->handleEvents();
-
       if (_context == Context::STARTSCREEN)
 	_displayStartScreen();
-
-      if (_context == Context::GAME || _context == Context::MENU)
+      else
 	{
+
+	  if (_gui->getKey() == IGui::SPACE)
+	    {
+	      if (_context == Context::GAME)
+	  	{
+	  	  if (!waitingMenu)
+	  	    {
+	  	      _lastTick = std::chrono::system_clock::now();
+	  	      _context = Context::MENU;
+	  	    }
+	  	}
+	      else if (_context == Context::MENU)
+	  	{
+		  _context = Context::GAME;
+		  waitingMenu = false;
+	  	}
+	    }
+
 	  _displayInGameBackground();
 	  _displayGameBoard();
 	  _updateMap();
-	  if (_gui->buttonLeftIsClicked())
-	    _gameInteract();
+
+	  if (_context == Context::MENU)
+	    {
+	      _displayMenu();
+	      if (!waitingMenu)
+		{
+		  _now = std::chrono::system_clock::now();
+		  if (std::chrono::duration_cast<std::chrono::milliseconds>(_now - _lastTick).count()
+		      > 1000)
+		    {
+		      _lastTick = _now;
+		      waitingMenu = true;
+		    }
+		}
+	    }
+	  else if (_context == Context::WAITING)
+	    {
+	      if (!firstScreen)
+		{
+		  _lastTick = std::chrono::system_clock::now();
+		  firstScreen = true;
+		}
+	      _now = std::chrono::system_clock::now();
+	      if (std::chrono::duration_cast<std::chrono::milliseconds>(_now - _lastTick).count()
+		  > TICK_DURATION)
+		{
+		  _lastTick = _now;
+		  if (_gui->buttonLeftIsClicked())
+		    _gameInteract();
+		  _context = Context::GAME;
+		}
+	      else
+		_displayWaiting();
+	    }
+	  else if (_context == Context::GAME)
+	    {
+	      if (_gui->buttonLeftIsClicked())
+		_gameInteract();
+	    }
 	  _displayPlayerInfo();
 	}
 
