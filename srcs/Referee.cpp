@@ -52,7 +52,30 @@ bool				countCapture(const Map &map, Map::Coordinates coordinates, int xInc, int
   return false;
 }
 
-bool				testCapture(GomokuReferee::Direction direction,
+std::vector<GomokuReferee::Direction>	testCapture(const Map &map, Map::Coordinates coordinates)
+{
+  std::vector<GomokuReferee::Direction> captureDirection;
+
+  if (testCaptureInDirection(GomokuReferee::Direction::NORTH, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::NORTH);
+  if (testCaptureInDirection(GomokuReferee::Direction::NORTH_EAST, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::NORTH_EAST);
+  if (testCaptureInDirection(GomokuReferee::Direction::EAST, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::EAST);
+  if (testCaptureInDirection(GomokuReferee::Direction::SOUTH_EAST, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::SOUTH_EAST);
+  if (testCaptureInDirection(GomokuReferee::Direction::SOUTH, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::SOUTH);
+  if (testCaptureInDirection(GomokuReferee::Direction::SOUTH_WEST, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::SOUTH_WEST);
+  if (testCaptureInDirection(GomokuReferee::Direction::WEST, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::WEST);
+  if (testCaptureInDirection(GomokuReferee::Direction::NORTH_WEST, map, coordinates))
+    captureDirection.push_back(GomokuReferee::Direction::NORTH_WEST);
+  return captureDirection;
+}
+
+bool				testCaptureInDirection(GomokuReferee::Direction direction,
 					    const Map &map, Map::Coordinates coordinates)
 {
   switch (direction)
