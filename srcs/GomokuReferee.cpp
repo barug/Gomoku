@@ -1,3 +1,13 @@
+//
+// GomokuReferee.cpp for Gomoku in /home/josselin/rendu/tek3/IA/Gomoku/srcs
+//
+// Made by Josselin
+// Login   <josselin@epitech.net>
+//
+// Started on  Mon Dec  5 13:50:04 2016 Josselin
+// Last update Mon Dec  5 14:31:50 2016 Josselin
+//
+
 #include "GomokuReferee.hpp"
 
 GomokuReferee::GomokuReferee(Map &map)
@@ -41,7 +51,7 @@ int				testAlignement(GomokuReferee::Direction direction,
     count = countAlignement(map, coordinates, 1, 1) + countAlignement(map, coordinates, -1, -1);
   else
     count = countAlignement(map, coordinates, 1, -1) + countAlignement(map, coordinates, -1, 1);
-  return count;
+  return count + 1;
 }
 
 bool				countCapture(Map &map, Map::Coordinates coordinates, int xInc, int yInc)
