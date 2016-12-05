@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:14:22 2016 Thomas Billot
-// Last update Wed Nov 30 23:11:16 2016 bogard_t
+// Last update Fri Dec  2 20:41:28 2016 bogard_t
 //
 
 #include <iostream>
@@ -88,7 +88,7 @@ void			mSFML_Window::handleEvents(void)
 	  if (event.key.code == sf::Keyboard::Escape)
 	    {
 	      if (DEBUG)
-		std::cout << "[Window::handlemSFML_Keyboards] Closed window event" << std::endl;
+		std::cout << "[Window::handleEvents] Closed window event" << std::endl;
 	      this->_window.close();
 	    }
 	  else if (event.key.code)

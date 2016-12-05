@@ -5,11 +5,14 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Thu Dec  1 17:21:43 2016 Josselin
+// Last update Fri Dec  2 18:22:25 2016 Josselin
 //
 
-#ifndef			_REFEREE_HPP_
-# define		_REFEREE_HPP_
+#ifndef			_GOMOKUREFEREE_HPP_
+# define		_GOMOKUREFEREE_HPP_
+
+# include "Map.hpp"
+# include "IReferee.hpp"
 
 class			GomokuReferee : public IReferee
 {
@@ -27,7 +30,7 @@ public:
       NORTH_WEST,
     };
 
-
+private:
   Map				_map;
 
 public:
@@ -37,10 +40,12 @@ public:
 						     const unsigned int &CoordY);
 };
 
-bool				testAlignement(gomokuReferee::direction direction,
-					       const Map &map);
-bool				testCapture(gomokuReferee::direction direction,
-					    const Map &map);
+bool				testAlignement(GomokuReferee::Direction direction,
+					       Map &map);
+bool				testCapture(GomokuReferee::Direction direction,
+					    Map &map);
+bool				testCaptureInDirection(GomokuReferee::Direction direction,
+					    Map &map, Map::Coordinates coordinates)
 
 
-#endif			/* _REFEREE_HPP_ */
+#endif			/* _GOMOKUREFEREE_HPP_ */

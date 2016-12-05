@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Fri Dec  2 02:35:13 2016 bogard_t
+// Last update Fri Dec  2 20:59:46 2016 bogard_t
 //
 
 # include	<cstdio>
@@ -17,7 +17,9 @@
 BoardGame::BoardGame() : _gui(new mSFML_Window(std::string("Gomoku - 2016"), 800, 600)),
 			 _map(new Map),
 			 _context(Context::STARTSCREEN),
-			 _timerFirstToSecondScreen(false)
+			 _lastTick(std::chrono::system_clock::now()),
+			 _menuTimerContext(new TimerContext),
+			 _waitingTimerContext(new TimerContext)
 {
   _gui->loadFont("./font/digital.otf");
   for (unsigned int x = 0; x < IGui::mapSize; x++)
@@ -29,6 +31,7 @@ BoardGame::~BoardGame()
 {
   delete _gui;
   delete _map;
+  delete _menuTimerContext;
 }
 
 bool		BoardGame::_magnetTileCircle(const unsigned int mouseX,
@@ -219,11 +222,13 @@ void		BoardGame::_displayWaiting() const
 {
   std::string	dot;
 
-  _gui->fillRec(380, 280, 150, 50, 0x000000, 230);
-  for (unsigned int i = 0; i < std::chrono::duration_cast<std::chrono::milliseconds>(_now - _lastTick).count() / 100; i++)
+  _gui->fillRec(0, 0, 800, 600, 0x000000);
+  for (unsigned int i = 0; i <
+	 std::chrono::duration_cast<std::chrono::
+	 milliseconds>(_now - _lastTick).count() / 100; i++)
     if (i < 3)
       dot += ".";
-  _gui->writeAt("waiting" + dot, 395, 285, 0x00ff00, 1.2);
+  _gui->writeAt("waiting" + dot, (800/2) - 50, (600/2) - 50, 0x00ff00, 1.2);
 }
 
 void		BoardGame::_displayMenu() const
@@ -232,83 +237,96 @@ void		BoardGame::_displayMenu() const
   _gui->writeAt("MENU", 465, 100, 0x00ff00, 1.2);
 }
 
+void		BoardGame::_displayGameScreen()
+{
+  if (_gui->getKey() == IGui::SPACE)
+    {
+
+      if (_context == Context::GAME &&
+	  _menuTimerContext->getState() == TimerContext::State::NONE)
+	{
+	  std::cout << "CONTEXT MOVED TO ::MENU" << std::endl;
+	  _context = Context::MENU;
+	  _menuTimerContext->setState(TimerContext::State::PUSHED);
+	}
+
+      else if (_context == Context::MENU &&
+	       _menuTimerContext->getState() == TimerContext::State::TIMER_OUT)
+	{
+	  std::cout << "CONTEXT MOVED TO ::GAME" << std::endl;
+	  _context = Context::GAME;
+	  _menuTimerContext->setState(TimerContext::State::NONE);
+	}
+    }
+
+  if (_context != Context::WAITING)
+    {
+      _displayInGameBackground();
+      _displayGameBoard();
+      _updateMap();
+      _displayPlayerInfo();
+    }
+
+  if (_context == Context::MENU)
+    {
+      _now = std::chrono::system_clock::now();
+      if (_menuTimerContext->getState() == TimerContext::State::PUSHED)
+	{
+	  std::cout << "timer reinitialized" << std::endl;
+	  _lastTick = std::chrono::system_clock::now();
+	  _menuTimerContext->setState(TimerContext::State::TIMER_IN);
+	}
+      if (std::chrono::duration_cast<std::chrono::milliseconds>(_now - _lastTick).count()
+	  > TICK_DURATION)
+	{
+	  std::cout << "[TIMER::MENU] is finished" << std::endl;
+	  _lastTick = _now;
+	  _menuTimerContext->setState(TimerContext::State::TIMER_OUT);
+	}
+      else
+	_displayMenu();
+    }
+
+  if (_context == Context::WAITING)
+    {
+      if (_waitingTimerContext->getState() == TimerContext::State::NONE)
+	{
+	  _lastTick = std::chrono::system_clock::now();
+	  _waitingTimerContext->setState(TimerContext::State::PUSHED);
+	}
+      _now = std::chrono::system_clock::now();
+      if (std::chrono::duration_cast<std::chrono::milliseconds>(_now - _lastTick).count()
+	  > TICK_DURATION)
+	{
+	  std::cout << "[TIMER::WAITING] is finished" << std::endl;
+	  _lastTick = _now;
+	  if (_gui->buttonLeftIsClicked())
+	    _gameInteract();
+	  _context = Context::GAME;
+	  _waitingTimerContext->setState(TimerContext::State::TIMER_OUT);
+	}
+      else
+	{
+	  _displayWaiting();
+	  _waitingTimerContext->setState(TimerContext::State::TIMER_IN);
+	}
+    }
+
+  else if (_context == Context::GAME)
+    {
+      if (_gui->buttonLeftIsClicked())
+	_gameInteract();
+    }
+
+}
+
 int		BoardGame::start()
 {
-  bool		firstScreen = false;
-  bool		waitingMenu = false;
-
-  _lastTick = std::chrono::system_clock::now();
   while (_gui->isAlive())
     {
       _gui->clear();
       _gui->handleEvents();
-      if (_context == Context::STARTSCREEN)
-	_displayStartScreen();
-      else
-	{
-
-	  if (_gui->getKey() == IGui::SPACE)
-	    {
-	      if (_context == Context::GAME)
-	  	{
-	  	  if (!waitingMenu)
-	  	    {
-	  	      _lastTick = std::chrono::system_clock::now();
-	  	      _context = Context::MENU;
-	  	    }
-	  	}
-	      else if (_context == Context::MENU)
-	  	{
-		  _context = Context::GAME;
-		  waitingMenu = false;
-	  	}
-	    }
-
-	  _displayInGameBackground();
-	  _displayGameBoard();
-	  _updateMap();
-
-	  if (_context == Context::MENU)
-	    {
-	      _displayMenu();
-	      if (!waitingMenu)
-		{
-		  _now = std::chrono::system_clock::now();
-		  if (std::chrono::duration_cast<std::chrono::milliseconds>(_now - _lastTick).count()
-		      > 1000)
-		    {
-		      _lastTick = _now;
-		      waitingMenu = true;
-		    }
-		}
-	    }
-	  else if (_context == Context::WAITING)
-	    {
-	      if (!firstScreen)
-		{
-		  _lastTick = std::chrono::system_clock::now();
-		  firstScreen = true;
-		}
-	      _now = std::chrono::system_clock::now();
-	      if (std::chrono::duration_cast<std::chrono::milliseconds>(_now - _lastTick).count()
-		  > TICK_DURATION)
-		{
-		  _lastTick = _now;
-		  if (_gui->buttonLeftIsClicked())
-		    _gameInteract();
-		  _context = Context::GAME;
-		}
-	      else
-		_displayWaiting();
-	    }
-	  else if (_context == Context::GAME)
-	    {
-	      if (_gui->buttonLeftIsClicked())
-		_gameInteract();
-	    }
-	  _displayPlayerInfo();
-	}
-
+      (_context == Context::STARTSCREEN) ? _displayStartScreen() : _displayGameScreen();
       _gui->display();
     }
   return 0;

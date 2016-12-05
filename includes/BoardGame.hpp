@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Fri Dec  2 01:37:23 2016 bogard_t
+// Last update Fri Dec  2 20:56:26 2016 bogard_t
 //
 
 #ifndef		__BOARD_GAME_HPP__
@@ -17,7 +17,36 @@
 # include	"IReferee.hpp"
 # include	"Map.hpp"
 
-# define	TICK_DURATION (500)
+# define	TICK_DURATION (800)
+
+class		TimerContext
+{
+public:
+  TimerContext() : _timerState(NONE) {}
+  ~TimerContext() {};
+
+  enum State
+    {
+      NONE = 0,
+      PUSHED = 1,
+      TIMER_IN = 2,
+      TIMER_OUT = 3,
+      OFF = 4
+    };
+
+  void		setState(const State& timerState)
+  {
+    _timerState = timerState;
+  }
+
+  const State	&getState() const
+  {
+    return (_timerState);
+  }
+
+private:
+  State _timerState;
+};
 
 class		BoardGame
 {
@@ -35,7 +64,9 @@ class		BoardGame
   BoardGame::Context _context;
   std::chrono::system_clock::time_point _lastTick;
   std::chrono::system_clock::time_point	_now;
-  bool		_timerFirstToSecondScreen;
+  TimerContext	*_menuTimerContext;
+  TimerContext	*_waitingTimerContext;
+  // bool		_timerFirstToSecondScreen;
 
 public:
   BoardGame();
@@ -62,6 +93,7 @@ private:
   void	        _displayGameBoard() const;
   void	        _displayWaiting() const;
   void	        _displayMenu() const;
+  void		_displayGameScreen();
   void		_updateMap();
   void		_gameInteract();
 
