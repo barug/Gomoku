@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:14:22 2016 Thomas Billot
-// Last update Fri Dec  2 20:41:28 2016 bogard_t
+// Last update Sat Dec  3 01:46:11 2016 bogard_t
 //
 
 #include <iostream>
@@ -196,4 +196,19 @@ void			mSFML_Window::fillRec(const unsigned int x,
   rectangle.setSize(sf::Vector2f(i, j));
   rectangle.setFillColor(sf::Color(rgb[0], rgb[1], rgb[2], alpha));
   this->_window.draw(rectangle);
+}
+
+void			mSFML_Window::fillCircle(const unsigned int x,
+						 const unsigned int y,
+						 const unsigned int i,
+						 const unsigned int j,
+						 const unsigned int hexaColorCode)
+{
+  std::vector<unsigned int> rgb = hexaToRgb(hexaColorCode);
+  sf::CircleShape circle;
+
+  circle.setPosition(x, y);
+  circle.setScale(sf::Vector2f(i, j));
+  circle.setFillColor(sf::Color(rgb[0], rgb[1], rgb[2], 255));
+  this->_window.draw(circle);
 }

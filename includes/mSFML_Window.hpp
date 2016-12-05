@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:07:01 2016 Thomas Billot
-// Last update Wed Nov 30 03:02:07 2016 bogard_t
+// Last update Sat Dec  3 01:43:58 2016 bogard_t
 //
 
 #ifndef		__MSFML__WINDOW__HPP__
@@ -71,6 +71,11 @@ public:
 				const unsigned int j,
 				const unsigned int hexaColorCode = 0x000000,
 				const unsigned int alpha = 255);
+  virtual void	        fillCircle(const unsigned int x,
+				   const unsigned int y,
+				   const unsigned int i,
+				   const unsigned int j,
+				   const unsigned int hexaColorCode = 0x000000);
 
 private:
   sf::RenderWindow	_window;
