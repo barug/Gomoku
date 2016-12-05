@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:14:22 2016 Thomas Billot
-// Last update Sat Dec  3 01:46:11 2016 bogard_t
+// Last update Mon Dec  5 13:46:03 2016 bogard_t
 //
 
 #include <iostream>
@@ -38,6 +38,42 @@ mSFML_Window::mSFML_Window(const std::string &windowName,
 {
   sf::VideoMode		size(winX, winY);
 
+  std::cout << "[mSFML_Window::mSFML_Window] "
+	    << windowName << " "
+	    << winX << "x"
+	    << winY
+	    << std::endl;
+  _window.create(size, windowName);
+}
+
+mSFML_Window::mSFML_Window(const std::string &fontPath,
+			   const std::string &windowName,
+			   const int winX,
+			   const int winY) : _window(),
+					     _winX(winX),
+					     _winY(winY),
+					     _current_key(NONE),
+					     _key_map(
+					   {{sf::Keyboard::Unknown,	IGui::NONE},
+					    {sf::Keyboard::Space,	IGui::SPACE},
+					    {sf::Keyboard::Right,	IGui::RIGHT},
+					    {sf::Keyboard::Left,	IGui::LEFT},
+					    {sf::Keyboard::Up,		IGui::UP},
+					    {sf::Keyboard::Down,	IGui::DOWN},
+					    {sf::Keyboard::Num0,	IGui::K_0},
+					    {sf::Keyboard::Num1,	IGui::K_1},
+					    {sf::Keyboard::Num2,	IGui::K_2},
+					    {sf::Keyboard::Num3,	IGui::K_3},
+					    {sf::Keyboard::Num4,	IGui::K_4},
+					    {sf::Keyboard::Num5,	IGui::K_5},
+					    {sf::Keyboard::Num6,	IGui::K_6},
+					    {sf::Keyboard::Num7,	IGui::K_7},
+					    {sf::Keyboard::Num8,	IGui::K_8},
+					    {sf::Keyboard::Num9,	IGui::K_9}})
+
+{
+  sf::VideoMode		size(winX, winY);
+  this->loadFont(fontPath);
   std::cout << "[mSFML_Window::mSFML_Window] "
 	    << windowName << " "
 	    << winX << "x"
