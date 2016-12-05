@@ -5,16 +5,18 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Mon Dec  5 15:44:25 2016 bogard_t
+// Last update Mon Dec  5 16:35:39 2016 Thomas Billot
 //
 
 # include	<cstdio>
 # include	<iostream>
 # include	"Game.hpp"
+# include       "GomokuReferee.hpp"
 # include	"mSFML_Window.hpp"
 # include	"mSFML_Audio.hpp"
 
 Game::Game() : _gui(new mSFML_Window("./font/digital.otf", "Gomoku - 2016")),
+	       _referee(new GomokuReferee()),
 	       _map(new Map),
 	       _context(Context::STARTSCREEN),
 	       _turn(Turn::PLAYER1),
@@ -255,11 +257,12 @@ void		Game::_handleMenu()
 void		Game::_gameInteract()
 {
   for (unsigned int i = 0; i < _map->getMapData().size(); i++)
-    {
+    {             
       if (_magnetTile(_gui->getMouseX(), _gui->getMouseY(),
 		      IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX),
 		      IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY)))
 	{
+	  _referee->validatePlayerAction(_gui->getMouseX(), _gui->getMouseY());
 	  if (_map->getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
 	      == Map::CaseState::EMPTY)
 	    {

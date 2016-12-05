@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Mon Dec  5 15:44:29 2016 bogard_t
+// Last update Mon Dec  5 16:16:20 2016 Thomas Billot
 //
 
 #ifndef		__GAME_HPP__

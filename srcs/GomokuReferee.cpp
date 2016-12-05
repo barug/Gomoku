@@ -1,4 +1,14 @@
-#include "GomokuReferee.hpp"
+//
+// GomokuReferee.cpp for Gomoku in /home/mikaz3/Tek3/B5/AI/Gomoku
+// 
+// Made by Thomas Billot
+// Login   <mikaz3@epitech.net>
+// 
+// Started on  Mon Dec  5 15:50:28 2016 Thomas Billot
+// Last update Mon Dec  5 16:25:05 2016 Thomas Billot
+//
+
+#include		"GomokuReferee.hpp"
 
 GomokuReferee::GomokuReferee(Map &map) : _map(map)
 {}
@@ -9,6 +19,7 @@ GomokuReferee::~GomokuReferee()
 IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int &,
 							    const unsigned int &)
 {
+  std::cout << "validate player action" << std::endl;
   return IReferee::gameState::ONGOING;
 }
 
