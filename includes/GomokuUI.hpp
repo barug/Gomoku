@@ -20,16 +20,16 @@ public:
 					GomokuUI(IGui &gui, Map &map);
 					~GomokuUI();
 
-
   void					displayMenu();
   void				        displayWaiting();
   void					displayStartScreen();
+  void					displayGame();
 
   void				        updateMap();
 
   bool					currentTimer(const unsigned int timer);
   bool					getClicked();
-  Map::Coordinates*			getClickedOnTile();
+  Map::Coordinates*			getClickedTile();
 
   void					setContext(GomokuUI::Context context);
   GomokuUI::Context			getContext() const;
@@ -42,14 +42,13 @@ public:
 						   const unsigned int intensityY = 13) const;
 
 private:
-  // static const int			timerWaiting = 700;
-  // static const int			timerCurrent = 200;
   IGui					&_gui;
   Map					&_map;
   GomokuUI::Context			_context;
   TimerContext				_currentTimer;
   std::chrono::system_clock::time_point _lastTick;
   std::chrono::system_clock::time_point	_now;
+  bool					_restart;
 };
 
 #endif					// __GOMOKU_UI_HPP__

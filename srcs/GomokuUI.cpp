@@ -3,7 +3,8 @@
 
 GomokuUI::GomokuUI(IGui &gui, Map &map) : _gui(gui),
 					  _map(map),
-					  _context(Context::STARTSCREEN)
+					  _context(Context::STARTSCREEN),
+					  _restart(false)
 {
 }
 
@@ -23,28 +24,29 @@ GomokuUI::Context	GomokuUI::getContext() const
 
 bool			GomokuUI::currentTimer(const unsigned int timer)
 {
-  if (_currentTimer.getState() == TimerContext::State::NONE ||
+  if (_currentTimer.getState() == TimerContext::State::NONE or
       _currentTimer.getState() == TimerContext::State::TIMER_OUT)
     {
       _lastTick = std::chrono::system_clock::now();
       _currentTimer.setState(TimerContext::State::PUSHED);
     }
   _now = std::chrono::system_clock::now();
-  if (std::chrono::duration_cast<std::chrono::milliseconds>(_now - _lastTick).count()
-      > timer)
+  if (std::chrono::duration_cast<std::chrono::milliseconds>(_now - _lastTick).count() > timer)
     {
       _lastTick = _now;
-      _currentTimer.setState(TimerContext::State::TIMER_OUT);
+      std::cout << "[timer::out]" << std::endl;
+      _currentTimer.setState(TimerContext::State::NONE);
       return (false);
     }
   else
     {
+      std::cout << "[timer::in]" << std::endl;
       _currentTimer.setState(TimerContext::State::TIMER_IN);
       return (true);
     }
 }
 
-Map::Coordinates	*GomokuUI::getClickedOnTile()
+Map::Coordinates	*GomokuUI::getClickedTile()
 {
   if (_gui.buttonLeftIsClicked())
     for (unsigned int i = 0; i < _map.getMapData().size(); i++)
@@ -64,13 +66,16 @@ bool			GomokuUI::getClicked()
 
 void		        GomokuUI::displayMenu()
 {
+  if (_gui.getKey() == IGui::SPACE and currentTimer(500))
+    _context = GomokuUI::GAME;
   _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
   _gui.writeAt("MENU", 400, 70, 0x00ff00, 1.2);
   _gui.fillRec(390, 115, 100, 2, 0x00ff00);
   _gui.writeAt("BACK TO HOME", 330, 370, 0x00ff00, 1.2);
-  if (magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 370, 50, 30) && getClicked())
+  if (magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 370, 50, 30) and getClicked())
     {
-      _context = Context::STARTSCREEN;
+      _context = Context::WAITING;
+      _restart = true;
       for (unsigned int x = 0; x < IGui::mapSize; x++)
 	for (unsigned int y = 0; y < IGui::mapSize; y++)
 	  _map.setCaseAt(Map::Coordinates(x, y), Map::CaseState::EMPTY);
@@ -79,9 +84,13 @@ void		        GomokuUI::displayMenu()
 
 void			GomokuUI::displayStartScreen()
 {
+  if (_restart)
+    _restart = !_restart;
+
   _gui.setTextureAt("./sprites/background.jpg", 0, 0, 0.5);
   _gui.setTextureAt("./sprites/gomoku.png", 130, 100, 0.4);
   _gui.writeAt("project for tek3 by : barthe_g, billot_t, bloy_j, bogard_t", 230, 560, 0xffffff, 0.5);
+
   if (magnetTile(_gui.getMouseX(), _gui.getMouseY(), 400, 340, 40, 40))
     {
       if (getClicked())
@@ -122,9 +131,17 @@ void			GomokuUI::displayWaiting()
       _gui.writeAt("waiting" + displayDot, (800/2) - 50, (600/2) - 50, 0x00ff00, 1.2);
     }
   else
-    _context = Context::GAME;
+    _context = _restart ? Context::STARTSCREEN : Context::GAME;
 }
 
+void			GomokuUI::displayGame()
+{
+  if (_gui.getKey() == IGui::SPACE and currentTimer(1000))
+    _context = GomokuUI::MENU;
+}
+
+
+// update map
 void		        GomokuUI::updateMap()
 {
   // display background
@@ -206,25 +223,25 @@ bool		        GomokuUI::magnetTile(const unsigned int mouseX,
 {
   for (unsigned int i = 0; i < intensityX; i++)
     for (unsigned int j = 0; j < intensityY; j++)
-      if ((mouseX + i == x && mouseY + i == y) ||
-	  (mouseX + i == x && mouseY + j == y) ||
-	  (mouseX + j == x && mouseY + j == y) ||
-	  (mouseX + j == x && mouseY + i == y) ||
+      if ((mouseX + i == x and mouseY + i == y) ||
+	  (mouseX + i == x and mouseY + j == y) ||
+	  (mouseX + j == x and mouseY + j == y) ||
+	  (mouseX + j == x and mouseY + i == y) ||
 
-	  (mouseX + i == x && mouseY - i == y) ||
-	  (mouseX + i == x && mouseY - j == y) ||
-	  (mouseX + j == x && mouseY - j == y) ||
-	  (mouseX + j == x && mouseY - i == y) ||
+	  (mouseX + i == x and mouseY - i == y) ||
+	  (mouseX + i == x and mouseY - j == y) ||
+	  (mouseX + j == x and mouseY - j == y) ||
+	  (mouseX + j == x and mouseY - i == y) ||
 
-	  (mouseX - i == x && mouseY + i == y) ||
-	  (mouseX - i == x && mouseY + j == y) ||
-	  (mouseX - j == x && mouseY + j == y) ||
-	  (mouseX - j == x && mouseY + i == y) ||
+	  (mouseX - i == x and mouseY + i == y) ||
+	  (mouseX - i == x and mouseY + j == y) ||
+	  (mouseX - j == x and mouseY + j == y) ||
+	  (mouseX - j == x and mouseY + i == y) ||
 
-	  (mouseX - i == x && mouseY - i == y) ||
-	  (mouseX - i == x && mouseY - j == y) ||
-	  (mouseX - j == x && mouseY - j == y) ||
-	  (mouseX - j == x && mouseY - i == y))
+	  (mouseX - i == x and mouseY - i == y) ||
+	  (mouseX - i == x and mouseY - j == y) ||
+	  (mouseX - j == x and mouseY - j == y) ||
+	  (mouseX - j == x and mouseY - i == y))
 	return (true);
   return (false);
 }
