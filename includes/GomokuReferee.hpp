@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Mon Dec  5 18:05:51 2016 Thomas Billot
+// Last update Mon Dec  5 18:11:33 2016 Thomas Billot
 //
 
 #ifndef			_GOMOKUREFEREE_HPP_
@@ -40,7 +40,9 @@ public:
 						     const unsigned int CoordY);
 };
 
-int					testAlignement(GomokuReferee::Direction direction,
+std::vector<int> testAlignement(Map &map, Map::Coordinates coordinates);
+
+int					testAlignementInDirection(GomokuReferee::Direction direction,
 					       Map &map, Map::Coordinates coordinates);
 std::vector<GomokuReferee::Direction>	testCapture(Map &map, Map::Coordinates coordinates);
 bool					testCaptureInDirection(GomokuReferee::Direction direction,

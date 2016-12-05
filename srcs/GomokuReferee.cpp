@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Mon Dec  5 18:06:08 2016 Thomas Billot
+// Last update Mon Dec  5 18:11:55 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -23,10 +23,8 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int Coord
   return IReferee::gameState::ONGOING;
 }
 
-int			countAlignement(Map &map,
-					Map::Coordinates coordinates,
-					int xInc,
-					int yInc)
+int			countAlignement(Map &map, Map::Coordinates coordinates,
+					int xInc, int yInc)
 {
   int			count = 0;
 
@@ -41,9 +39,24 @@ int			countAlignement(Map &map,
   return count;
 }
 
-int				testAlignement(GomokuReferee::Direction direction,
-					       Map &map,
-					       Map::Coordinates coordinates)
+std::vector<int>	testAlignement(Map &map, Map::Coordinates coordinates)
+{
+  std::vector<int> vec;
+
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_EAST, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::EAST, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_EAST, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_WEST, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::WEST, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_WEST, map, coordinates));
+
+  return vec;
+}
+
+int				testAlignementInDirection(GomokuReferee::Direction direction, Map &map,
+							  Map::Coordinates coordinates)
 {
   int				count;
 
