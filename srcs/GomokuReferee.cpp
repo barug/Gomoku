@@ -1,19 +1,29 @@
+//
+// GomokuReferee.cpp for Gomoku in /home/josselin/rendu/tek3/IA/Gomoku/srcs
+//
+// Made by Josselin
+// Login   <josselin@epitech.net>
+//
+// Started on  Mon Dec  5 13:50:04 2016 Josselin
+// Last update Mon Dec  5 16:58:37 2016 Josselin
+//
+
 #include "GomokuReferee.hpp"
 
-GomokuReferee::GomokuReferee(Map &map)
-  : _map(map)
+GomokuReferee::GomokuReferee(Map &map) : _map(map)
 {}
 
 GomokuReferee::~GomokuReferee()
 {}
 
-IReferee::gameState	GomokuReferee::validatePlayerAction(__attribute__((unused))const unsigned int &CoordX,
-							    __attribute__((unused))const unsigned int &CoordY)
+IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int &,
+							    const unsigned int &)
 {
   return IReferee::gameState::ONGOING;
 }
 
-int			countAlignement(Map &map, Map::Coordinates coordinates, int xInc, int yInc)
+int			countAlignement(Map &map, Map::Coordinates coordinates,
+					int xInc, int yInc)
 {
   int			count = 0;
 
@@ -28,8 +38,24 @@ int			countAlignement(Map &map, Map::Coordinates coordinates, int xInc, int yInc
   return count;
 }
 
-int				testAlignement(GomokuReferee::Direction direction,
-					       Map &map, Map::Coordinates coordinates)
+std::vector<int>	testAlignement(Map &map, Map::Coordinates coordinates)
+{
+  std::vector<int> vec;
+
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_EAST, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::EAST, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_EAST, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_WEST, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::WEST, map, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_WEST, map, coordinates));
+
+  return vec;
+}
+
+int				testAlignementInDirection(GomokuReferee::Direction direction, Map &map,
+							  Map::Coordinates coordinates)
 {
   int				count;
 
@@ -41,7 +67,7 @@ int				testAlignement(GomokuReferee::Direction direction,
     count = countAlignement(map, coordinates, 1, 1) + countAlignement(map, coordinates, -1, -1);
   else
     count = countAlignement(map, coordinates, 1, -1) + countAlignement(map, coordinates, -1, 1);
-  return count;
+  return count + 1;
 }
 
 bool				countCapture(Map &map, Map::Coordinates coordinates, int xInc, int yInc)
@@ -55,7 +81,8 @@ bool				countCapture(Map &map, Map::Coordinates coordinates, int xInc, int yInc)
   return false;
 }
 bool				testCaptureInDirection(GomokuReferee::Direction direction,
-					    Map &map, Map::Coordinates coordinates)
+						       Map &map,
+						       Map::Coordinates coordinates)
 {
   int xInc = 0;
   int yInc = 0;
