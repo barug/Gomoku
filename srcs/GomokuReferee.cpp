@@ -1,14 +1,14 @@
+// GomokuReferee.cpp for Gomoku in /home/josselin/rendu/tek3/IA/Gomoku/srcs
 //
-// GomokuReferee.cpp for Gomoku in /home/mikaz3/Tek3/B5/AI/Gomoku
-// 
-// Made by Thomas Billot
-// Login   <mikaz3@epitech.net>
-// 
-// Started on  Mon Dec  5 15:50:28 2016 Thomas Billot
-// Last update Mon Dec  5 16:25:05 2016 Thomas Billot
+// Made by Josselin
+// Login   <josselin@epitech.net>
+//
+// Started on  Mon Dec  5 13:50:04 2016 Josselin
+// Last update Mon Dec  5 18:06:08 2016 Thomas Billot
 //
 
-#include		"GomokuReferee.hpp"
+#include <iostream>
+#include "GomokuReferee.hpp"
 
 GomokuReferee::GomokuReferee(Map &map) : _map(map)
 {}
@@ -16,10 +16,10 @@ GomokuReferee::GomokuReferee(Map &map) : _map(map)
 GomokuReferee::~GomokuReferee()
 {}
 
-IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int &,
-							    const unsigned int &)
+IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int CoordX,
+							    const unsigned int CoordY)
 {
-  std::cout << "validate player action" << std::endl;
+  std::cout << CoordX << " " << CoordY << std::endl;
   return IReferee::gameState::ONGOING;
 }
 
@@ -55,7 +55,7 @@ int				testAlignement(GomokuReferee::Direction direction,
     count = countAlignement(map, coordinates, 1, 1) + countAlignement(map, coordinates, -1, -1);
   else
     count = countAlignement(map, coordinates, 1, -1) + countAlignement(map, coordinates, -1, 1);
-  return count;
+  return count + 1;
 }
 
 bool				countCapture(Map &map, Map::Coordinates coordinates, int xInc, int yInc)

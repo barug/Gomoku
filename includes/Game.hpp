@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Mon Dec  5 16:16:20 2016 Thomas Billot
+// Last update Mon Dec  5 18:00:08 2016 Thomas Billot
 //
 
 #ifndef		__GAME_HPP__
@@ -44,8 +44,8 @@ private:
     };
 
   IGui		*_gui;
-  IReferee	*_referee;
   Map		*_map;
+  IReferee	*_referee;
   Game::Context _context;
   Game::Turn	_turn;
   TimerContext	_menuTimerContext;
