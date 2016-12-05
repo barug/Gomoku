@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 16:16:14 2016 Thomas Billot
-// Last update Thu Dec  1 14:08:14 2016 bogard_t
+// Last update Sun Dec  4 18:17:48 2016 bogard_t
 //
 
 #ifndef			__IGUI__HPP__
@@ -45,14 +45,15 @@ public:
       K_Z,
       K_Q,
       K_S,
-      K_D
+      K_D,
+      K_W
     };
 
-  static const int 			offsetX = 30;
-  static const int			offsetY = 30;
-  static const int			offsetMapX = 230;
-  static const int			offsetMapY = 20;
-  static const int			mapSize = 19;
+  static const int 	offsetX = 30;
+  static const int	offsetY = 30;
+  static const int	offsetMapX = 230;
+  static const int	offsetMapY = 20;
+  static const int	mapSize = 19;
 
   /*
   ** Dtor
@@ -105,6 +106,11 @@ public:
 				const unsigned int j,
 				const unsigned int hexaColorCode = 0x000000,
 				const unsigned int alpha = 255) = 0;
+  virtual void	        fillCircle(const unsigned int x,
+				   const unsigned int y,
+				   const unsigned int i,
+				   const unsigned int j,
+				   const unsigned int hexaColorCode = 0x000000) = 0;
 
   /*
   ** Color converter

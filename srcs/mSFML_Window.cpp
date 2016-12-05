@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:14:22 2016 Thomas Billot
-// Last update Wed Nov 30 23:11:16 2016 bogard_t
+// Last update Mon Dec  5 13:46:03 2016 bogard_t
 //
 
 #include <iostream>
@@ -38,6 +38,42 @@ mSFML_Window::mSFML_Window(const std::string &windowName,
 {
   sf::VideoMode		size(winX, winY);
 
+  std::cout << "[mSFML_Window::mSFML_Window] "
+	    << windowName << " "
+	    << winX << "x"
+	    << winY
+	    << std::endl;
+  _window.create(size, windowName);
+}
+
+mSFML_Window::mSFML_Window(const std::string &fontPath,
+			   const std::string &windowName,
+			   const int winX,
+			   const int winY) : _window(),
+					     _winX(winX),
+					     _winY(winY),
+					     _current_key(NONE),
+					     _key_map(
+					   {{sf::Keyboard::Unknown,	IGui::NONE},
+					    {sf::Keyboard::Space,	IGui::SPACE},
+					    {sf::Keyboard::Right,	IGui::RIGHT},
+					    {sf::Keyboard::Left,	IGui::LEFT},
+					    {sf::Keyboard::Up,		IGui::UP},
+					    {sf::Keyboard::Down,	IGui::DOWN},
+					    {sf::Keyboard::Num0,	IGui::K_0},
+					    {sf::Keyboard::Num1,	IGui::K_1},
+					    {sf::Keyboard::Num2,	IGui::K_2},
+					    {sf::Keyboard::Num3,	IGui::K_3},
+					    {sf::Keyboard::Num4,	IGui::K_4},
+					    {sf::Keyboard::Num5,	IGui::K_5},
+					    {sf::Keyboard::Num6,	IGui::K_6},
+					    {sf::Keyboard::Num7,	IGui::K_7},
+					    {sf::Keyboard::Num8,	IGui::K_8},
+					    {sf::Keyboard::Num9,	IGui::K_9}})
+
+{
+  sf::VideoMode		size(winX, winY);
+  this->loadFont(fontPath);
   std::cout << "[mSFML_Window::mSFML_Window] "
 	    << windowName << " "
 	    << winX << "x"
@@ -88,7 +124,7 @@ void			mSFML_Window::handleEvents(void)
 	  if (event.key.code == sf::Keyboard::Escape)
 	    {
 	      if (DEBUG)
-		std::cout << "[Window::handlemSFML_Keyboards] Closed window event" << std::endl;
+		std::cout << "[Window::handleEvents] Closed window event" << std::endl;
 	      this->_window.close();
 	    }
 	  else if (event.key.code)
@@ -196,4 +232,19 @@ void			mSFML_Window::fillRec(const unsigned int x,
   rectangle.setSize(sf::Vector2f(i, j));
   rectangle.setFillColor(sf::Color(rgb[0], rgb[1], rgb[2], alpha));
   this->_window.draw(rectangle);
+}
+
+void			mSFML_Window::fillCircle(const unsigned int x,
+						 const unsigned int y,
+						 const unsigned int i,
+						 const unsigned int j,
+						 const unsigned int hexaColorCode)
+{
+  std::vector<unsigned int> rgb = hexaToRgb(hexaColorCode);
+  sf::CircleShape circle;
+
+  circle.setPosition(x, y);
+  circle.setScale(sf::Vector2f(i, j));
+  circle.setFillColor(sf::Color(rgb[0], rgb[1], rgb[2], 255));
+  this->_window.draw(circle);
 }

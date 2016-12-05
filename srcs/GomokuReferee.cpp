@@ -10,20 +10,22 @@
 
 #include "GomokuReferee.hpp"
 
-GomokuReferee::GomokuReferee(Map &map)
-  : _map(map)
+GomokuReferee::GomokuReferee(Map &map) : _map(map)
 {}
 
 GomokuReferee::~GomokuReferee()
 {}
 
-IReferee::gameState	GomokuReferee::validatePlayerAction(__attribute__((unused))const unsigned int &CoordX,
-							    __attribute__((unused))const unsigned int &CoordY)
+IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int &,
+							    const unsigned int &)
 {
   return IReferee::gameState::ONGOING;
 }
 
-int			countAlignement(Map &map, Map::Coordinates coordinates, int xInc, int yInc)
+int			countAlignement(Map &map,
+					Map::Coordinates coordinates,
+					int xInc,
+					int yInc)
 {
   int			count = 0;
 
@@ -39,7 +41,8 @@ int			countAlignement(Map &map, Map::Coordinates coordinates, int xInc, int yInc
 }
 
 int				testAlignement(GomokuReferee::Direction direction,
-					       Map &map, Map::Coordinates coordinates)
+					       Map &map,
+					       Map::Coordinates coordinates)
 {
   int				count;
 
@@ -65,7 +68,8 @@ bool				countCapture(Map &map, Map::Coordinates coordinates, int xInc, int yInc)
   return false;
 }
 bool				testCaptureInDirection(GomokuReferee::Direction direction,
-					    Map &map, Map::Coordinates coordinates)
+						       Map &map,
+						       Map::Coordinates coordinates)
 {
   int xInc = 0;
   int yInc = 0;

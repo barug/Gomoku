@@ -5,12 +5,12 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Thu Dec  1 14:55:35 2016 bogard_t
-// Last update Thu Dec  1 15:12:03 2016 bogard_t
+// Last update Mon Dec  5 14:10:21 2016 bogard_t
 //
 
 # include		"Player.hpp"
 
-Player::Player(const Type type) : _type(type), _score(0)
+Player::Player(const Player::Type &type) : _type(type), _score(0)
 {
 }
 
@@ -36,4 +36,10 @@ void		Player::setType(const Player::Type type)
 Player::Type	Player::getType() const
 {
   return _type;
+}
+
+const Player&	Player::operator=(const Player::Type &type)
+{
+  _type = type;
+  return (*this);
 }

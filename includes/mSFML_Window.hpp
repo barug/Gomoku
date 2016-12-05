@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:07:01 2016 Thomas Billot
-// Last update Wed Nov 30 03:02:07 2016 bogard_t
+// Last update Mon Dec  5 14:11:52 2016 bogard_t
 //
 
 #ifndef		__MSFML__WINDOW__HPP__
@@ -23,8 +23,13 @@ class		mSFML_Window : public IGui
 {
 
 public:
-
+  // classic ctor
   mSFML_Window(const std::string &name = DEFAULT_WINDOW_NAME,
+	       const int windowX = DEFAULT_WINDOW_X,
+	       const int windowY = DEFAULT_WINDOW_Y);
+  // font ctor
+  mSFML_Window(const std::string &fontPath,
+	       const std::string &name = DEFAULT_WINDOW_NAME,
 	       const int windowX = DEFAULT_WINDOW_X,
 	       const int windowY = DEFAULT_WINDOW_Y);
   virtual ~mSFML_Window();
@@ -71,6 +76,11 @@ public:
 				const unsigned int j,
 				const unsigned int hexaColorCode = 0x000000,
 				const unsigned int alpha = 255);
+  virtual void	        fillCircle(const unsigned int x,
+				   const unsigned int y,
+				   const unsigned int i,
+				   const unsigned int j,
+				   const unsigned int hexaColorCode = 0x000000);
 
 private:
   sf::RenderWindow	_window;
@@ -83,7 +93,6 @@ private:
   IGui::Key		_current_key;
   std::map<sf::Keyboard::Key, IGui::Key> _key_map;
   sf::Mouse		_mouse;
-
 };
 
 #endif		/* __MSFML__WINDOW__HPP__ */
