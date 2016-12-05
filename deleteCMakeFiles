@@ -12,3 +12,6 @@ fi
 if [ -f Makefile ]; then
     rm Makefile
 fi
+if [ -d build ]; then
+    rm -rf build
+fi
