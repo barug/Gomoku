@@ -20,16 +20,17 @@ else()
   link_directories(${CMAKE_CURRENT_SOURCE_DIR}/SFML/lib/linux)
 endif()
 
-link_libraries(sfml-graphics sfml-window sfml-system sfml-audio)
+# link_libraries(sfml-graphics sfml-window sfml-system sfml-audio)
 
 add_executable(Gomoku
-  srcs/BoardGame.cpp
+  srcs/Game.cpp
   srcs/Player.cpp
   srcs/Main.cpp
   # srcs/GomokuReferee.cpp
   srcs/TextureManager.cpp
   srcs/mSFML_Audio.cpp
   srcs/mSFML_Window.cpp
-  srcs/Map.cpp)
+  srcs/Map.cpp
+  )
 
-target_link_libraries(Gomoku)
+target_link_libraries(Gomoku sfml-window sfml-system sfml-audio sfml-graphics)
