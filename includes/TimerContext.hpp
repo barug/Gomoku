@@ -1,10 +1,15 @@
 #ifndef		_TIMER_CONTEXT_HPP_
 # define	_TIMER_CONTEXT_HPP_
 
+# include	<memory>
+# include	<chrono>
+
 class		TimerContext
 {
 public:
-  TimerContext() : _timerState(NONE) {}
+  TimerContext() : _timerState(NONE),
+		   _currentTimer(NONE)
+  {}
   ~TimerContext() {};
 
   enum		State
@@ -18,16 +23,19 @@ public:
 
   void		setState(const State& timerState)
   {
-    _timerState = timerState;
+    _currentTimer = timerState;
   }
 
   const State	&getState() const
   {
-    return (_timerState);
+    return (_currentTimer);
   }
 
 private:
-  State		_timerState;
+  std::chrono::system_clock::time_point _lastTick;
+  std::chrono::system_clock::time_point	_now;
+  State					_timerState;
+  State					_currentTimer;
 };
 
 #endif		// _TIMER_CONTEXT_HPP_

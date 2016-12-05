@@ -10,8 +10,8 @@ project(Gomoku)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/includes)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/SFML/include)
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra -Werror")
+# -Werror
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall -Wextra")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
 if(WIN32)
@@ -26,6 +26,7 @@ add_executable(Gomoku
   srcs/Game.cpp
   srcs/Player.cpp
   srcs/Main.cpp
+  srcs/GomokuUI.cpp
   # srcs/GomokuReferee.cpp
   srcs/TextureManager.cpp
   srcs/mSFML_Audio.cpp
