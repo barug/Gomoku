@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:07:01 2016 Thomas Billot
-// Last update Mon Dec  5 14:11:52 2016 bogard_t
+// Last update Tue Dec  6 00:42:03 2016 bogard_t
 //
 
 #ifndef		__MSFML__WINDOW__HPP__
@@ -81,6 +81,12 @@ public:
 				   const unsigned int i,
 				   const unsigned int j,
 				   const unsigned int hexaColorCode = 0x000000);
+  virtual bool	        magnetTile(const unsigned int mouseX,
+				   const unsigned int mouseY,
+				   const unsigned int x,
+				   const unsigned int y,
+				   const unsigned int intensityX,
+				   const unsigned int intensityY) const;
 
 private:
   sf::RenderWindow	_window;

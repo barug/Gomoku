@@ -1,15 +1,28 @@
+//
+// GomokuUI.cpp for Gomoku in /home/bogard_t/rendu/tek3/Gomoku/srcs
+//
+// Made by bogard_t
+// Login   <bogard_t@epitech.net>
+//
+// Started on  Tue Dec  6 02:06:49 2016 bogard_t
+// Last update Tue Dec  6 02:12:25 2016 bogard_t
+//
+
 # include	<iostream>
 # include	"GomokuUI.hpp"
 
 GomokuUI::GomokuUI(IGui &gui, Map &map) : _gui(gui),
 					  _map(map),
+					  _timer(new Timer),
 					  _context(Context::STARTSCREEN),
 					  _restart(false)
 {
+  _map.resetAllCases(IGui::mapSize);
 }
 
 GomokuUI::~GomokuUI()
 {
+  delete _timer;
 }
 
 void			GomokuUI::setContext(GomokuUI::Context context)
@@ -22,35 +35,11 @@ GomokuUI::Context	GomokuUI::getContext() const
   return _context;
 }
 
-bool			GomokuUI::currentTimer(const unsigned int timer)
-{
-  if (_currentTimer.getState() == TimerContext::State::NONE or
-      _currentTimer.getState() == TimerContext::State::TIMER_OUT)
-    {
-      _lastTick = std::chrono::system_clock::now();
-      _currentTimer.setState(TimerContext::State::PUSHED);
-    }
-  _now = std::chrono::system_clock::now();
-  if (std::chrono::duration_cast<std::chrono::milliseconds>(_now - _lastTick).count() > timer)
-    {
-      _lastTick = _now;
-      std::cout << "[timer::out]" << std::endl;
-      _currentTimer.setState(TimerContext::State::NONE);
-      return (false);
-    }
-  else
-    {
-      std::cout << "[timer::in]" << std::endl;
-      _currentTimer.setState(TimerContext::State::TIMER_IN);
-      return (true);
-    }
-}
-
 Map::Coordinates	*GomokuUI::getClickedTile()
 {
   if (_gui.buttonLeftIsClicked())
     for (unsigned int i = 0; i < _map.getMapData().size(); i++)
-      if (magnetTile(_gui.getMouseX(), _gui.getMouseY(),
+      if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(),
 		     IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX),
 		     IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY)))
 	if (_map.getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
@@ -59,26 +48,29 @@ Map::Coordinates	*GomokuUI::getClickedTile()
   return (NULL);
 }
 
-bool			GomokuUI::getClicked()
+bool			GomokuUI::getClicked() const
 {
-  return (_gui.buttonLeftIsClicked() ? currentTimer(100) : false);
+  return (_gui.buttonLeftIsClicked());
 }
 
 void		        GomokuUI::displayMenu()
 {
-  if (_gui.getKey() == IGui::SPACE and currentTimer(500))
-    _context = GomokuUI::GAME;
+  if (!_timer->currentTimer(300) and _gui.getKey() == IGui::SPACE)
+    {
+      _context = GomokuUI::Context::GAME;
+      _timer->setState(Timer::State::NONE);
+    }
   _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
   _gui.writeAt("MENU", 400, 70, 0x00ff00, 1.2);
   _gui.fillRec(390, 115, 100, 2, 0x00ff00);
   _gui.writeAt("BACK TO HOME", 330, 370, 0x00ff00, 1.2);
-  if (magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 370, 50, 30) and getClicked())
+  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 370, 50, 30) and
+      _gui.buttonLeftIsClicked())
     {
       _context = Context::WAITING;
+      _timer->setState(Timer::State::NONE);
       _restart = true;
-      for (unsigned int x = 0; x < IGui::mapSize; x++)
-	for (unsigned int y = 0; y < IGui::mapSize; y++)
-	  _map.setCaseAt(Map::Coordinates(x, y), Map::CaseState::EMPTY);
+      _map.resetAllCases(IGui::mapSize);
     }
 }
 
@@ -90,10 +82,9 @@ void			GomokuUI::displayStartScreen()
   _gui.setTextureAt("./sprites/background.jpg", 0, 0, 0.5);
   _gui.setTextureAt("./sprites/gomoku.png", 130, 100, 0.4);
   _gui.writeAt("project for tek3 by : barthe_g, billot_t, bloy_j, bogard_t", 230, 560, 0xffffff, 0.5);
-
-  if (magnetTile(_gui.getMouseX(), _gui.getMouseY(), 400, 340, 40, 40))
+  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 400, 340, 40, 40))
     {
-      if (getClicked())
+      if (_gui.buttonLeftIsClicked())
 	_context = Context::WAITING;
       _gui.fillRec(300, 300, 200, 80, 0x000000, 180);
       _gui.writeAt("Player vs Player", 315, 325, 0x00ff00, 0.8);
@@ -103,9 +94,9 @@ void			GomokuUI::displayStartScreen()
       _gui.fillRec(300, 300, 200, 80, 0xffffff, 180);
       _gui.writeAt("Player vs Player", 315, 325, 0x000000, 0.8);
     }
-  if (magnetTile(_gui.getMouseX(), _gui.getMouseY(), 400, 440, 40, 40))
+  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 400, 440, 40, 40))
     {
-      if (getClicked())
+      if (_gui.buttonLeftIsClicked())
 	_context = Context::WAITING;
       _gui.fillRec(300, 400, 200, 80, 0x000000, 180);
       _gui.writeAt("Player vs AI", 340, 425, 0x00ff00, 0.8);
@@ -119,27 +110,31 @@ void			GomokuUI::displayStartScreen()
 
 void			GomokuUI::displayWaiting()
 {
-  if (currentTimer(500))
+  if (_timer->currentTimer(500))
     {
       std::string	displayDot;
 
-      for (unsigned int i = 0; i <
-	     std::chrono::duration_cast<std::chrono::
-	     milliseconds>(_now - _lastTick).count() / 100 && i < 3; i++)
+      for (unsigned int i = 0; i < _timer->timeLeft() / 100 && i < 3; i++)
 	displayDot += ".";
       _gui.fillRec(0, 0, 800, 600, 0x000000);
       _gui.writeAt("waiting" + displayDot, (800/2) - 50, (600/2) - 50, 0x00ff00, 1.2);
     }
   else
-    _context = _restart ? Context::STARTSCREEN : Context::GAME;
+    {
+      std::cout << "finish waiting" << std::endl;
+      _context = _restart ? Context::STARTSCREEN : Context::GAME;
+      _timer->setState(Timer::State::NONE);
+    }
 }
 
 void			GomokuUI::displayGame()
 {
-  if (_gui.getKey() == IGui::SPACE and currentTimer(1000))
-    _context = GomokuUI::MENU;
+  if (!_timer->currentTimer(300) and _gui.getKey() == IGui::SPACE)
+    {
+      _context = GomokuUI::Context::MENU;
+      _timer->setState(Timer::State::NONE);
+    }
 }
-
 
 // update map
 void		        GomokuUI::updateMap()
@@ -199,9 +194,9 @@ void		        GomokuUI::updateMap()
 	_gui.setTextureAt("./sprites/black.png",
 			  IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
 			  IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1);
-      if (magnetTile(_gui.getMouseX(), _gui.getMouseY(),
-		     IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetY),
-		     IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetX))
+      if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(),
+			  IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetY),
+			  IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetX))
 	  and _context == Context::GAME)
 	(_map.getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
 	 == Map::CaseState::EMPTY) ?
@@ -212,36 +207,4 @@ void		        GomokuUI::updateMap()
 			    IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
 			    IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1);
     }
-}
-
-bool		        GomokuUI::magnetTile(const unsigned int mouseX,
-					     const unsigned int mouseY,
-					     const unsigned int x,
-					     const unsigned int y,
-					     const unsigned int intensityX,
-					     const unsigned int intensityY) const
-{
-  for (unsigned int i = 0; i < intensityX; i++)
-    for (unsigned int j = 0; j < intensityY; j++)
-      if ((mouseX + i == x and mouseY + i == y) ||
-	  (mouseX + i == x and mouseY + j == y) ||
-	  (mouseX + j == x and mouseY + j == y) ||
-	  (mouseX + j == x and mouseY + i == y) ||
-
-	  (mouseX + i == x and mouseY - i == y) ||
-	  (mouseX + i == x and mouseY - j == y) ||
-	  (mouseX + j == x and mouseY - j == y) ||
-	  (mouseX + j == x and mouseY - i == y) ||
-
-	  (mouseX - i == x and mouseY + i == y) ||
-	  (mouseX - i == x and mouseY + j == y) ||
-	  (mouseX - j == x and mouseY + j == y) ||
-	  (mouseX - j == x and mouseY + i == y) ||
-
-	  (mouseX - i == x and mouseY - i == y) ||
-	  (mouseX - i == x and mouseY - j == y) ||
-	  (mouseX - j == x and mouseY - j == y) ||
-	  (mouseX - j == x and mouseY - i == y))
-	return (true);
-  return (false);
 }

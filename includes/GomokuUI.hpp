@@ -1,15 +1,25 @@
-#ifndef					__GOMOKU_UI_HPP__
-# define				__GOMOKU_UI_HPP__
+//
+// GomokuUI.hpp for Gomoku in /home/bogard_t/rendu/tek3/Gomoku/srcs
+//
+// Made by bogard_t
+// Login   <bogard_t@epitech.net>
+//
+// Started on  Tue Dec  6 02:06:57 2016 bogard_t
+// Last update Tue Dec  6 02:19:19 2016 bogard_t
+//
 
-# include				"Map.hpp"
-# include				"IGui.hpp"
-# include				"TimerContext.hpp"
-# include				"Player.hpp"
+#ifndef	        __GOMOKU_UI_HPP__
+# define	__GOMOKU_UI_HPP__
 
-class					GomokuUI
+# include	"Map.hpp"
+# include	"IGui.hpp"
+# include	"Timer.hpp"
+# include	"Player.hpp"
+
+class	        GomokuUI
 {
 public:
-  enum					Context
+  enum		Context
     {
       STARTSCREEN = 0,
       WAITING = 1,
@@ -17,38 +27,27 @@ public:
       MENU = 3
     };
 
-					GomokuUI(IGui &gui, Map &map);
-					~GomokuUI();
+  GomokuUI(IGui &gui, Map &map);
+  ~GomokuUI();
 
   void					displayMenu();
   void				        displayWaiting();
   void					displayStartScreen();
   void					displayGame();
-
   void				        updateMap();
 
-  bool					currentTimer(const unsigned int timer);
-  bool					getClicked();
+  bool					getClicked() const;
   Map::Coordinates*			getClickedTile();
 
   void					setContext(GomokuUI::Context context);
   GomokuUI::Context			getContext() const;
 
-  bool					magnetTile(const unsigned int mouseX,
-						   const unsigned int mouseY,
-						   const unsigned int x,
-						   const unsigned int y,
-						   const unsigned int intensityX = 13,
-						   const unsigned int intensityY = 13) const;
-
 private:
   IGui					&_gui;
   Map					&_map;
+  Timer					*_timer;
   GomokuUI::Context			_context;
-  TimerContext				_currentTimer;
-  std::chrono::system_clock::time_point _lastTick;
-  std::chrono::system_clock::time_point	_now;
   bool					_restart;
 };
 
-#endif					// __GOMOKU_UI_HPP__
+#endif		// __GOMOKU_UI_HPP__

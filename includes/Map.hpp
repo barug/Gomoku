@@ -31,6 +31,7 @@ public:
   Map();
   ~Map();
 
+  void					resetAllCases(const unsigned int size);
   void					setCaseAt(const Map::Coordinates &coordinates,
 						  const Map::CaseState &state);
   const Map::CaseState			&getCaseAt(const Map::Coordinates &coordinates);

@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:14:22 2016 Thomas Billot
-// Last update Mon Dec  5 13:46:03 2016 bogard_t
+// Last update Tue Dec  6 00:42:25 2016 bogard_t
 //
 
 #include <iostream>
@@ -247,4 +247,37 @@ void			mSFML_Window::fillCircle(const unsigned int x,
   circle.setScale(sf::Vector2f(i, j));
   circle.setFillColor(sf::Color(rgb[0], rgb[1], rgb[2], 255));
   this->_window.draw(circle);
+}
+
+
+bool		        mSFML_Window::magnetTile(const unsigned int mouseX,
+						 const unsigned int mouseY,
+						 const unsigned int x,
+						 const unsigned int y,
+						 const unsigned int intensityX,
+						 const unsigned int intensityY) const
+{
+  for (unsigned int i = 0; i < intensityX; i++)
+    for (unsigned int j = 0; j < intensityY; j++)
+      if ((mouseX + i == x and mouseY + i == y) ||
+	  (mouseX + i == x and mouseY + j == y) ||
+	  (mouseX + j == x and mouseY + j == y) ||
+	  (mouseX + j == x and mouseY + i == y) ||
+
+	  (mouseX + i == x and mouseY - i == y) ||
+	  (mouseX + i == x and mouseY - j == y) ||
+	  (mouseX + j == x and mouseY - j == y) ||
+	  (mouseX + j == x and mouseY - i == y) ||
+
+	  (mouseX - i == x and mouseY + i == y) ||
+	  (mouseX - i == x and mouseY + j == y) ||
+	  (mouseX - j == x and mouseY + j == y) ||
+	  (mouseX - j == x and mouseY + i == y) ||
+
+	  (mouseX - i == x and mouseY - i == y) ||
+	  (mouseX - i == x and mouseY - j == y) ||
+	  (mouseX - j == x and mouseY - j == y) ||
+	  (mouseX - j == x and mouseY - i == y))
+	return (true);
+  return (false);
 }

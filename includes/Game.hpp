@@ -5,53 +5,53 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Mon Dec  5 23:20:22 2016 bogard_t
+// Last update Tue Dec  6 02:04:02 2016 bogard_t
 //
 
-#ifndef		__GAME_HPP__
-# define	__GAME_HPP__
+#ifndef					__GAME_HPP__
+# define				__GAME_HPP__
 
-# include	<memory>
-# include	<chrono>
-# include	<map>
-# include	"GomokuUI.hpp"
-# include	"IReferee.hpp"
+# include				<memory>
+# include				<chrono>
+# include				<map>
+# include				"GomokuUI.hpp"
+# include				"IReferee.hpp"
 
-class		Game
+class					Game
 {
 public:
   Game();
   ~Game();
-  int		start();
+  int					start();
 
 private:
-  enum		Turn
+  enum					Turn
     {
       PLAYER1 = 0,
-      PLAYER2
+      PLAYER2 = 1
     };
 
-  Map		*_map;
-  IGui		*_gui;
-  IReferee	*_referee;
+  Map					*_map;
+  IGui					*_gui;
+  IReferee				*_referee;
+  GomokuUI				_gomokuUI;
+  typedef void (Game::* f)(void);
+  std::map<GomokuUI::Context, f>	_gameHandler;
 
-  std::map<GomokuUI::Context, void (Game::*)(void)>	_gameHandler;
+  Player				_player1;
+  Player				_player2;
 
-  Game::Turn	_turn;
-  GomokuUI	_gomokuUI;
-
-  Player	_player1;
-  Player	_player2;
+  Game::Turn		       		_turn;
 
   /*
   ** private methods
   */
 
-  void		_gameInteract();
-  void	        _handleStartScreen();
-  void		_handleMenu();
-  void		_handleGame();
-  void		_handleWaiting();
+  void					_gameInteract();
+  void				        _handleStartScreen();
+  void					_handleMenu();
+  void					_handleGame();
+  void					_handleWaiting();
 
 };
 

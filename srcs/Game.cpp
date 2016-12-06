@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Mon Dec  5 23:20:09 2016 bogard_t
+// Last update Tue Dec  6 02:06:26 2016 bogard_t
 //
 
 # include	<cstdio>
@@ -17,16 +17,12 @@
 
 Game::Game() : _map(new Map),
 	       _gui(new mSFML_Window("./font/digital.otf", "Gomoku - 2016")),
+	       _gomokuUI(*_gui, *_map),
 	       _gameHandler({{GomokuUI::Context::STARTSCREEN,	&Game::_handleStartScreen},
 			     {GomokuUI::Context::WAITING,	&Game::_handleWaiting},
 			     {GomokuUI::Context::GAME,		&Game::_handleGame},
-			     {GomokuUI::Context::MENU,		&Game::_handleMenu}}),
-	       _turn(Turn::PLAYER1),
-	       _gomokuUI(*_gui, *_map)
+			     {GomokuUI::Context::MENU,		&Game::_handleMenu}})
 {
-  for (auto x = 0; x < IGui::mapSize; x++)
-    for (auto y = 0; y < IGui::mapSize; y++)
-      _map->setCaseAt(Map::Coordinates(x, y), Map::CaseState::EMPTY);
 }
 
 Game::~Game()
@@ -35,7 +31,7 @@ Game::~Game()
   delete _gui;
 }
 
-int		Game::start()
+int					Game::start()
 {
   while (_gui->isAlive())
     {
@@ -47,25 +43,25 @@ int		Game::start()
   return 0;
 }
 
-void		Game::_handleStartScreen()
+void					Game::_handleStartScreen()
 {
   _gomokuUI.displayStartScreen();
 }
 
-void		Game::_handleWaiting()
+void					Game::_handleWaiting()
 {
   _gomokuUI.displayWaiting();
 }
 
-void		Game::_handleMenu()
+void					Game::_handleMenu()
 {
   _gomokuUI.updateMap();
   _gomokuUI.displayMenu();
 }
 
-void		Game::_handleGame()
+void					Game::_handleGame()
 {
-  std::unique_ptr<Map::Coordinates> newCoordinates(_gomokuUI.getClickedTile());
+  std::unique_ptr<Map::Coordinates>	newCoordinates(_gomokuUI.getClickedTile());
 
   _gomokuUI.updateMap();
   _gomokuUI.displayGame();
