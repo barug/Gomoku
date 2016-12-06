@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Tue Dec  6 02:06:49 2016 bogard_t
-// Last update Tue Dec  6 14:45:27 2016 bogard_t
+// Last update Tue Dec  6 16:40:31 2016 bogard_t
 //
 
 # include	<iostream>
@@ -29,12 +29,12 @@ void			GomokuUI::setContext(const GomokuUI::Context context)
   _context = context;
 }
 
-GomokuUI::Context	GomokuUI::getContext() const
+GomokuUI::Context	GomokuUI::getContext(void) const
 {
   return _context;
 }
 
-Map::Coordinates	*GomokuUI::getClickedTile()
+Map::Coordinates	*GomokuUI::getClickedTile(void)
 {
   if (_gui.buttonLeftIsClicked())
     for (unsigned int i = 0; i < _map.getMapData().size(); i++)
@@ -47,12 +47,12 @@ Map::Coordinates	*GomokuUI::getClickedTile()
   return (NULL);
 }
 
-bool			GomokuUI::getClicked() const
+bool			GomokuUI::getClicked(void) const
 {
   return (_gui.buttonLeftIsClicked());
 }
 
-void		        GomokuUI::displayMenu()
+void		        GomokuUI::displayMenu(void)
 {
   if (!_timer->currentTimer(300) and _gui.getKey() == IGui::SPACE)
     {
@@ -82,18 +82,17 @@ void		        GomokuUI::displayMenu()
     }
 }
 
-void			GomokuUI::displayStartScreen(Player &player2)
+Player::Type		GomokuUI::displayStartScreen(void)
 {
   if (_restart)
     _restart = !_restart;
-
   _gui.setTextureAt("./sprites/background.jpg", 0, 0, 0.5);
   _gui.setTextureAt("./sprites/gomoku.png", 130, 100, 0.4);
   _gui.writeAt("project for tek3 by : barthe_g, billot_t, bloy_j, bogard_t", 230, 560, 0xffffff, 0.5);
   if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 400, 340, 40, 40))
     {
       if (_gui.buttonLeftIsClicked())
-	_context = Context::WAITING;
+	return Player::Type::HUMAN;
       _gui.fillRec(300, 300, 200, 80, 0x000000, 180);
       _gui.writeAt("Player vs Player", 315, 325, 0x00ff00, 0.8);
     }
@@ -105,10 +104,7 @@ void			GomokuUI::displayStartScreen(Player &player2)
   if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 400, 440, 40, 40))
     {
       if (_gui.buttonLeftIsClicked())
-	{
-	  _context = Context::WAITING;
-	  player2.setType(Player::Type::AI);
-	}
+	return Player::Type::AI;
       _gui.fillRec(300, 400, 200, 80, 0x000000, 180);
       _gui.writeAt("Player vs AI", 340, 425, 0x00ff00, 0.8);
     }
@@ -117,9 +113,10 @@ void			GomokuUI::displayStartScreen(Player &player2)
       _gui.fillRec(300, 400, 200, 80, 0xffffff, 180);
       _gui.writeAt("Player vs AI", 340, 425, 0x000000, 0.8);
     }
+  return Player::Type::NONE;
 }
 
-void			GomokuUI::displayWaiting()
+void			GomokuUI::displayWaiting(void)
 {
   if (_timer->currentTimer(500))
     {
@@ -137,7 +134,7 @@ void			GomokuUI::displayWaiting()
     }
 }
 
-void			GomokuUI::displayGame()
+void			GomokuUI::displayGame(void)
 {
   if (!_timer->currentTimer(300) and _gui.getKey() == IGui::SPACE)
     {
@@ -147,7 +144,7 @@ void			GomokuUI::displayGame()
 }
 
 // update map
-void		        GomokuUI::updateMap()
+void		        GomokuUI::updateMap(void)
 {
 
   // display background

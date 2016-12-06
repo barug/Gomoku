@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Tue Dec  6 15:08:19 2016 Thomas Billot
+// Last update Tue Dec  6 19:39:32 2016 bogard_t
 //
 
 # include	<cstdio>
@@ -20,7 +20,7 @@ Game::Game() : _map(new Map),
 	       _referee(new GomokuReferee(*_map)),
 	       _player1(new Player),
 	       _player2(new Player),
-	       _gomokuUI(*_gui, *_map),
+	       _gomokuUI(*(_gui.get()), *(_map.get())),
 	       _gameHandler({{GomokuUI::Context::STARTSCREEN,	&Game::_handleStartScreen},
 			     {GomokuUI::Context::WAITING,	&Game::_handleWaiting},
 			     {GomokuUI::Context::GAME,		&Game::_handleGame},
@@ -46,7 +46,18 @@ int					Game::start()
 
 void					Game::_handleStartScreen()
 {
-  _gomokuUI.displayStartScreen(*_player2);
+  Player::Type				getType;
+
+  if ((getType = _gomokuUI.displayStartScreen()) != Player::Type::NONE)
+    {
+      _player2->setType(getType);
+      _gomokuUI.setContext(GomokuUI::Context::WAITING);
+    }
+  if (_player2->getType() != Player::Type::NONE)
+    {
+      _player1->setType(Player::Type::HUMAN);
+      // _gomokuUI.setContext(GomokuUI::Context::WAITING);
+    }
 }
 
 void					Game::_handleWaiting()
@@ -86,7 +97,7 @@ void					Game::_handleGame()
 		  == IReferee::gameState::ONGOING)
 		_map->setCaseAt(*newCoordinates, Map::CaseState::BLACK);
 	      else
-		std::cout << "PLAYER1 wiiiiiinn" << std::endl;
+		std::cout << "PLAYER2 wiiiiiinn" << std::endl;
 	      break;
 	    default:
 	      break;
@@ -100,4 +111,5 @@ void					Game::_handleGame()
       std::cerr << e.what() << std::endl;
       std::abort();
     }
+
 }
