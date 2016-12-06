@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Tue Dec  6 02:32:08 2016 bogard_t
+// Last update Tue Dec  6 12:14:22 2016 Thomas Billot
 //
 
 # include	<cstdio>
@@ -68,7 +68,15 @@ void					Game::_handleGame()
   std::unique_ptr<Map::Coordinates>	newCoordinates(_gomokuUI.getClickedTile());
 
   _gomokuUI.updateMap();
-  _gomokuUI.displayGame();
+  try
+    {
+      _gomokuUI.displayGame();
+    }
+  catch (const std::exception &e)
+    {
+      std::cerr << e.what() << std::endl;
+      std::abort();
+    }
   if (newCoordinates)
     {
       switch (_turn)

@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:17:28 2016 Thomas Billot
-// Last update Mon Dec  5 16:43:33 2016 Thomas Billot
+// Last update Tue Dec  6 11:22:59 2016 Thomas Billot
 //
 
 #ifndef			_IREFEREE_HPP_

@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Tue Dec  6 02:06:49 2016 bogard_t
-// Last update Tue Dec  6 02:53:53 2016 bogard_t
+// Last update Tue Dec  6 12:12:24 2016 Thomas Billot
 //
 
 # include	<iostream>
@@ -153,7 +153,6 @@ void		        GomokuUI::updateMap()
   _gui.fillRec(10, 10, 180, 290, 0x000000);
   _gui.fillRec(10, 310, 180, 280, 0x000000);
   _gui.setTextureAt("./sprites/wood.jpg", 205, 9, 0.975);
-
   // display players infos
   _gui.writeAt("SCORE J1 :", 40, 50, 0xffffff, 0.5);
   _gui.fillRec(40, 70, 60, 1, 0xffffff);

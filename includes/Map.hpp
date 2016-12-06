@@ -19,7 +19,12 @@ public:
   struct				Coordinates
   {
   public:
-    Coordinates(const unsigned int &x, const unsigned int &y);
+    Coordinates(const unsigned int x, const unsigned int y);
+    Coordinates operator+(const Map::Coordinates &rhs);
+    Coordinates operator-(const Map::Coordinates &rhs);
+    bool	operator==(const Map::Coordinates &rhs);
+    int					getX() const;
+    int					getY() const;
     int					x;
     int					y;
   };
