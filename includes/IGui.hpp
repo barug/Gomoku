@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 16:16:14 2016 Thomas Billot
-// Last update Sun Dec  4 18:17:48 2016 bogard_t
+// Last update Tue Dec  6 00:42:52 2016 bogard_t
 //
 
 #ifndef			__IGUI__HPP__
@@ -111,6 +111,13 @@ public:
 				   const unsigned int i,
 				   const unsigned int j,
 				   const unsigned int hexaColorCode = 0x000000) = 0;
+  virtual bool	        magnetTile(const unsigned int mouseX,
+				   const unsigned int mouseY,
+				   const unsigned int x,
+				   const unsigned int y,
+				   const unsigned int intensityX = 13,
+				   const unsigned int intensityY = 13) const = 0;
+
 
   /*
   ** Color converter

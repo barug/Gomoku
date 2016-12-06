@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 15:28:50 2016 Thomas Billot
-// Last update Fri Dec  2 17:40:00 2016 Josselin
+// Last update Tue Dec  6 00:12:38 2016 bogard_t
 //
 
 #include <stdexcept>
@@ -27,6 +27,13 @@ Map::Coordinates::Coordinates(const unsigned int &x,
   : x(x),
     y(y)
 {}
+
+void			        Map::resetAllCases(const unsigned int size)
+{
+  for (unsigned int x = 0; x < size; x++)
+    for (unsigned int y = 0; y < size; y++)
+      setCaseAt(Map::Coordinates(x, y), Map::CaseState::EMPTY);
+}
 
 void				Map::setCaseAt(const Map::Coordinates &coordinates,
 					       const Map::CaseState &state)

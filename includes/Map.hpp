@@ -32,6 +32,7 @@ public:
   Map(std::vector<char> &mapData);
   ~Map();
 
+  void					resetAllCases(const unsigned int size);
   void					setCaseAt(const Map::Coordinates &coordinates,
 						  const Map::CaseState &state);
   const char				&getCaseAt(const Map::Coordinates &coordinates);

@@ -26,6 +26,8 @@ add_executable(Gomoku
   srcs/Game.cpp
   srcs/Player.cpp
   srcs/Main.cpp
+  srcs/Timer.cpp
+  srcs/GomokuUI.cpp
   srcs/GomokuReferee.cpp
   srcs/TextureManager.cpp
   srcs/mSFML_Audio.cpp

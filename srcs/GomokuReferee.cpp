@@ -1,13 +1,13 @@
-//
 // GomokuReferee.cpp for Gomoku in /home/josselin/rendu/tek3/IA/Gomoku/srcs
 //
 // Made by Josselin
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Mon Dec  5 16:58:37 2016 Josselin
+// Last update Mon Dec  5 18:11:55 2016 Thomas Billot
 //
 
+#include <iostream>
 #include "GomokuReferee.hpp"
 
 GomokuReferee::GomokuReferee(Map &map) : _map(map)
@@ -16,9 +16,10 @@ GomokuReferee::GomokuReferee(Map &map) : _map(map)
 GomokuReferee::~GomokuReferee()
 {}
 
-IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int &,
-							    const unsigned int &)
+IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int CoordX,
+							    const unsigned int CoordY)
 {
+  std::cout << CoordX << " " << CoordY << std::endl;
   return IReferee::gameState::ONGOING;
 }
 
