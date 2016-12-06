@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Tue Dec  6 13:07:44 2016 Thomas Billot
+// Last update Tue Dec  6 16:07:36 2016 Josselin
 //
 
 #include <iostream>
@@ -28,7 +28,9 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int Coord
   {
     int			count = 0;
 
-    while (MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc) <= MAP_SIZE &&
+    while (coordinates.x + xInc >= 0 && coordinates.x + xInc <= 19 &&
+	   coordinates.y + yInc >= 0 && coordinates.y + yInc <= 19 &&
+	   // MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc) <= MAP_SIZE &&
 	   map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x) ==
 	   map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)))
       {
@@ -44,13 +46,16 @@ std::vector<int>	testAlignement(Map &map, Map::Coordinates coordinates)
   std::vector<int> vec;
 
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH, map, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_EAST, map, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::EAST, map, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_EAST, map, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH, map, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_WEST, map, coordinates));
+  // vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH, map, coordinates));
+
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::WEST, map, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_WEST, map, coordinates));
+  // vec.push_back(testAlignementInDirection(GomokuReferee::Direction::EAST, map, coordinates));
+
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_EAST, map, coordinates));
+  // vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_WEST, map, coordinates));
+
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_EAST, map, coordinates));
+  // vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_WEST, map, coordinates));
 
   return vec;
 }
@@ -133,9 +138,11 @@ bool				testCaptureInDirection(GomokuReferee::Direction direction,
       xInc = 0;
       yInc = 0;
     }
-  if (MAP_WIDTH * (coordinates.y + (yInc * 3)) + (coordinates.x + (xInc * 3)) > MAP_SIZE)
-    return false;
-  return countCapture(map, coordinates, xInc, yInc);
+  if (coordinates.x + (xInc * 3) >= 0 && coordinates.x + (xInc * 3) <= 19 &&
+      coordinates.y + (yInc * 3) >= 0 && coordinates.y + (yInc * 3) <= 19)
+    //MAP_WIDTH * (coordinates.y + (yInc * 3)) + (coordinates.x + (xInc * 3)) > MAP_SIZE)
+    return countCapture(map, coordinates, xInc, yInc);
+  return false;
 }
 
 std::vector<GomokuReferee::Direction>	testCapture(Map &map, Map::Coordinates coordinates)
