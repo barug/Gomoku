@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Tue Dec  6 18:35:55 2016 Thomas Billot
-// Last update Tue Dec  6 19:29:53 2016 Thomas Billot
+// Last update Tue Dec  6 19:45:54 2016 Thomas Billot
 //
 
 #include			<stdexcept>
@@ -30,9 +30,9 @@ void					Bitboard::setCaseAt(const Bitboard::Coordinates &coord,
 	caseState == CaseState::EMPTY))
     throw std::logic_error("Error: Bad state for this bitboard");
   if (caseState == _pawnColor)
-    _bitboard[_boardWidth * coord.x() + coord.y()] = _pawnColor;
+    _bitboard[_boardWidth * coord.x + coord.y] = _pawnColor;
   else
-    _bitboard[_boardWidth * coord.x() + coord.y()] = CaseState::EMPTY;
+    _bitboard[_boardWidth * coord.x + coord.y] = CaseState::EMPTY;
   return;
 }
 
@@ -49,6 +49,6 @@ const Bitboard::CaseState	        Bitboard::getCaseAt(const Bitboard::Coordinate
 
 int					Bitboard::convertToIndex(const Bitboard::Coordinates &coord)
 {
-  return _boardWidth * coord.x() + coord.y();
+  return _boardWidth * coord.x + coord.y;
 }
 

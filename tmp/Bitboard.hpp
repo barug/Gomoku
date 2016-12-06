@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Tue Dec  6 18:17:25 2016 Thomas Billot
-// Last update Tue Dec  6 19:30:29 2016 Thomas Billot
+// Last update Tue Dec  6 19:43:44 2016 Thomas Billot
 //
 
 #pragma once
@@ -27,17 +27,12 @@ public:
   struct				Coordinates
   {
     
-    int					_x;
-    int					_y;
-    
-  public:
-    
+    int					x;
+    int					y;
     Coordinates(const unsigned int x, const unsigned int y);
     Coordinates operator+(const Bitboard::Coordinates &rhs);
     Coordinates operator-(const Bitboard::Coordinates &rhs);
     bool	operator==(const Bitboard::Coordinates &rhs);
-    int					x() const;
-    int					y() const;
     
   };
   

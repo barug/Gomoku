@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Tue Dec  6 17:13:26 2016 Thomas Billot
-// Last update Tue Dec  6 19:33:56 2016 Thomas Billot
+// Last update Tue Dec  6 19:46:04 2016 Thomas Billot
 //
 
 # define	NBR_BITSET	(19 * 19)
@@ -46,11 +46,12 @@ int		main()
   Bitboard	white(Bitboard::CaseState::WHITE);
 
   Bitboard::Coordinates		coord(1, 1);
-  
+
+  std::cout << coord.x << std::endl; 
   white.setCaseAt(coord, Bitboard::CaseState::EMPTY);
   std::cout << white.getCaseAt(coord) << std::endl;
   std::cout << "MAP = " << bitset << std::endl;
   std::cout << "Count = " << testAlignementInDirection(bitset, 1, W) << std::endl;
-  return 0;
+ return 0;
 }
     
