@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Tue Dec  6 02:04:02 2016 bogard_t
+// Last update Tue Dec  6 02:31:30 2016 bogard_t
 //
 
 #ifndef					__GAME_HPP__
@@ -34,12 +34,12 @@ private:
   Map					*_map;
   IGui					*_gui;
   IReferee				*_referee;
+  Player				*_player1;
+  Player				*_player2;
   GomokuUI				_gomokuUI;
   typedef void (Game::* f)(void);
   std::map<GomokuUI::Context, f>	_gameHandler;
 
-  Player				_player1;
-  Player				_player2;
 
   Game::Turn		       		_turn;
 

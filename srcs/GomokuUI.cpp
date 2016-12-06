@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Tue Dec  6 02:06:49 2016 bogard_t
-// Last update Tue Dec  6 02:12:25 2016 bogard_t
+// Last update Tue Dec  6 02:53:53 2016 bogard_t
 //
 
 # include	<iostream>
@@ -63,8 +63,9 @@ void		        GomokuUI::displayMenu()
   _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
   _gui.writeAt("MENU", 400, 70, 0x00ff00, 1.2);
   _gui.fillRec(390, 115, 100, 2, 0x00ff00);
+  _gui.writeAt("BACK TO GAME", 330, 270, 0x00ff00, 1.2);
   _gui.writeAt("BACK TO HOME", 330, 370, 0x00ff00, 1.2);
-  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 370, 50, 30) and
+  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 370, 60, 30) and
       _gui.buttonLeftIsClicked())
     {
       _context = Context::WAITING;
@@ -72,9 +73,15 @@ void		        GomokuUI::displayMenu()
       _restart = true;
       _map.resetAllCases(IGui::mapSize);
     }
+  else if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 270, 60, 30) and
+	   _gui.buttonLeftIsClicked())
+    {
+      _context = Context::WAITING;
+      _timer->setState(Timer::State::NONE);
+    }
 }
 
-void			GomokuUI::displayStartScreen()
+void			GomokuUI::displayStartScreen(Player *player2)
 {
   if (_restart)
     _restart = !_restart;
@@ -97,7 +104,10 @@ void			GomokuUI::displayStartScreen()
   if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 400, 440, 40, 40))
     {
       if (_gui.buttonLeftIsClicked())
-	_context = Context::WAITING;
+	{
+	  _context = Context::WAITING;
+	  player2->setType(Player::Type::AI);
+	}
       _gui.fillRec(300, 400, 200, 80, 0x000000, 180);
       _gui.writeAt("Player vs AI", 340, 425, 0x00ff00, 0.8);
     }
@@ -121,7 +131,6 @@ void			GomokuUI::displayWaiting()
     }
   else
     {
-      std::cout << "finish waiting" << std::endl;
       _context = _restart ? Context::STARTSCREEN : Context::GAME;
       _timer->setState(Timer::State::NONE);
     }
@@ -140,16 +149,12 @@ void			GomokuUI::displayGame()
 void		        GomokuUI::updateMap()
 {
   // display background
-  _gui.fillRec(0, 0, 800, 600, 0xffffff);
-  _gui.fillRec(0, 0, 190, 600, 0x000000);
-  _gui.fillRec(0, 300, 200, 10, 0xffffff);
-  _gui.setTextureAt("./sprites/wood.jpg", 200, 0, 1.);
+  _gui.setTextureAt("./sprites/horrible.jpg", 0, 0);
+  _gui.fillRec(10, 10, 180, 290, 0x000000);
+  _gui.fillRec(10, 310, 180, 280, 0x000000);
+  _gui.setTextureAt("./sprites/wood.jpg", 205, 9, 0.975);
 
   // display players infos
-  _gui.fillRec(0, 0, 800, 10, 0xffffff);
-  _gui.fillRec(0, 590, 800, 10, 0xffffff);
-  _gui.fillRec(790, 0, 10, 800, 0xffffff);
-  _gui.fillRec(0, 0, 10, 600, 0xffffff);
   _gui.writeAt("SCORE J1 :", 40, 50, 0xffffff, 0.5);
   _gui.fillRec(40, 70, 60, 1, 0xffffff);
   _gui.writeAt("PIONS RESTANTS :", 40, 100, 0xffffff, 0.5);

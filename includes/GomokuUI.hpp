@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Tue Dec  6 02:06:57 2016 bogard_t
-// Last update Tue Dec  6 02:19:19 2016 bogard_t
+// Last update Tue Dec  6 02:28:09 2016 bogard_t
 //
 
 #ifndef	        __GOMOKU_UI_HPP__
@@ -32,7 +32,7 @@ public:
 
   void					displayMenu();
   void				        displayWaiting();
-  void					displayStartScreen();
+  void					displayStartScreen(Player *player2);
   void					displayGame();
   void				        updateMap();
 

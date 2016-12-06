@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Tue Dec  6 02:06:26 2016 bogard_t
+// Last update Tue Dec  6 02:32:08 2016 bogard_t
 //
 
 # include	<cstdio>
@@ -17,6 +17,8 @@
 
 Game::Game() : _map(new Map),
 	       _gui(new mSFML_Window("./font/digital.otf", "Gomoku - 2016")),
+	       _player1(new Player),
+	       _player2(new Player),
 	       _gomokuUI(*_gui, *_map),
 	       _gameHandler({{GomokuUI::Context::STARTSCREEN,	&Game::_handleStartScreen},
 			     {GomokuUI::Context::WAITING,	&Game::_handleWaiting},
@@ -29,6 +31,8 @@ Game::~Game()
 {
   delete _map;
   delete _gui;
+  delete _player1;
+  delete _player2;
 }
 
 int					Game::start()
@@ -45,7 +49,7 @@ int					Game::start()
 
 void					Game::_handleStartScreen()
 {
-  _gomokuUI.displayStartScreen();
+  _gomokuUI.displayStartScreen(_player2);
 }
 
 void					Game::_handleWaiting()
@@ -77,7 +81,11 @@ void					Game::_handleGame()
 	  break;
 	case Game::Turn::PLAYER2:
 	  {
-	    // if arbiter allow
+	    if (_player2->getType() == Player::Type::AI)
+	      {
+		std::cout << "player 2 is AI" << std::endl;
+	      }
+	    // if arbiter allow or ai
 	    _map->setCaseAt(*newCoordinates, Map::CaseState::BLACK);
 	  }
 	  break;
