@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Tue Dec  6 12:14:22 2016 Thomas Billot
+// Last update Tue Dec  6 12:56:02 2016 Thomas Billot
 //
 
 # include	<cstdio>
@@ -17,6 +17,7 @@
 
 Game::Game() : _map(new Map),
 	       _gui(new mSFML_Window("./font/digital.otf", "Gomoku - 2016")),
+	       _referee(new GomokuReferee(*_map)),
 	       _player1(new Player),
 	       _player2(new Player),
 	       _gomokuUI(*_gui, *_map),
@@ -83,7 +84,7 @@ void					Game::_handleGame()
 	{
 	case Game::Turn::PLAYER1:
 	  {
-	    // if arbiter allow
+	    _referee->validatePlayerAction(newCoordinates->getX(), newCoordinates->getY());
 	    _map->setCaseAt(*newCoordinates, Map::CaseState::WHITE);
 	  }
 	  break;

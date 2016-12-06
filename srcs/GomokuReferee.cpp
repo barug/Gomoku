@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Tue Dec  6 12:05:26 2016 Thomas Billot
+// Last update Tue Dec  6 13:07:44 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -20,28 +20,24 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int Coord
 							    const unsigned int CoordY)
 {
   std::cout << CoordX << " " << CoordY << std::endl;
-  Map::Coordinates	c0(1, 2);
-  Map::Coordinates	c1(1, 1);
-
-  std::cout << (c0 + c1).getX() << std::endl;
   return IReferee::gameState::ONGOING;
 }
 
-int			countAlignement(Map &map, Map::Coordinates coordinates,
+  int			countAlignement(Map &map, Map::Coordinates coordinates,
 					int xInc, int yInc)
-{
-  int			count = 0;
+  {
+    int			count = 0;
 
-  while (MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc) <= MAP_SIZE &&
-	 map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x) ==
-	 map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)))
-    {
-      xInc = xInc < 0 ? xInc - 1 : xInc > 0 ? xInc + 1 : 0;
-      yInc = yInc < 0 ? yInc - 1 : yInc > 0 ? yInc + 1 : 0;
-      count++;
-    }
-  return count;
-}
+    while (MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc) <= MAP_SIZE &&
+	   map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x) ==
+	   map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)))
+      {
+	xInc = xInc < 0 ? xInc - 1 : xInc > 0 ? xInc + 1 : 0;
+	yInc = yInc < 0 ? yInc - 1 : yInc > 0 ? yInc + 1 : 0;
+	count++;
+      }
+    return count;
+  }
 
 std::vector<int>	testAlignement(Map &map, Map::Coordinates coordinates)
 {
