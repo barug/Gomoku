@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:07:01 2016 Thomas Billot
-// Last update Tue Dec  6 00:42:03 2016 bogard_t
+// Last update Tue Dec  6 15:06:32 2016 Thomas Billot
 //
 
 #ifndef		__MSFML__WINDOW__HPP__

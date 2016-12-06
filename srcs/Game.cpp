@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Tue Dec  6 12:56:02 2016 Thomas Billot
+// Last update Tue Dec  6 15:00:56 2016 Thomas Billot
 //
 
 # include	<cstdio>
@@ -94,7 +94,7 @@ void					Game::_handleGame()
 	      {
 		std::cout << "player 2 is AI" << std::endl;
 	      }
-	    // if arbiter allow or ai
+	    _referee->validatePlayerAction(newCoordinates->getX(), newCoordinates->getY());
 	    _map->setCaseAt(*newCoordinates, Map::CaseState::BLACK);
 	  }
 	  break;
