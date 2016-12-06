@@ -11,9 +11,9 @@ class					Map
 public:
   enum					CaseState : char
     {
-      EMPTY,
-      WHITE,
-      BLACK
+      EMPTY				= 0,
+      WHITE				= 1,
+      BLACK				= 2
     };
 
   struct				Coordinates
@@ -25,17 +25,18 @@ public:
   };
 
 private:
-  std::vector<Map::CaseState>		_mapData;
+  std::vector<char>		_mapData;
 
 public:
   Map();
+  Map(std::vector<char> &mapData);
   ~Map();
 
   void					setCaseAt(const Map::Coordinates &coordinates,
 						  const Map::CaseState &state);
-  const Map::CaseState			&getCaseAt(const Map::Coordinates &coordinates);
-  const Map::CaseState			&getCaseAtIndex(const int index);
-  const std::vector<Map::CaseState>	&getMapData();
+  const char				&getCaseAt(const Map::Coordinates &coordinates);
+  const char				&getCaseAtIndex(const int index);
+  const std::vector<char>		&getMapData();
 };
 
 #endif /* GOMOKU_MAP_HPP */

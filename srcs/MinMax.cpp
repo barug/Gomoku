@@ -1,6 +1,8 @@
 #include "MinMax.hpp"
 
-Result(unsigned int x, unsigned int y, unsigned int actionScore)
+GomokuMinMax::Result::Result(unsigned int x,
+			     unsigned int y,
+			     unsigned int actionScore)
   : coordinates(x, y),
     actionScore(actionScore)
 {}
@@ -8,25 +10,28 @@ Result(unsigned int x, unsigned int y, unsigned int actionScore)
 GomokuMinMax::GomokuMinMax()
   : _alpha(12345678),
     _iaColor(Map::Black)
+{}
 
-Map::Coordinates		GomokuMinMax::computeNextAction(const Map &map)
+Map::Coordinates	GomokuMinMax::computeNextAction(const Map &map)
 {
-  GomokuMinMax::Result		result;
+  GomokuMinMax::Result	result;
 
   result = _minMax(map, 0, GomokuMinMax::MAX);
   return (result.Coordinates);
 }
 
-GomokuMinMax::Result		GomokuMinMax::_minMax(const Map map,
-						      unsigned int depth,
-						      GomokuMinMax::turn turn)
+unsigned int		GomokuMinMax::CalculateActionScore(const Map &map,
+							   Map::Coordinates Action,
+							   
+GomokuMinMax::Result	GomokuMinMax::_minMax(const Map map,
+					      unsigned int depth,
+					      GomokuMinMax::turn turn)
 {
-  std::vector<Map::CaseState>	mapData = map.getMapData();
-  Map				newMap;
-  GomokuMinMax::turn		nextTurn;
-  GomokuMinMax::Result		bestResult(-1, -1, 12345678);
-  GomokuMinMax::Result		result;
-
+  std::vector<char>	mapData = map.getMapData();
+  Map			newMap;
+  GomokuMinMax::turn	nextTurn;
+  GomokuMinMax::Result	bestResult(-1, -1, 12345678);
+  GomokuMinMax::Result	result;
 
   if (turn == GomokuMinMax::MIN)
     nextTurn = GomokuMinMax::Max;

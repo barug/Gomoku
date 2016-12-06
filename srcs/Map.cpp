@@ -12,7 +12,11 @@
 #include "Map.hpp"
 
 Map::Map()
-  : _mapData(std::vector<Map::CaseState>(MAP_SIZE, Map::EMPTY))
+  : _mapData(std::vector<char>(MAP_SIZE, Map::EMPTY))
+{}
+
+Map::Map(std::vector<char> &mapData)
+  : _mapData(mapData)
 {}
 
 Map::~Map()
@@ -32,17 +36,17 @@ void				Map::setCaseAt(const Map::Coordinates &coordinates,
   _mapData[MAP_WIDTH * coordinates.y + coordinates.x] = state;
 }
 
-const Map::CaseState		&Map::getCaseAt(const Map::Coordinates &coordinates)
+const char			&Map::getCaseAt(const Map::Coordinates &coordinates)
 {
   return _mapData[MAP_WIDTH * coordinates.y + coordinates.x];
 }
 
-const Map::CaseState		&Map::getCaseAtIndex(const int index)
+const char			&Map::getCaseAtIndex(const int index)
 {
   return _mapData[index];
 }
 
-const std::vector<Map::CaseState>	&Map::getMapData()
+const std::vector<char>		&Map::getMapData()
 {
   return _mapData;
 }

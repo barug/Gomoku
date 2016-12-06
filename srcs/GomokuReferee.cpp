@@ -63,7 +63,7 @@ int				testAlignementInDirection(GomokuReferee::Direction direction, Map &map,
     count = countAlignement(map, coordinates, 0, 1) + countAlignement(map, coordinates, 0, -1);
   else if (direction == GomokuReferee::Direction::WEST || direction == GomokuReferee::Direction::EAST)
     count = countAlignement(map, coordinates, 1, 0) + countAlignement(map, coordinates, -1, 0);
-  else if (direction == GomokuReferee::Direction::NORTH_EAST || direction == GomokuReferee::Direction::SOUTH_WEST)
+  else if (direction == GomokuReferee::Direction::NORTH_WEST || direction == GomokuReferee::Direction::SOUTH_EAST)
     count = countAlignement(map, coordinates, 1, 1) + countAlignement(map, coordinates, -1, -1);
   else
     count = countAlignement(map, coordinates, 1, -1) + countAlignement(map, coordinates, -1, 1);
