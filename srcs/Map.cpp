@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 15:28:50 2016 Thomas Billot
-// Last update Tue Dec  6 12:02:11 2016 Thomas Billot
+// Last update Tue Dec  6 19:09:24 2016 Thomas Billot
 //
 
 #include <stdexcept>
@@ -17,37 +17,6 @@ Map::Map()
 
 Map::~Map()
 {}
-
-Map::Coordinates::Coordinates(const unsigned int x,
-			      const unsigned int y)
-  : x(x),
-    y(y)
-{}
-
-int				Map::Coordinates::getX() const
-{
-  return x;
-}
-
-int				Map::Coordinates::getY() const
-{
-  return y;
-}
-
-Map::Coordinates		Map::Coordinates::operator+(const Map::Coordinates &rhs)
-{
-  return Coordinates(x + rhs.getX(), y + rhs.getY());
-}
-
-Map::Coordinates	        Map::Coordinates::operator-(const Map::Coordinates &rhs)
-{
-  return Coordinates(x - rhs.getX(), y - rhs.getY());
-}
-
-bool				Map::Coordinates::operator==(const Map::Coordinates &rhs)
-{
-  return x == rhs.getX() && y == rhs.getY();
-}
 
 void			        Map::resetAllCases(const unsigned int size)
 {
