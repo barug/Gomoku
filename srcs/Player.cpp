@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Thu Dec  1 14:55:35 2016 bogard_t
-// Last update Mon Dec  5 14:10:21 2016 bogard_t
+// Last update Tue Dec  6 16:37:06 2016 bogard_t
 //
 
 # include		"Player.hpp"
@@ -38,7 +38,7 @@ Player::Type	Player::getType() const
   return _type;
 }
 
-const Player&	Player::operator=(const Player::Type &type)
+const Player&	Player::operator=(const Player::Type type)
 {
   _type = type;
   return (*this);
