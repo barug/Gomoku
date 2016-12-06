@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Tue Dec  6 02:06:49 2016 bogard_t
-// Last update Tue Dec  6 12:12:24 2016 Thomas Billot
+// Last update Tue Dec  6 14:45:27 2016 bogard_t
 //
 
 # include	<iostream>
@@ -22,10 +22,9 @@ GomokuUI::GomokuUI(IGui &gui, Map &map) : _gui(gui),
 
 GomokuUI::~GomokuUI()
 {
-  delete _timer;
 }
 
-void			GomokuUI::setContext(GomokuUI::Context context)
+void			GomokuUI::setContext(const GomokuUI::Context context)
 {
   _context = context;
 }
@@ -40,8 +39,8 @@ Map::Coordinates	*GomokuUI::getClickedTile()
   if (_gui.buttonLeftIsClicked())
     for (unsigned int i = 0; i < _map.getMapData().size(); i++)
       if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(),
-		     IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX),
-		     IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY)))
+			  IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX),
+			  IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY)))
 	if (_map.getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
 	    == Map::CaseState::EMPTY)
 	  return (new Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize));
@@ -60,11 +59,13 @@ void		        GomokuUI::displayMenu()
       _context = GomokuUI::Context::GAME;
       _timer->setState(Timer::State::NONE);
     }
+
   _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
   _gui.writeAt("MENU", 400, 70, 0x00ff00, 1.2);
   _gui.fillRec(390, 115, 100, 2, 0x00ff00);
   _gui.writeAt("BACK TO GAME", 330, 270, 0x00ff00, 1.2);
   _gui.writeAt("BACK TO HOME", 330, 370, 0x00ff00, 1.2);
+
   if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 370, 60, 30) and
       _gui.buttonLeftIsClicked())
     {
@@ -81,7 +82,7 @@ void		        GomokuUI::displayMenu()
     }
 }
 
-void			GomokuUI::displayStartScreen(Player *player2)
+void			GomokuUI::displayStartScreen(Player &player2)
 {
   if (_restart)
     _restart = !_restart;
@@ -106,7 +107,7 @@ void			GomokuUI::displayStartScreen(Player *player2)
       if (_gui.buttonLeftIsClicked())
 	{
 	  _context = Context::WAITING;
-	  player2->setType(Player::Type::AI);
+	  player2.setType(Player::Type::AI);
 	}
       _gui.fillRec(300, 400, 200, 80, 0x000000, 180);
       _gui.writeAt("Player vs AI", 340, 425, 0x00ff00, 0.8);
@@ -148,24 +149,22 @@ void			GomokuUI::displayGame()
 // update map
 void		        GomokuUI::updateMap()
 {
+
   // display background
   _gui.setTextureAt("./sprites/horrible.jpg", 0, 0);
   _gui.fillRec(10, 10, 180, 290, 0x000000);
   _gui.fillRec(10, 310, 180, 280, 0x000000);
   _gui.setTextureAt("./sprites/wood.jpg", 205, 9, 0.975);
+
   // display players infos
   _gui.writeAt("SCORE J1 :", 40, 50, 0xffffff, 0.5);
   _gui.fillRec(40, 70, 60, 1, 0xffffff);
-  _gui.writeAt("PIONS RESTANTS :", 40, 100, 0xffffff, 0.5);
+  _gui.writeAt("ALIGNEMENT :", 40, 100, 0xffffff, 0.5);
   _gui.fillRec(40, 120, 100, 1, 0xffffff);
-  _gui.writeAt("ALIGNEMENT :", 40, 150, 0xffffff, 0.5);
-  _gui.fillRec(40, 170, 75, 1, 0xffffff);
   _gui.writeAt("SCORE J2 :", 40, 350, 0xffffff, 0.5);
   _gui.fillRec(40, 370, 60, 1, 0xffffff);
-  _gui.writeAt("PIONS RESTANTS :", 40, 400, 0xffffff, 0.5);
+  _gui.writeAt("ALIGNEMENT :", 40, 400, 0xffffff, 0.5);
   _gui.fillRec(40, 420, 100, 1, 0xffffff);
-  _gui.writeAt("ALIGNEMENT :", 40, 450, 0xffffff, 0.5);
-  _gui.fillRec(40, 470, 75, 1, 0xffffff);
 
   // display checkerboard
   for (unsigned int x = 0; x < IGui::mapSize - 1; x++)

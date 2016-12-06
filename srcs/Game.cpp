@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Tue Dec  6 15:00:56 2016 Thomas Billot
+// Last update Tue Dec  6 15:08:19 2016 Thomas Billot
 //
 
 # include	<cstdio>
@@ -30,10 +30,6 @@ Game::Game() : _map(new Map),
 
 Game::~Game()
 {
-  delete _map;
-  delete _gui;
-  delete _player1;
-  delete _player2;
 }
 
 int					Game::start()
@@ -50,7 +46,7 @@ int					Game::start()
 
 void					Game::_handleStartScreen()
 {
-  _gomokuUI.displayStartScreen(_player2);
+  _gomokuUI.displayStartScreen(*_player2);
 }
 
 void					Game::_handleWaiting()
@@ -66,41 +62,42 @@ void					Game::_handleMenu()
 
 void					Game::_handleGame()
 {
-  std::unique_ptr<Map::Coordinates>	newCoordinates(_gomokuUI.getClickedTile());
-
-  _gomokuUI.updateMap();
   try
     {
+      _gomokuUI.updateMap();
       _gomokuUI.displayGame();
+      std::unique_ptr<Map::Coordinates>	newCoordinates(_gomokuUI.getClickedTile());
+
+      if (newCoordinates)
+	{
+	  switch (_turn)
+	    {
+	    case Game::Turn::PLAYER1:
+	      if (_referee->validatePlayerAction(newCoordinates->getX(), newCoordinates->getY())
+		  == IReferee::gameState::ONGOING)
+		_map->setCaseAt(*newCoordinates, Map::CaseState::WHITE);
+	      else
+		std::cout << "PLAYER1 wiiiiiinn" << std::endl;
+	      break;
+	    case Game::Turn::PLAYER2:
+	      if (_player2->getType() == Player::Type::AI)
+		std::cout << "player 2 is AI" << std::endl;
+	      if (_referee->validatePlayerAction(newCoordinates->getX(), newCoordinates->getY())
+		  == IReferee::gameState::ONGOING)
+		_map->setCaseAt(*newCoordinates, Map::CaseState::BLACK);
+	      else
+		std::cout << "PLAYER1 wiiiiiinn" << std::endl;
+	      break;
+	    default:
+	      break;
+	    }
+	  _turn = _turn == Game::Turn::PLAYER1 ? Game::Turn::PLAYER2 : Game::Turn::PLAYER1;
+
+	}
     }
   catch (const std::exception &e)
     {
       std::cerr << e.what() << std::endl;
       std::abort();
-    }
-  if (newCoordinates)
-    {
-      switch (_turn)
-	{
-	case Game::Turn::PLAYER1:
-	  {
-	    _referee->validatePlayerAction(newCoordinates->getX(), newCoordinates->getY());
-	    _map->setCaseAt(*newCoordinates, Map::CaseState::WHITE);
-	  }
-	  break;
-	case Game::Turn::PLAYER2:
-	  {
-	    if (_player2->getType() == Player::Type::AI)
-	      {
-		std::cout << "player 2 is AI" << std::endl;
-	      }
-	    _referee->validatePlayerAction(newCoordinates->getX(), newCoordinates->getY());
-	    _map->setCaseAt(*newCoordinates, Map::CaseState::BLACK);
-	  }
-	  break;
-	default:
-	  break;
-	}
-      _turn = _turn == Game::Turn::PLAYER1 ? Game::Turn::PLAYER2 : Game::Turn::PLAYER1;
     }
 }
