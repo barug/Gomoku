@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Tue Dec  6 13:07:44 2016 Thomas Billot
+// Last update Tue Dec  6 16:01:47 2016 Josselin
 //
 
 #include <iostream>
@@ -44,13 +44,16 @@ std::vector<int>	testAlignement(Map &map, Map::Coordinates coordinates)
   std::vector<int> vec;
 
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH, map, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_EAST, map, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::EAST, map, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_EAST, map, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH, map, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_WEST, map, coordinates));
+  // vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH, map, coordinates));
+
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::WEST, map, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_WEST, map, coordinates));
+  // vec.push_back(testAlignementInDirection(GomokuReferee::Direction::EAST, map, coordinates));
+
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_EAST, map, coordinates));
+  // vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_WEST, map, coordinates));
+
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_EAST, map, coordinates));
+  // vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_WEST, map, coordinates));
 
   return vec;
 }
