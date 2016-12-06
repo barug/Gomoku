@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Tue Dec  6 02:31:30 2016 bogard_t
+// Last update Tue Dec  6 14:11:25 2016 bogard_t
 //
 
 #ifndef					__GAME_HPP__
@@ -31,23 +31,24 @@ private:
       PLAYER2 = 1
     };
 
-  Map					*_map;
-  IGui					*_gui;
-  IReferee				*_referee;
-  Player				*_player1;
-  Player				*_player2;
-  GomokuUI				_gomokuUI;
   typedef void (Game::* f)(void);
-  std::map<GomokuUI::Context, f>	_gameHandler;
 
+  std::unique_ptr<Map>			_map;
+  std::unique_ptr<IGui>		        _gui;
+  std::unique_ptr<IReferee>	        _referee;
+  std::unique_ptr<Player>	        _player1;
+  std::unique_ptr<Player>	        _player2;
+
+  GomokuUI				_gomokuUI;
+
+  std::map<GomokuUI::Context, f>	_gameHandler;
 
   Game::Turn		       		_turn;
 
   /*
-  ** private methods
+  ** private methods handler
   */
 
-  void					_gameInteract();
   void				        _handleStartScreen();
   void					_handleMenu();
   void					_handleGame();
