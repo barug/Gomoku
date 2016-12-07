@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Tue Dec  6 18:17:25 2016 Thomas Billot
-// Last update Tue Dec  6 19:43:44 2016 Thomas Billot
+// Last update Wed Dec  7 09:46:47 2016 Thomas Billot
 //
 
 #pragma once
@@ -35,6 +35,17 @@ public:
     bool	operator==(const Bitboard::Coordinates &rhs);
     
   };
+
+    
+private:
+
+  Bitboard::CaseState			_pawnColor;
+  static const int			_boardWidth = 19;
+  static const int			_boardSize = _boardWidth * _boardWidth;
+  std::bitset<_boardSize>		_bitboard;
+  
+  Bitboard(const Bitboard &);
+  const Bitboard			&operator=(const Bitboard &);
   
 public:
 
@@ -47,14 +58,6 @@ public:
   const Bitboard::CaseState	        getCaseAt(const Bitboard::Coordinates &coordinates);
   const Bitboard::CaseState	        &getCaseAtIndex(const int index);
   int					convertToIndex(const Bitboard::Coordinates &coordinates);
-  
-private:
+  const std::bitset<_boardSize>		&getBitboard() const;
 
-  Bitboard::CaseState			_pawnColor;
-  static const int			_boardWidth = 19;
-  static const int			_boardSize = _boardWidth * _boardWidth;
-  std::bitset<_boardSize>		_bitboard;
-  
-  Bitboard(const Bitboard &);
-  const Bitboard			&operator=(const Bitboard &);
 };
