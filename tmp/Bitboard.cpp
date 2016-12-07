@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Tue Dec  6 18:35:55 2016 Thomas Billot
-// Last update Tue Dec  6 19:45:54 2016 Thomas Billot
+// Last update Wed Dec  7 10:39:47 2016 Thomas Billot
 //
 
 #include			<stdexcept>
@@ -24,15 +24,17 @@ void					Bitboard::reset()
 void					Bitboard::setCaseAt(const Bitboard::Coordinates &coord,
 					    const Bitboard::CaseState &caseState)
 {
-  if (convertToIndex(coord) > _boardSize)
+  int					index = convertToIndex(coord);
+  
+  if (index > _boardSize)
     throw std::out_of_range("Error: Bad coordinates");
   if (!(caseState == _pawnColor ||
 	caseState == CaseState::EMPTY))
     throw std::logic_error("Error: Bad state for this bitboard");
   if (caseState == _pawnColor)
-    _bitboard[_boardWidth * coord.x + coord.y] = _pawnColor;
+    _bitboard[index] = _pawnColor;
   else
-    _bitboard[_boardWidth * coord.x + coord.y] = CaseState::EMPTY;
+    _bitboard[index] = CaseState::EMPTY;
   return;
 }
 
@@ -49,6 +51,18 @@ const Bitboard::CaseState	        Bitboard::getCaseAt(const Bitboard::Coordinate
 
 int					Bitboard::convertToIndex(const Bitboard::Coordinates &coord)
 {
-  return _boardWidth * coord.x + coord.y;
+  return _boardWidth * coord.y + coord.x;
 }
 
+#include <iostream>
+#include <memory>
+
+const std::bitset<Bitboard::_boardSize>	&Bitboard::getBitboard() const
+{
+  std::unique_ptr<std::bitset<Bitboard::_boardSize>>	bitset(new std::bitset<Bitboard::_boardSize>());
+  int					j = 0;
+
+  for (unsigned int i = _boardSize - 1; i > 0; i--)
+    (*bitset)[j++] = _bitboard[i];
+  return _bitboard;
+}
