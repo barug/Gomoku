@@ -17,7 +17,7 @@ GomokuUI::GomokuUI(IGui &gui, Map &map) : _gui(gui),
 					  _context(Context::STARTSCREEN),
 					  _restart(false)
 {
-  _map.resetAllCases(IGui::mapSize);
+  _map.resetAllCases();
 }
 
 GomokuUI::~GomokuUI()
@@ -37,7 +37,7 @@ GomokuUI::Context	GomokuUI::getContext(void) const
 Map::Coordinates	*GomokuUI::getClickedTile(void)
 {
   if (_gui.buttonLeftIsClicked())
-    for (unsigned int i = 0; i < _map.getMapData().size(); i++)
+    for (unsigned int i = 0; i < Map::boardSize; i++)
       if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(),
 			  IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX),
 			  IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY)))
@@ -72,7 +72,7 @@ void		        GomokuUI::displayMenu(void)
       _context = Context::WAITING;
       _timer->setState(Timer::State::NONE);
       _restart = true;
-      _map.resetAllCases(IGui::mapSize);
+      _map.resetAllCases();
     }
   else if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 270, 60, 30) and
 	   _gui.buttonLeftIsClicked())
@@ -182,7 +182,7 @@ void		        GomokuUI::updateMap(void)
 	       (IGui::offsetX * (IGui::mapSize - 1)) + 1, 2, 0x000000);
 
   // update map
-  for (unsigned int i = 0; i < _map.getMapData().size(); i++)
+  for (unsigned int i = 0; i < Map::boardSize; i++)
     {
       if (_map.getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
 	  == Map::CaseState::WHITE)

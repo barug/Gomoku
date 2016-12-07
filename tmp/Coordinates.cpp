@@ -8,25 +8,25 @@
 // Last update Tue Dec  6 19:45:15 2016 Thomas Billot
 //
 
-#include		"Bitboard.hpp"
+#include		"Map.hpp"
 
-Bitboard::Coordinates::Coordinates(const unsigned int x,
+Map::Coordinates::Coordinates(const unsigned int x,
 			      const unsigned int y)
   : x(x),
     y(y)
 {}
 
-Bitboard::Coordinates		Bitboard::Coordinates::operator+(const Bitboard::Coordinates &rhs)
+Map::Coordinates		Map::Coordinates::operator+(const Map::Coordinates &rhs)
 {
   return Coordinates(x + rhs.x, y + rhs.y);
 }
 
-Bitboard::Coordinates	        Bitboard::Coordinates::operator-(const Bitboard::Coordinates &rhs)
+Map::Coordinates	        Map::Coordinates::operator-(const Map::Coordinates &rhs)
 {
   return Coordinates(x - rhs.x, y - rhs.y);
 }
 
-bool				Bitboard::Coordinates::operator==(const Bitboard::Coordinates &rhs)
+bool				Map::Coordinates::operator==(const Map::Coordinates &rhs)
 {
   return x == rhs.x && y == rhs.y;
 }

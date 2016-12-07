@@ -1,6 +1,7 @@
 #ifndef GOMOKU_MAP_HPP
 # define GOMOKU_MAP_HPP
 
+# include <bitset>
 # include <vector>
 
 # define MAP_WIDTH			(19)
@@ -29,20 +30,25 @@ public:
     int					y;
   };
 
+  static const int		boardWidth = 19;
+  static const int		boardSize = boardWidth * boardWidth;
+  
 private:
-  std::vector<char>		_mapData;
+  std::bitset<boardSize>	_whiteBoard;
+  std::bitset<boardSize>	_blackBoard;
 
 public:
   Map();
-  Map(std::vector<char> &mapData);
+  Map(Map &map);
   ~Map();
 
-  void				resetAllCases(const unsigned int size);
+  void				resetAllCases();
   void				setCaseAt(const Map::Coordinates &coordinates,
 					  const Map::CaseState &state);
-  const char			&getCaseAt(const Map::Coordinates &coordinates) const;
-  const char			&getCaseAtIndex(const int index) const;
+  Map::CaseState		getCaseAt(const Map::Coordinates &coordinates) const;
+  Map::CaseState		getCaseAtIndex(const int index) const;
   void				setCaseAtIndex(int index, Map::CaseState state);
+  int				convertToIndex(const Map::Coordinates &coordinates) const;
   const std::vector<char>	&getMapData() const;
   void			        mapDump() const;
 };

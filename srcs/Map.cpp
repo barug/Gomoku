@@ -13,59 +13,78 @@
 #include "Map.hpp"
 
 Map::Map()
-  : _mapData(std::vector<char>(MAP_SIZE, Map::EMPTY))
 {}
 
-Map::Map(std::vector<char> &mapData)
-  : _mapData(mapData)
+Map::Map(Map &map)
+  : _whiteBoard(map._whiteBoard),
+    _blackBoard(map._blackBoard)
 {}
 
 Map::~Map()
 {}
 
-void			        Map::resetAllCases(const unsigned int size)
+void			        Map::resetAllCases()
 {
-  for (unsigned int x = 0; x < size; x++)
-    for (unsigned int y = 0; y < size; y++)
-      setCaseAt(Map::Coordinates(x, y), Map::CaseState::EMPTY);
+  for (unsigned int i = 0; i < (Map::boardSize - 1); i++)
+    {
+      _whiteBoard.set(i,false);
+      _blackBoard.set(i,false);
+    }
+}
+
+int				Map::convertToIndex(const Map::Coordinates &coord) const
+{
+  return boardWidth * coord.y + coord.x;
 }
 
 void				Map::setCaseAt(const Map::Coordinates &coordinates,
 					       const Map::CaseState &state)
 {
-  if ((MAP_WIDTH * coordinates.y + coordinates.x) > MAP_SIZE)
-    throw std::out_of_range ("Error in Map::setCaseAt");
-  _mapData[MAP_WIDTH * coordinates.y + coordinates.x] = state;
-}
-
-const char			&Map::getCaseAt(const Map::Coordinates &coordinates) const
-{
-  return _mapData[MAP_WIDTH * coordinates.y + coordinates.x];
-}
-
-const char			&Map::getCaseAtIndex(const int index) const
-{
-  return _mapData[index];
+  if (state == Map::BLACK)
+    _blackBoard[convertToIndex(coordinates)] = true;
+  else
+    _whiteBoard[convertToIndex(coordinates)] = true;
 }
 
 void				Map::setCaseAtIndex(int index, Map::CaseState state)
 {
-  _mapData[index] = state;
+  if (state == Map::BLACK)
+    _blackBoard[index] = true;
+  else
+    _whiteBoard[index] = true;
 }
 
-const std::vector<char>		&Map::getMapData() const
+Map::CaseState 			Map::getCaseAt(const Map::Coordinates &coordinates) const
 {
-  return _mapData;
+  if (_blackBoard[convertToIndex(coordinates)])
+    return Map::BLACK;
+  if (_whiteBoard[convertToIndex(coordinates)])
+    return Map::WHITE;
+  return Map::EMPTY;
 }
 
-void				Map::mapDump() const
+Map::CaseState			Map::getCaseAtIndex(const int index) const
 {
-  std::cout << "map dump: ----------------";
-  for (int i = 0; i < MAP_SIZE; i++)
-    {
-      if (i % MAP_WIDTH == 0)
-	std::cout << std::endl;
-      std::cout << (int)_mapData[i];
-    }
-  std::cout << std::endl;
+  if (_blackBoard[index])
+    return Map::BLACK;
+  if (_whiteBoard[index])
+    return Map::WHITE;
+  return Map::EMPTY;
 }
+
+// const std::vector<char>		&Map::getMapData() const
+// {
+//   return _mapData;
+// }
+
+// void				Map::mapDump() const
+// {
+//   std::cout << "map dump: ----------------";
+//   for (int i = 0; i < MAP_SIZE; i++)
+//     {
+//       if (i % MAP_WIDTH == 0)
+// 	std::cout << std::endl;
+//       std::cout << (int)_mapData[i];
+//     }
+//   std::cout << std::endl;
+// }

@@ -84,7 +84,7 @@ void					Game::_handleGame()
 	  switch (_turn)
 	    {
 	    case Game::Turn::PLAYER1:
-	      if (_referee->validatePlayerAction(newCoordinates->getX(), newCoordinates->getY())
+	      if (_referee->validatePlayerAction(newCoordinates->x, newCoordinates->y)
 		  == IReferee::gameState::ONGOING)
 		_map->setCaseAt(*newCoordinates, Map::CaseState::WHITE);
 	      else
@@ -93,7 +93,7 @@ void					Game::_handleGame()
 	    case Game::Turn::PLAYER2:
 	      if (_player2->getType() == Player::Type::AI)
 		std::cout << "player 2 is AI" << std::endl;
-	      if (_referee->validatePlayerAction(newCoordinates->getX(), newCoordinates->getY())
+	      if (_referee->validatePlayerAction(newCoordinates->x, newCoordinates->y)
 		  == IReferee::gameState::ONGOING)
 		_map->setCaseAt(*newCoordinates, Map::CaseState::BLACK);
 	      else

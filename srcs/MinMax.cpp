@@ -47,7 +47,7 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
   return actionScore;
 }
 
-GomokuMinMax::Result	GomokuMinMax::_minMax(Map map,
+GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
 					      unsigned int depth,
 					      GomokuMinMax::turn turn,
 					      int actionScore)
