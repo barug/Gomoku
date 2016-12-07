@@ -8,6 +8,7 @@
 // Last update Tue Dec  6 00:12:38 2016 bogard_t
 //
 
+#include <iostream>
 #include <stdexcept>
 #include "Map.hpp"
 
@@ -43,17 +44,34 @@ void				Map::setCaseAt(const Map::Coordinates &coordinates,
   _mapData[MAP_WIDTH * coordinates.y + coordinates.x] = state;
 }
 
-const char			&Map::getCaseAt(const Map::Coordinates &coordinates)
+const char			&Map::getCaseAt(const Map::Coordinates &coordinates) const
 {
   return _mapData[MAP_WIDTH * coordinates.y + coordinates.x];
 }
 
-const char			&Map::getCaseAtIndex(const int index)
+const char			&Map::getCaseAtIndex(const int index) const
 {
   return _mapData[index];
 }
 
-const std::vector<char>		&Map::getMapData()
+void				Map::setCaseAtIndex(int index, Map::CaseState state)
+{
+  _mapData[index] = state;
+}
+
+const std::vector<char>		&Map::getMapData() const
 {
   return _mapData;
+}
+
+void				Map::mapDump() const
+{
+  std::cout << "map dump: ----------------";
+  for (int i = 0; i < MAP_SIZE; i++)
+    {
+      if (i % MAP_WIDTH == 0)
+	std::cout << std::endl;
+      std::cout << (int)_mapData[i];
+    }
+  std::cout << std::endl;
 }

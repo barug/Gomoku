@@ -23,7 +23,7 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int Coord
   return IReferee::gameState::ONGOING;
 }
 
-int			countAlignement(Map &map, Map::Coordinates coordinates,
+int			countAlignement(const Map &map, Map::Coordinates coordinates,
 					int xInc, int yInc)
 {
   int			count = 0;
@@ -55,8 +55,9 @@ std::vector<int>	testAlignement(Map &map, Map::Coordinates coordinates)
   return vec;
 }
 
-int				testAlignementInDirection(GomokuReferee::Direction direction, Map &map,
-							  Map::Coordinates coordinates)
+int			testAlignementInDirection(GomokuReferee::Direction direction,
+						  const Map &map,
+						  Map::Coordinates coordinates)
 {
   int				count;
 
@@ -71,7 +72,7 @@ int				testAlignementInDirection(GomokuReferee::Direction direction, Map &map,
   return count + 1;
 }
 
-bool				countCapture(Map &map, Map::Coordinates coordinates, int xInc, int yInc)
+bool				countCapture(const Map &map, Map::Coordinates coordinates, int xInc, int yInc)
 {
   Map::CaseState rivals = map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x) == Map::CaseState::WHITE ? Map::CaseState::BLACK : Map::CaseState::WHITE;
 
@@ -82,7 +83,7 @@ bool				countCapture(Map &map, Map::Coordinates coordinates, int xInc, int yInc)
   return false;
 }
 bool				testCaptureInDirection(GomokuReferee::Direction direction,
-						       Map &map,
+						       const Map &map,
 						       Map::Coordinates coordinates)
 {
   int xInc = 0;

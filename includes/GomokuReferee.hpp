@@ -42,11 +42,12 @@ public:
 
 std::vector<int> testAlignement(Map &map, Map::Coordinates coordinates);
 
-int					testAlignementInDirection(GomokuReferee::Direction direction,
-					       Map &map, Map::Coordinates coordinates);
+int				testAlignementInDirection(GomokuReferee::Direction direction,
+							  const Map &map,
+							  Map::Coordinates coordinates);
 std::vector<GomokuReferee::Direction>	testCapture(Map &map, Map::Coordinates coordinates);
-bool					testCaptureInDirection(GomokuReferee::Direction direction,
-							       Map &map, Map::Coordinates coordinates);
+bool				testCaptureInDirection(GomokuReferee::Direction direction,
+							       const Map &map, Map::Coordinates coordinates);
 
 
 #endif			/* _GOMOKUREFEREE_HPP_ */

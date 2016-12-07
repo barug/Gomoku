@@ -1,7 +1,7 @@
 #ifndef IARTIFICIAL_INTELIGENCE_HPP
 # define IARTIFICIAL_INTELIGENCE_HPP
 
-# include "map.hpp"
+# include "Map.hpp"
 
 class				IArtificialInteligence
 {

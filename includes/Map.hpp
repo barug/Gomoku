@@ -32,12 +32,14 @@ public:
   Map(std::vector<char> &mapData);
   ~Map();
 
-  void					resetAllCases(const unsigned int size);
-  void					setCaseAt(const Map::Coordinates &coordinates,
-						  const Map::CaseState &state);
-  const char				&getCaseAt(const Map::Coordinates &coordinates);
-  const char				&getCaseAtIndex(const int index);
-  const std::vector<char>		&getMapData();
+  void				resetAllCases(const unsigned int size);
+  void				setCaseAt(const Map::Coordinates &coordinates,
+					  const Map::CaseState &state);
+  const char			&getCaseAt(const Map::Coordinates &coordinates) const;
+  const char			&getCaseAtIndex(const int index) const;
+  void				setCaseAtIndex(int index, Map::CaseState state);
+  const std::vector<char>	&getMapData() const;
+  void			        mapDump() const;
 };
 
 #endif /* GOMOKU_MAP_HPP */
