@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Tue Dec  6 02:32:08 2016 bogard_t
+// Last update Tue Dec  6 19:39:32 2016 bogard_t
 //
 
 # include	<cstdio>
@@ -17,9 +17,10 @@
 
 Game::Game() : _map(new Map),
 	       _gui(new mSFML_Window("./font/digital.otf", "Gomoku - 2016")),
+	       _referee(new GomokuReferee(*_map)),
 	       _player1(new Player),
 	       _player2(new Player),
-	       _gomokuUI(*_gui, *_map),
+	       _gomokuUI(*(_gui.get()), *(_map.get())),
 	       _gameHandler({{GomokuUI::Context::STARTSCREEN,	&Game::_handleStartScreen},
 			     {GomokuUI::Context::WAITING,	&Game::_handleWaiting},
 			     {GomokuUI::Context::GAME,		&Game::_handleGame},
@@ -29,10 +30,6 @@ Game::Game() : _map(new Map),
 
 Game::~Game()
 {
-  delete _map;
-  delete _gui;
-  delete _player1;
-  delete _player2;
 }
 
 int					Game::start()
@@ -49,7 +46,18 @@ int					Game::start()
 
 void					Game::_handleStartScreen()
 {
-  _gomokuUI.displayStartScreen(_player2);
+  Player::Type				getType;
+
+  if ((getType = _gomokuUI.displayStartScreen()) != Player::Type::NONE)
+    {
+      _player2->setType(getType);
+      _gomokuUI.setContext(GomokuUI::Context::WAITING);
+    }
+  if (_player2->getType() != Player::Type::NONE)
+    {
+      _player1->setType(Player::Type::HUMAN);
+      // _gomokuUI.setContext(GomokuUI::Context::WAITING);
+    }
 }
 
 void					Game::_handleWaiting()
@@ -65,33 +73,43 @@ void					Game::_handleMenu()
 
 void					Game::_handleGame()
 {
-  std::unique_ptr<Map::Coordinates>	newCoordinates(_gomokuUI.getClickedTile());
-
-  _gomokuUI.updateMap();
-  _gomokuUI.displayGame();
-  if (newCoordinates)
+  try
     {
-      switch (_turn)
+      _gomokuUI.updateMap();
+      _gomokuUI.displayGame();
+      std::unique_ptr<Map::Coordinates>	newCoordinates(_gomokuUI.getClickedTile());
+
+      if (newCoordinates)
 	{
-	case Game::Turn::PLAYER1:
-	  {
-	    // if arbiter allow
-	    _map->setCaseAt(*newCoordinates, Map::CaseState::WHITE);
-	  }
-	  break;
-	case Game::Turn::PLAYER2:
-	  {
-	    if (_player2->getType() == Player::Type::AI)
-	      {
+	  switch (_turn)
+	    {
+	    case Game::Turn::PLAYER1:
+	      if (_referee->validatePlayerAction(newCoordinates->getX(), newCoordinates->getY())
+		  == IReferee::gameState::ONGOING)
+		_map->setCaseAt(*newCoordinates, Map::CaseState::WHITE);
+	      else
+		std::cout << "PLAYER1 wiiiiiinn" << std::endl;
+	      break;
+	    case Game::Turn::PLAYER2:
+	      if (_player2->getType() == Player::Type::AI)
 		std::cout << "player 2 is AI" << std::endl;
-	      }
-	    // if arbiter allow or ai
-	    _map->setCaseAt(*newCoordinates, Map::CaseState::BLACK);
-	  }
-	  break;
-	default:
-	  break;
+	      if (_referee->validatePlayerAction(newCoordinates->getX(), newCoordinates->getY())
+		  == IReferee::gameState::ONGOING)
+		_map->setCaseAt(*newCoordinates, Map::CaseState::BLACK);
+	      else
+		std::cout << "PLAYER2 wiiiiiinn" << std::endl;
+	      break;
+	    default:
+	      break;
+	    }
+	  _turn = _turn == Game::Turn::PLAYER1 ? Game::Turn::PLAYER2 : Game::Turn::PLAYER1;
+
 	}
-      _turn = _turn == Game::Turn::PLAYER1 ? Game::Turn::PLAYER2 : Game::Turn::PLAYER1;
     }
+  catch (const std::exception &e)
+    {
+      std::cerr << e.what() << std::endl;
+      std::abort();
+    }
+
 }

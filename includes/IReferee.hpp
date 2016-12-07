@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:17:28 2016 Thomas Billot
-// Last update Mon Dec  5 16:43:33 2016 Thomas Billot
+// Last update Tue Dec  6 13:53:14 2016 Thomas Billot
 //
 
 #ifndef			_IREFEREE_HPP_
@@ -18,6 +18,7 @@ public:
   enum			gameState
     {
       ONGOING,
+      UNVALID,
       P1_WIN,
       P2_WIN
     };

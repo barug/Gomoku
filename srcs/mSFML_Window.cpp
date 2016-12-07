@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 16 17:14:22 2016 Thomas Billot
-// Last update Tue Dec  6 00:42:25 2016 bogard_t
+// Last update Tue Dec  6 12:10:06 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -208,8 +208,11 @@ void			mSFML_Window::setTextureAt(const std::string &path,
 						   const float scale)
 {
   sf::Sprite		sprite;
+  const sf::Texture	*texture;
 
-  sprite.setTexture(*_manager.load(path));
+  if ((texture = _manager.load(path)) == NULL)
+    throw std::out_of_range("Failed to load texture " + path);
+  sprite.setTexture(*texture);
   sprite.setPosition(x, y);
   sprite.setScale(scale, scale);
   this->_window.draw(sprite);

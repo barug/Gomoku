@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Tue Dec  6 02:06:57 2016 bogard_t
-// Last update Tue Dec  6 02:28:09 2016 bogard_t
+// Last update Tue Dec  6 16:32:24 2016 bogard_t
 //
 
 #ifndef	        __GOMOKU_UI_HPP__
@@ -30,22 +30,22 @@ public:
   GomokuUI(IGui &gui, Map &map);
   ~GomokuUI();
 
-  void					displayMenu();
-  void				        displayWaiting();
-  void					displayStartScreen(Player *player2);
-  void					displayGame();
-  void				        updateMap();
+  void					displayMenu(void);
+  void				        displayWaiting(void);
+  Player::Type				displayStartScreen(void);
+  void					displayGame(void);
+  void				        updateMap(void);
 
-  bool					getClicked() const;
-  Map::Coordinates*			getClickedTile();
+  bool					getClicked(void) const;
+  Map::Coordinates*			getClickedTile(void);
 
-  void					setContext(GomokuUI::Context context);
-  GomokuUI::Context			getContext() const;
+  void					setContext(const GomokuUI::Context context);
+  GomokuUI::Context			getContext(void) const;
 
 private:
   IGui					&_gui;
   Map					&_map;
-  Timer					*_timer;
+  std::unique_ptr<Timer>	        _timer;
   GomokuUI::Context			_context;
   bool					_restart;
 };

@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Thu Dec  1 14:55:46 2016 bogard_t
-// Last update Mon Dec  5 14:10:33 2016 bogard_t
+// Last update Tue Dec  6 16:36:42 2016 bogard_t
 //
 
 #ifndef		__PLAYER_HPP__
@@ -16,8 +16,9 @@ class		Player
 public:
   enum Type
     {
-      HUMAN = 0,
-      AI = 1
+      NONE = 0,
+      HUMAN = 1,
+      AI = 2
     };
 
   Player(const Player::Type &type = HUMAN);
@@ -28,7 +29,7 @@ public:
 
   void		setType(const Player::Type type);
   Player::Type	getType() const;
-  const Player&	operator=(const Player::Type &type);
+  const Player&	operator=(const Player::Type type);
 
 private:
   Player::Type	_type;

@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Mon Dec  5 18:11:33 2016 Thomas Billot
+// Last update Tue Dec  6 11:31:16 2016 Thomas Billot
 //
 
 #ifndef			_GOMOKUREFEREE_HPP_
@@ -34,7 +34,7 @@ private:
   Map				_map;
 
 public:
-				GomokuReferee(Map &map);
+  explicit 			GomokuReferee(Map &map);
   virtual			~GomokuReferee();
   virtual IReferee::gameState	validatePlayerAction(const unsigned int CoordX,
 						     const unsigned int CoordY);

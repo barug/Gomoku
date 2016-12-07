@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 15:28:50 2016 Thomas Billot
-// Last update Tue Dec  6 00:12:38 2016 bogard_t
+// Last update Tue Dec  6 19:09:24 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -21,12 +21,6 @@ Map::Map(std::vector<char> &mapData)
 {}
 
 Map::~Map()
-{}
-
-Map::Coordinates::Coordinates(const unsigned int &x,
-			      const unsigned int &y)
-  : x(x),
-    y(y)
 {}
 
 void			        Map::resetAllCases(const unsigned int size)

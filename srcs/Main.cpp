@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Oct 12 11:52:44 2016 Thomas Billot
-// Last update Sat Dec  3 22:22:13 2016 bogard_t
+// Last update Tue Dec  6 14:58:34 2016 Thomas Billot
 //
 
 # include		"Game.hpp"
