@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Tue Dec  6 16:33:09 2016 bogard_t
+// Last update Thu Dec  8 17:30:33 2016 bogard_t
 //
 
 #ifndef					__GAME_HPP__
@@ -46,7 +46,7 @@ private:
   Game::Turn		       		_turn;
 
   /*
-  ** private methods handler
+  ** private methods
   */
 
   void				        _handleStartScreen();

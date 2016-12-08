@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Tue Dec  6 02:06:49 2016 bogard_t
-// Last update Tue Dec  6 16:40:31 2016 bogard_t
+// Last update Thu Dec  8 17:53:59 2016 bogard_t
 //
 
 # include	<iostream>
@@ -154,14 +154,18 @@ void		        GomokuUI::updateMap(void)
   _gui.setTextureAt("./sprites/wood.jpg", 205, 9, 0.975);
 
   // display players infos
-  _gui.writeAt("SCORE J1 :", 40, 50, 0xffffff, 0.5);
-  _gui.fillRec(40, 70, 60, 1, 0xffffff);
-  _gui.writeAt("ALIGNEMENT :", 40, 100, 0xffffff, 0.5);
-  _gui.fillRec(40, 120, 100, 1, 0xffffff);
-  _gui.writeAt("SCORE J2 :", 40, 350, 0xffffff, 0.5);
-  _gui.fillRec(40, 370, 60, 1, 0xffffff);
-  _gui.writeAt("ALIGNEMENT :", 40, 400, 0xffffff, 0.5);
-  _gui.fillRec(40, 420, 100, 1, 0xffffff);
+  _gui.writeAt("SCORE J1 :", 30, 50, 0xffffff, 0.7);
+  _gui.fillRec(30, 70, 60, 1, 0xffffff);
+  _gui.writeAt("ALIGNEMENT :", 40, 100, 0xffffff, 0.7);
+  _gui.fillRec(30, 120, 80, 1, 0xffffff);
+  _gui.writeAt("CAPTURE :", 40, 150, 0xffffff, 0.7);
+  _gui.fillRec(30, 170, 60, 1, 0xffffff);
+  _gui.writeAt("SCORE J2 :", 40, 350, 0xffffff, 0.7);
+  _gui.fillRec(30, 370, 60, 1, 0xffffff);
+  _gui.writeAt("ALIGNEMENT :", 40, 400, 0xffffff, 0.7);
+  _gui.fillRec(30, 420, 80, 1, 0xffffff);
+  _gui.writeAt("CAPTURE :", 40, 450, 0xffffff, 0.7);
+  _gui.fillRec(30, 470, 60, 1, 0xffffff);
 
   // display checkerboard
   for (unsigned int x = 0; x < IGui::mapSize - 1; x++)
