@@ -24,15 +24,15 @@ public:
     Coordinates operator+(const Map::Coordinates &rhs);
     Coordinates operator-(const Map::Coordinates &rhs);
     bool	operator==(const Map::Coordinates &rhs);
-    int					getX() const;
-    int					getY() const;
+    // int					getX() const;
+    // int					getY() const;
     int					x;
     int					y;
   };
 
   static const int		boardWidth = 19;
   static const int		boardSize = boardWidth * boardWidth;
-  
+
 private:
   std::bitset<boardSize>	_whiteBoard;
   std::bitset<boardSize>	_blackBoard;

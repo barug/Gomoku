@@ -1,7 +1,7 @@
 #!/bin/bash
 if [ -d build ]; then
-    cd build; make; cd ..; ./Gomoku
+    cd build; make -j4; cd ..; ./Gomoku
     # rm -rf build
 else
-    ls && mkdir build && cd build && cmake .. && make && cd .. && ls
+    ls && mkdir build && cd build && cmake .. && make -j4 && cd .. && ls
 fi
