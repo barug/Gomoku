@@ -60,13 +60,13 @@ public:
   void				initIncDirection(GomokuReferee::Direction direction, int &xInc, int &yInc);
 };
 
-// int			testAlignementInDirection(GomokuReferee::Direction direction,
-// 						  const Map &map,
-// 						  Map::Coordinates coordinates,
-// 						  Map::CaseState color);
-// bool			testCaptureInDirection(GomokuReferee::Direction direction,
-// 					       const Map &map,
-// 					       Map::Coordinates coordinates);
+int			testAlignementInDirection(GomokuReferee::Direction direction,
+						  const Map &map,
+						  Map::Coordinates coordinates,
+						  Map::CaseState color);
+bool			testCaptureInDirection(GomokuReferee::Direction direction,
+					       const Map &map,
+					       Map::Coordinates coordinates);
 
 
 #endif			/* _GOMOKUREFEREE_HPP_ */

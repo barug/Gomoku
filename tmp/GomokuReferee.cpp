@@ -19,8 +19,10 @@ GomokuReferee::~GomokuReferee()
 {}
 
 IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int CoordX,
-							    const unsigned int CoordY)
+							    const unsigned int CoordY,
+							    const bool turn)
 {
+  (void) turn;
   std::cout << CoordX << " " << CoordY << std::endl;
   return IReferee::gameState::ONGOING;
 }

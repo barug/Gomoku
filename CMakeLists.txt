@@ -23,7 +23,7 @@ endif()
 # link_libraries(sfml-graphics sfml-window sfml-system sfml-audio)
 
 add_executable(Gomoku
-  srcs/Game.cpp
+#  srcs/Game.cpp
   srcs/Player.cpp
   srcs/Main_jo.cpp
   srcs/Timer.cpp

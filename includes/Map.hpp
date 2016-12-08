@@ -20,6 +20,7 @@ public:
   struct				Coordinates
   {
   public:
+    Coordinates();
     Coordinates(const unsigned int x, const unsigned int y);
     Coordinates operator+(const Map::Coordinates &rhs);
     Coordinates operator-(const Map::Coordinates &rhs);
