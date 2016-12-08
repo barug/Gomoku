@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Thu Dec  8 19:45:38 2016 Josselin
+// Last update Thu Dec  8 19:51:12 2016 Josselin
 //
 
 #include <iostream>
@@ -16,6 +16,10 @@ GomokuReferee::GomokuReferee(Map &map) : _map(map), _whiteCapturedPieces(0), _bl
 GomokuReferee::~GomokuReferee()
 {}
 
+
+/*
+** Check player action
+*/
 IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int CoordX,
 							    const unsigned int CoordY,
 							    const bool turn)
