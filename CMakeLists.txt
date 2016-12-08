@@ -25,15 +25,16 @@ endif()
 add_executable(Gomoku
   srcs/Game.cpp
   srcs/Player.cpp
-  srcs/Main.cpp
+  srcs/Main_jo.cpp
   srcs/Timer.cpp
   srcs/GomokuUI.cpp
-  srcs/GomokuReferee.cpp
+  tmp/GomokuReferee.cpp
   srcs/TextureManager.cpp
   srcs/mSFML_Audio.cpp
   srcs/mSFML_Window.cpp
   srcs/Map.cpp
   srcs/Coordinates.cpp
+  srcs/MinMax.cpp
   )
 
 target_link_libraries(Gomoku sfml-window sfml-system sfml-audio sfml-graphics)

@@ -20,16 +20,25 @@ public:
 
   enum			Direction
     {
-      NORTH,
-      NORTH_EAST,
-      EAST,
-      SOUTH_EAST,
-      SOUTH,
-      SOUTH_WEST,
-      WEST,
-      NORTH_WEST,
+      NORTH		= -19,
+      NORTH_EAST	= -18,
+      EAST		= 1,
+      SOUTH_EAST	= 20,
+      SOUTH		= 19,
+      SOUTH_WEST	= 18,
+      WEST		= -1,
+      NORTH_WEST	= -20,
     };
 
+   static constexpr GomokuReferee::Direction directions[8] = {NORTH,
+							      NORTH_EAST,
+							      EAST,
+							      SOUTH_EAST,
+							      SOUTH,
+							      SOUTH_WEST,
+							      WEST,
+							      NORTH_WEST};
+  
 private:
   Map				_map;
 
@@ -40,14 +49,17 @@ public:
 						     const unsigned int CoordY);
 };
 
-std::vector<int> testAlignement(Map &map, Map::Coordinates coordinates);
+std::vector<int>	testAlignement(Map &map, Map::Coordinates coordinates);
 
-int				testAlignementInDirection(GomokuReferee::Direction direction,
-							  const Map &map,
-							  Map::Coordinates coordinates);
-std::vector<GomokuReferee::Direction>	testCapture(Map &map, Map::Coordinates coordinates);
-bool				testCaptureInDirection(GomokuReferee::Direction direction,
-							       const Map &map, Map::Coordinates coordinates);
+int			testAlignementInDirection(GomokuReferee::Direction direction,
+						  const Map &map,
+						  Map::Coordinates coordinates,
+						  Map::CaseState color);
+std::vector<GomokuReferee::Direction>	testCapture(Map &map,
+						    Map::Coordinates coordinates);
+bool			testCaptureInDirection(GomokuReferee::Direction direction,
+					       const Map &map,
+					       Map::Coordinates coordinates);
 
 
 #endif			/* _GOMOKUREFEREE_HPP_ */

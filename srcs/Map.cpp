@@ -15,6 +15,17 @@
 Map::Map()
 {}
 
+Map::Map(std::vector<char> initVect)
+{
+  for (unsigned int i = 0; i < initVect.size(); i++)
+    {
+      if (initVect[i] == Map::WHITE)
+	_whiteBoard[i] = true;
+      if (initVect[i] == Map::BLACK)
+	_blackBoard[i] = true;
+    }
+}
+
 Map::Map(Map &map)
   : _whiteBoard(map._whiteBoard),
     _blackBoard(map._blackBoard)
@@ -72,10 +83,13 @@ Map::CaseState			Map::getCaseAtIndex(const int index) const
   return Map::EMPTY;
 }
 
-// const std::vector<char>		&Map::getMapData() const
-// {
-//   return _mapData;
-// }
+const std::bitset<Map::boardSize>	&Map::getBitSet(Map::CaseState color) const 
+{
+  if (color == Map::WHITE)
+    return _whiteBoard;
+  else
+    return _blackBoard;
+}
 
 // void				Map::mapDump() const
 // {
