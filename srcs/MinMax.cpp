@@ -32,7 +32,7 @@ Map::Coordinates	*GomokuMinMax::computeNextAction(const Map &map)
 {
   GomokuMinMax::Result	result;
 
-  result = _minMax(map, 0, -12345678, 12345678, GomokuMinMax::MAX, 0);
+  result = _minMax(map, 1, -12345678, 12345678, GomokuMinMax::MAX, 0);
   return (new Map::Coordinates(result.coordinates));
 }
 

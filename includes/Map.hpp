@@ -31,11 +31,12 @@ public:
 
   static const int		boardWidth = 19;
   static const int		boardSize = boardWidth * boardWidth;
-
+  
 private:
   std::bitset<boardSize>	_whiteBoard;
   std::bitset<boardSize>	_blackBoard;
-
+  std::vector<unsigned int>	_pawnOnBoardIndexes;
+  
 public:
   Map();
   Map(std::vector<char> initVect);
