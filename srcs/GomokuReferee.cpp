@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Fri Dec  9 14:54:03 2016 Josselin
+// Last update Fri Dec  9 16:29:36 2016 Josselin
 //
 
 #include <iostream>
@@ -25,6 +25,15 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, 
   //check regle double trois
 	//-> return UNVALID
 
+
+
+  if (turn) {
+    std::cerr << "BLACK" << std::endl;
+    this->_map.setCaseAtIndex(MAP_WIDTH * CoordY + CoordX, Map::CaseState::BLACK);
+  } else {
+    std::cerr << "WHITE" << std::endl;
+    this->_map.setCaseAtIndex(MAP_WIDTH * CoordY + CoordX, Map::CaseState::WHITE);
+  }
 
   std::cerr << "Validate player action" << std::endl;//////////////////////////////////////////////debug
   testCapture(this->_map, Map::Coordinates(CoordX, CoordY));
@@ -50,7 +59,9 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, 
 
 	  int xInc;
 	  int yInc;
+
 	  initIncDirection(direction, xInc, yInc);
+
 
 	  while (CoordX + xInc >= 0 && CoordX + xInc <= 19 &&
 		 CoordY + yInc >= 0 && CoordY + yInc <= 19 &&
@@ -176,15 +187,14 @@ bool			GomokuReferee::simulateCapture(Map &map, Map::Coordinates coordinates,
   return false;
 }
 
-bool			GomokuReferee::hasFiveInARow(GomokuReferee::Direction direction,
-					   Map &map,
-					   Map::Coordinates coordinates)
+bool			GomokuReferee::hasFiveInARow(GomokuReferee::Direction direction, Map &map,
+						     Map::Coordinates coordinates)
 {
   Map::CaseState	rivals = map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x) ==
 				Map::CaseState::WHITE ? Map::CaseState::BLACK : Map::CaseState::WHITE;
   int			xInc;
-  int			xIncBack;
   int			yInc;
+  int			xIncBack;
   int			yIncBack;
   int			i = 0;
 
@@ -203,7 +213,7 @@ bool			GomokuReferee::hasFiveInARow(GomokuReferee::Direction direction,
 ** Alignement Tests
 */
 int			GomokuReferee::countAlignement(const Map &map, Map::Coordinates coordinates,
-					int xInc, int yInc)
+						       int xInc, int yInc)
   {
     int			count = 0;
 
@@ -212,6 +222,8 @@ int			GomokuReferee::countAlignement(const Map &map, Map::Coordinates coordinate
 	   map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x) ==
 	   map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)))
       {
+	std::cerr << "alignement count : \n " << map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x) << "   " <<
+	  map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)) << std::endl;
 	xInc = xInc < 0 ? xInc - 1 : xInc > 0 ? xInc + 1 : 0;
 	yInc = yInc < 0 ? yInc - 1 : yInc > 0 ? yInc + 1 : 0;
 	count++;
@@ -219,11 +231,11 @@ int			GomokuReferee::countAlignement(const Map &map, Map::Coordinates coordinate
     return count;
   }
 
-int				GomokuReferee::testAlignementInDirection(GomokuReferee::Direction direction, const Map &map, Map::Coordinates coordinates)
+int				GomokuReferee::testAlignementInDirection(GomokuReferee::Direction direction, const Map &map,
+									 Map::Coordinates coordinates)
 {
   int				count;
 
-  std::cerr << "test alignement in direction " << direction << std::endl;//////////////////////////////////////////////debug
   if (direction == GomokuReferee::Direction::NORTH)
     count = countAlignement(map, coordinates, 0, 1) + countAlignement(map, coordinates, 0, -1);
   else if (direction == GomokuReferee::Direction::WEST)
@@ -232,6 +244,7 @@ int				GomokuReferee::testAlignementInDirection(GomokuReferee::Direction directi
     count = countAlignement(map, coordinates, 1, 1) + countAlignement(map, coordinates, -1, -1);
   else
     count = countAlignement(map, coordinates, 1, -1) + countAlignement(map, coordinates, -1, 1);
+  std::cerr << "count = " << count << std::endl;
   return count + 1;
 }
 
@@ -283,7 +296,6 @@ void				GomokuReferee::testCaptureInDirection(GomokuReferee::Direction direction
   int xInc = 0;
   int yInc = 0;
 
-  std::cerr << "test capture in direction " << direction << std::endl;//////////////////////////////////////////////debug
   initIncDirection(direction, xInc, yInc);
   if (coordinates.x + (xInc * 3) >= 0 && coordinates.x + (xInc * 3) <= 19 &&
       coordinates.y + (yInc * 3) >= 0 && coordinates.y + (yInc * 3) <= 19)
@@ -308,7 +320,6 @@ void				GomokuReferee::testCapture(Map &map, Map::Coordinates coordinates)
 /*
 ** Set & Get
 */
-
 int			GomokuReferee::getWhiteCapturedPieces()
 {
   return this->_whiteCapturedPieces;
