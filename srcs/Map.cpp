@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 15:28:50 2016 Thomas Billot
-// Last update Tue Dec  6 19:09:24 2016 Thomas Billot
+// Last update Fri Dec  9 19:44:36 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -51,6 +51,12 @@ int				Map::convertToIndex(const Map::Coordinates &coord) const
 void				Map::setCaseAt(const Map::Coordinates &coordinates,
 					       const Map::CaseState &state)
 {
+  if (state == Map::EMPTY)
+    {
+      _blackBoard[convertToIndex(coordinates)] = false;
+      _whiteBoard[convertToIndex(coordinates)] = false;
+      return;
+    }
   if (state == Map::BLACK)
     _blackBoard[convertToIndex(coordinates)] = true;
   else
