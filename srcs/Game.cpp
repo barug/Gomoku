@@ -52,9 +52,10 @@ void					Game::_handleStartScreen()
       if (player2Type == IPlayer::HUMAN)
 	_player2 = std::unique_ptr<IPlayer>(new HumanPlayer(_gomokuUI, Map::BLACK));
       else if (player2Type == IPlayer::AI)
-	_player2 = std::unique_ptr<IPlayer>(new ArtificialPlayer(new GomokuMinMax,
-								 _map,
-								 Map::BLACK));
+	_player2 = std::unique_ptr<IPlayer>
+	  (new ArtificialPlayer(new GomokuMinMax(Map::BLACK),
+				_map,
+				Map::BLACK));
       _gomokuUI.setContext(GomokuUI::Context::WAITING);
     }
 }

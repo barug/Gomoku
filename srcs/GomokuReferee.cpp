@@ -327,9 +327,9 @@ int			testAlignementInDirection(GomokuReferee::Direction direction,
 						  Map::Coordinates coordinates,
 						  Map::CaseState color)
 {
-  int index = map.convertToIndex(coordinates);
-  int nextCaseIndex;
-  int				count = 1;
+  int			index = map.convertToIndex(coordinates);
+  int			nextCaseIndex;
+  int				count = 0;
   const std::bitset<Map::boardSize>	&bitset = map.getBitSet(color);
 
   if (!((coordinates.x == 18
