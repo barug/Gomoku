@@ -14,10 +14,18 @@ GomokuMinMax::Result::Result(unsigned int x,
     actionScore(actionScore)
 {}
 
+GomokuMinMax::GomokuMinMax(Map::CaseState iaColor)
+  : _iaColor(iaColor)
+{
+  if (_iaColor == Map::BLACK)
+    _enemyColor = Map::WHITE;
+  else
+    _enemyColor = Map::BLACK;
+}
+
 GomokuMinMax::GomokuMinMax()
   : _iaColor(Map::BLACK),
-    _enemyColor(Map::WHITE),
-    _alpha(12345678)
+    _enemyColor(Map::WHITE)
 {}
 
 Map::Coordinates	*GomokuMinMax::computeNextAction(const Map &map)
@@ -33,17 +41,27 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
 							   Map::CaseState color)
 {
   unsigned int		actionScore = 0;
-
+  Map::CaseState	enemyColor = color == Map::WHITE ? Map::BLACK : Map::WHITE;
+  unsigned int		testResult;
+  
   for (unsigned int i = 0; i <= 3; i++)
     {
+      testResult = pow(testAlignementInDirection(GomokuReferee::directions[i],
+						 map,
+						 Action,
+						 color), 2);
+      if (testResult == 25)
+	testResult = 12345678;
+      actionScore += testResult;
       actionScore += pow(testAlignementInDirection(GomokuReferee::directions[i],
 						   map,
 						   Action,
-						   color) - 1, 2);
+						   enemyColor), 2);
     }
   for (unsigned int i = 0; i <= 7; i++)
     {
       // actionScore += testCaptureInDirection(GomokuReferee::directions[i], map, Action);
+      
     }
   return actionScore;
 }

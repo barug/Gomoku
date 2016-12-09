@@ -5,7 +5,7 @@
 # include "IArtificialInteligence.hpp"
 # include "GomokuReferee.hpp"
 
-# define RECURSION_DEPTH	(1)
+# define RECURSION_DEPTH	(2)
 
 class				GomokuMinMax : public IArtificialInteligence
 {
@@ -27,9 +27,9 @@ class				GomokuMinMax : public IArtificialInteligence
 
   Map::CaseState			_iaColor;
   Map::CaseState			_enemyColor;
-  int					_alpha;
 
 public:
+  GomokuMinMax(Map::CaseState iaColor);
   unsigned int			calculateActionScore(const Map &map,
 						     Map::Coordinates Action,
 						     Map::CaseState color);
