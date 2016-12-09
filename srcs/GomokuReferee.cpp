@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Fri Dec  9 16:31:43 2016 Josselin
+// Last update Fri Dec  9 16:47:46 2016 Josselin
 //
 
 #include <iostream>
@@ -30,11 +30,11 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, 
 
 
   if (turn) {
-    std::cerr << "BLACK" << std::endl;
-    this->_map.setCaseAtIndex(MAP_WIDTH * CoordY + CoordX, Map::CaseState::BLACK);
-  } else {
     std::cerr << "WHITE" << std::endl;
     this->_map.setCaseAtIndex(MAP_WIDTH * CoordY + CoordX, Map::CaseState::WHITE);
+  } else {
+    std::cerr << "BLACK" << std::endl;
+    this->_map.setCaseAtIndex(MAP_WIDTH * CoordY + CoordX, Map::CaseState::BLACK);
   }
 
   std::cerr << "Validate player action" << std::endl;//////////////////////////////////////////////debug
@@ -47,44 +47,40 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, 
 
   std::vector<int> vec = testAlignement(this->_map, Map::Coordinates(CoordX, CoordY));
   for (unsigned int i = 0; i < vec.size(); i++)
-    {
-      std::cerr << "alignement : " << vec[i] << std::endl;//////////////////////////////////////////////debug
-      if (vec[i] >= 5)
-	{
-	  std::cerr << "test five in a row" << std::endl;//////////////////////////////////////////////debug
-	  GomokuReferee::Direction direction;
-	  direction =
-	    i == 0 ? GomokuReferee::Direction::NORTH :
-	    i == 1 ? GomokuReferee::Direction::WEST :
-	    i == 2 ? GomokuReferee::Direction::NORTH_EAST :
-	    GomokuReferee::Direction::SOUTH_EAST;
+    if (vec[i] >= 5)
+      {
+	std::cerr << "test five in a row" << std::endl;//////////////////////////////////////////////debug
+	GomokuReferee::Direction direction;
+	direction =
+	  i == 0 ? GomokuReferee::Direction::NORTH :
+	  i == 1 ? GomokuReferee::Direction::WEST :
+	  i == 2 ? GomokuReferee::Direction::NORTH_EAST :
+	  GomokuReferee::Direction::SOUTH_EAST;
 
-	  int xInc;
-	  int yInc;
+	int xInc;
+	int yInc;
 
-	  initIncDirection(direction, xInc, yInc);
+	initIncDirection(direction, xInc, yInc);
 
 
-	  while (CoordX + xInc >= 0 && CoordX + xInc <= 19 &&
-		 CoordY + yInc >= 0 && CoordY + yInc <= 19 &&
-		 this->_map.getCaseAtIndex(MAP_WIDTH * CoordY + CoordX) ==
-		 this->_map.getCaseAtIndex(MAP_WIDTH * (CoordY + yInc) + (CoordX + xInc)))
-	    {
-	      CoordX += xInc;
-	      CoordY += yInc;
-	    }
+	while (CoordX + xInc >= 0 && CoordX + xInc <= 19 &&
+	       CoordY + yInc >= 0 && CoordY + yInc <= 19 &&
+	       this->_map.getCaseAtIndex(MAP_WIDTH * CoordY + CoordX) ==
+	       this->_map.getCaseAtIndex(MAP_WIDTH * (CoordY + yInc) + (CoordX + xInc)))
+	  {
+	    CoordX += xInc;
+	    CoordY += yInc;
+	  }
 
-	  if (hasFiveInARow(invertDirection(direction), this->_map, Map::Coordinates(CoordX, CoordY)))
-	    {
-	      std::cerr << "five in a row ok, game over" << std::endl;//////////////////////////////////////////////debug
-	      if (turn)
-		return IReferee::gameState::P2_WIN;
-	      else
-		return IReferee::gameState::P1_WIN;
-	    }
-	}
-    }
-  std::cout << CoordX << " " << CoordY << std::endl;
+	if (hasFiveInARow(invertDirection(direction), this->_map, Map::Coordinates(CoordX, CoordY)))
+	  {
+	    std::cerr << "five in a row ok, game over" << std::endl;//////////////////////////////////////////////debug
+	    if (turn)
+	      return IReferee::gameState::P1_WIN;
+	    else
+	      return IReferee::gameState::P2_WIN;
+	  }
+      }
   return IReferee::gameState::ONGOING;
 }
 
@@ -224,8 +220,6 @@ int			GomokuReferee::countAlignement(const Map &map, Map::Coordinates coordinate
 	   map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x) ==
 	   map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)))
       {
-	std::cerr << "alignement count : \n " << map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x) << "   " <<
-	  map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)) << std::endl;
 	xInc = xInc < 0 ? xInc - 1 : xInc > 0 ? xInc + 1 : 0;
 	yInc = yInc < 0 ? yInc - 1 : yInc > 0 ? yInc + 1 : 0;
 	count++;
@@ -246,7 +240,6 @@ int				GomokuReferee::testAlignementInDirection(GomokuReferee::Direction directi
     count = countAlignement(map, coordinates, 1, 1) + countAlignement(map, coordinates, -1, -1);
   else
     count = countAlignement(map, coordinates, 1, -1) + countAlignement(map, coordinates, -1, 1);
-  std::cerr << "count = " << count << std::endl;
   return count + 1;
 }
 
@@ -256,9 +249,13 @@ std::vector<int>	GomokuReferee::testAlignement(const Map &map, Map::Coordinates 
 
   std::cerr << "start alignement test" << std::endl;//////////////////////////////////////////////debug
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH, map, coordinates));
+  std::cerr << "NORTH/SOUTH alignement : " << vec[0]  << std::endl;//////////////////////////////////////////////debug
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::WEST, map, coordinates));
+  std::cerr << "WEST/EAST alignement : " << vec[1]  << std::endl;//////////////////////////////////////////////debug
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_EAST, map, coordinates));
+  std::cerr << "NORTH_EAST/SOUTH_WEST alignement : " << vec[2]  << std::endl;//////////////////////////////////////////////debug
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_EAST, map, coordinates));
+  std::cerr << "SOUTH_EAST/NORTH_WEST alignement : " << vec[3]  << std::endl;//////////////////////////////////////////////debug
   return vec;
 }
 
