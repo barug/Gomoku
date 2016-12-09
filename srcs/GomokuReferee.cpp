@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Fri Dec  9 14:54:03 2016 Josselin
+// Last update Fri Dec  9 16:16:59 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -17,16 +17,20 @@ GomokuReferee::~GomokuReferee()
 {}
 
 
+bool			GomokuReferee::testDoubleTree(Map::Coordinates coordinates)
+{
+  return false;
+}
+
 /*
 ** Check player action
 */
 IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, const bool turn)
 {
-  //check regle double trois
-	//-> return UNVALID
-
 
   std::cerr << "Validate player action" << std::endl;//////////////////////////////////////////////debug
+  if (testDoubleTree(Map::Coordinates(CoordX, CoordY)) == true)
+    return IReferee::gameState::INVALID;
   testCapture(this->_map, Map::Coordinates(CoordX, CoordY));
   std::cerr << "Test Capture OK" << std::endl;//////////////////////////////////////////////debug
   if (this->_whiteCapturedPieces >= 10)
@@ -246,7 +250,6 @@ std::vector<int>	GomokuReferee::testAlignement(const Map &map, Map::Coordinates 
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_EAST, map, coordinates));
   return vec;
 }
-
 
 /*
 ** Capture Tests
