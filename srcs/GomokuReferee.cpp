@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Fri Dec  9 22:14:00 2016 Josselin
+// Last update Fri Dec  9 22:16:34 2016 Josselin
 //
 
 #include <iostream>
@@ -43,9 +43,10 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, 
   }
 
   std::cerr << "[REFEREE DEBUG]Validate player action" << std::endl;//////////////////////////////////////////////debug
-  std::cout << CoordX << " " << CoordY << std::endl;
+  std::cout << "[REFEREE DEBUG]Position : " << CoordX << " " << CoordY << std::endl;
   // if (testDoubleThree(Map::Coordinates(CoordX, CoordY)) == true)
   //   return IReferee::gameState::UNVALID;
+
   testCapture(Map::Coordinates(CoordX, CoordY));
   std::cerr << "[REFEREE DEBUG]Test Capture OK" << std::endl;//////////////////////////////////////////////debug
   if (this->_whiteCapturedPieces >= 10)
