@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Thu Dec  8 17:49:13 2016 bogard_t
+// Last update Thu Dec  8 20:17:26 2016 Josselin
 //
 
 # include	<cstdio>
@@ -78,8 +78,9 @@ void					Game::_handleGame()
       if (newCoordinates)
 	{
 	  Map::CaseState			caseState;
+	  bool					turn = _turn == Game::Turn::PLAYER1 ? false : true;
 	  IReferee::gameState			state =_referee->
-	    validatePlayerAction(newCoordinates->x, newCoordinates->y);
+	    validatePlayerAction(newCoordinates->x, newCoordinates->y, turn);//modif by jo
 
 	  switch (state)
 	    {
