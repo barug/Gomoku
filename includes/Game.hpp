@@ -16,6 +16,10 @@
 # include				<chrono>
 # include				"GomokuUI.hpp"
 # include				"IReferee.hpp"
+# include				"IPlayer.hpp"
+# include				"HumanPlayer.hpp"
+# include				"ArtificialPlayer.hpp"
+# include				"MinMax.hpp"
 
 class					Game
 {
@@ -33,11 +37,11 @@ private:
 
   typedef void (Game::* f)(void);
 
-  std::shared_ptr<Map>			_map;
+  Map					_map;
   std::shared_ptr<IGui>		        _gui;
   std::unique_ptr<IReferee>	        _referee;
-  std::unique_ptr<Player>	        _player1;
-  std::unique_ptr<Player>	        _player2;
+  std::unique_ptr<IPlayer>	        _player1;
+  std::unique_ptr<IPlayer>	        _player2;
 
   GomokuUI				_gomokuUI;
 

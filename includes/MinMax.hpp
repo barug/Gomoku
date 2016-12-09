@@ -7,7 +7,7 @@
 
 # define RECURSION_DEPTH	(3)
 
-class				GomokuMinMax
+class				GomokuMinMax : public IArtificialInteligence
 {
   enum				turn : unsigned char
     {
@@ -42,7 +42,7 @@ public:
   
 public:
   GomokuMinMax();
-  virtual Map::Coordinates	computeNextAction(const Map &map);
+  virtual Map::Coordinates	*computeNextAction(const Map &map);
 };
 
 #endif /* MIN_MAX_HPP */

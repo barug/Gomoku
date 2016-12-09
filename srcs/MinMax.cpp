@@ -20,12 +20,12 @@ GomokuMinMax::GomokuMinMax()
     _alpha(12345678)
 {}
 
-Map::Coordinates	GomokuMinMax::computeNextAction(const Map &map)
+Map::Coordinates	*GomokuMinMax::computeNextAction(const Map &map)
 {
   GomokuMinMax::Result	result;
 
   result = _minMax(map, 0, -12345678, 12345678, GomokuMinMax::MAX, 0);
-  return (result.coordinates);
+  return (new Map::Coordinates(result.coordinates));
 }
 
 unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
