@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Fri Dec  9 22:16:34 2016 Josselin
+// Last update Fri Dec  9 22:19:29 2016 Josselin
 //
 
 #include <iostream>
@@ -34,6 +34,12 @@ GomokuReferee::~GomokuReferee()
 */
 IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, const bool turn)
 {
+
+
+  // if (testDoubleThree(Map::Coordinates(CoordX, CoordY)) == true)
+  //   return IReferee::gameState::UNVALID;
+
+
   if (turn) {
     std::cerr << "[WHITE TURN]" << std::endl;//////////////////////////////////////////////debug
     this->_map.setCaseAtIndex(MAP_WIDTH * CoordY + CoordX, Map::CaseState::WHITE);
@@ -43,9 +49,7 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, 
   }
 
   std::cerr << "[REFEREE DEBUG]Validate player action" << std::endl;//////////////////////////////////////////////debug
-  std::cout << "[REFEREE DEBUG]Position : " << CoordX << " " << CoordY << std::endl;
-  // if (testDoubleThree(Map::Coordinates(CoordX, CoordY)) == true)
-  //   return IReferee::gameState::UNVALID;
+  std::cout << "[REFEREE DEBUG]Position : " << CoordX << " " << CoordY << std::endl;//////////////////////////////////////////////debug
 
   testCapture(Map::Coordinates(CoordX, CoordY));
   std::cerr << "[REFEREE DEBUG]Test Capture OK" << std::endl;//////////////////////////////////////////////debug
