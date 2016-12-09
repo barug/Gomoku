@@ -15,28 +15,33 @@
 
 
 void			testCaptureAndAlignement(const Map &map,
-						 Map::Coordinates c)
+						 Map::Coordinates c,
+						 Map::CaseState color)
 {
   std::cout << "test for position x: " << c.x << " y: " << c.y << std::endl;
   std::cout << "alignement North "
 	    << testAlignementInDirection(GomokuReferee::NORTH,
 					 map,
-					 c)
+					 c,
+					 color)
 	    << std::endl;
   std::cout << "alignement North East: "
 	    << testAlignementInDirection(GomokuReferee::NORTH_EAST,
 					 map,
-					 c)
+					 c,
+					 color)
 	    << std::endl;
   std::cout << "alignement South East: "
 	    << testAlignementInDirection(GomokuReferee::SOUTH_EAST,
 					 map,
-					 c)
+					 c,
+					 color)
 	    << std::endl;
   std::cout << "alignement West: "
 	    << testAlignementInDirection(GomokuReferee::WEST,
 					 map,
-					 c)
+					 c,
+					 color)
 	    << std::endl;
   
   std::cout << "capture in North: " << testCaptureInDirection(GomokuReferee::NORTH,
@@ -87,70 +92,95 @@ int			main(void)
 
   // return game.start();
   GomokuMinMax		minMax;
-  std::vector<char>	mapData 
-	  {1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
-	   0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,
-	   0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	   0, 0, 0, 0, 1, 1, 2, 2, 1, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0,
-	   0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	   0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,
-	   0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
+  // std::vector<char>	mapData 
+  // 	  {1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
+  // 	   0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+  // 	   0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  // 	   0, 0, 0, 0, 1, 1, 2, 2, 1, 2, 2, 1, 0, 0, 0, 0, 0, 0, 0,
+  // 	   0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  // 	   0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0,
+  // 	   1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
+  // 	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  // 	   1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0,
+  // 	   0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0,
+  // 	   0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0,
+  // 	   0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0,
+  // 	   0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,
+  // 	   0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,
+  // 	   0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  // 	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+  // 	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  // 	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+  // 	   0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0};
+    std::vector<char>	mapData 
+	  {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	   1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0,
-	   0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0,
-	   0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0,
-	   0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0,
-	   0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,
-	   0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,
-	   0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
 	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	   0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0};
-  Map map(mapData);
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,};
+    Map map(mapData);
+    
+  // testCaptureAndAlignement(map, Map::Coordinates(3, 11), Map::WHITE);
+  // testCaptureAndAlignement(map, Map::Coordinates(8, 3), Map::WHITE);
+  // testCaptureAndAlignement(map, Map::Coordinates(12, 11), Map::BLACK);
+  // testCaptureAndAlignement(map, Map::Coordinates(18, 6), Map::WHITE);
+  // testCaptureAndAlignement(map, Map::Coordinates(0, 6), Map::WHITE);
+  // testCaptureAndAlignement(map, Map::Coordinates(18, 7), Map::WHITE);
+  // testCaptureAndAlignement(map, Map::Coordinates(10, 18), Map::WHITE);
+  // testCaptureAndAlignement(map, Map::Coordinates(3, 18), Map::WHITE);
 
-  testCaptureAndAlignement(map, Map::Coordinates(3, 11));
-  testCaptureAndAlignement(map, Map::Coordinates(8, 3));
-  testCaptureAndAlignement(map, Map::Coordinates(12, 11));
+  // std::cout << "capture Fail: "
+  // 	    << testCaptureInDirection(GomokuReferee::NORTH_WEST,
+  // 				      map,
+  // 				      Map::Coordinates(10, 10))
+  // 	    << std::endl;
 
-  std::cout << "capture Fail: "
-	    << testCaptureInDirection(GomokuReferee::NORTH_WEST,
-				      map,
-				      Map::Coordinates(10, 10))
-	    << std::endl;
+  // std::cout << "test aligment action Score calculation in 3 11: "
+  // 	    << minMax.calculateActionScore(map, Map::Coordinates(3, 11), true)
+  // 	    << std::endl;
+  // std::cout << "test action Score calculation in 0 0: "
+  // 	    << minMax.calculateActionScore(map, Map::Coordinates(0, 0), true)
+  // 	    << std::endl;
+  // std::cout << "test action Score calculation in 8 1: "
+  // 	    << minMax.calculateActionScore(map, Map::Coordinates(8, 3), true)
+  // 	    << std::endl;
+  // std::cout << "test action Score calculation in 12 11: "
+  // 	    << minMax.calculateActionScore(map, Map::Coordinates(12, 11), true)
+  // 	    << std::endl;
+  // std::cout << "test action Score calculation in 17 3: "
+  // 	    << minMax.calculateActionScore(map, Map::Coordinates(17, 3), true)
+  // 	    << std::endl;
+  // std::cout << "test action Score calculation in 3 18: "
+  // 	    << minMax.calculateActionScore(map, Map::Coordinates(3, 18), true)
+  // 	    << std::endl;
+  // std::cout << "test action Score calculation in 15 18: "
+  // 	    << minMax.calculateActionScore(map, Map::Coordinates(15, 18), true)
+  // 	    << std::endl;
+  // std::cout << "test action Score calculation in 15 15: "
+  // 	    << minMax.calculateActionScore(map, Map::Coordinates(15, 15), true)
+  // 	    << std::endl;
+  // std::cout << "test action Score calculation in 18 6: "
+  // 	    << minMax.calculateActionScore(map, Map::Coordinates(18, 6), true)
+  // 	    << std::endl;
 
-  std::cout << "test aligment action Score calculation in 3 11: "
-	    << minMax.calculateActionScore(map, Map::Coordinates(3, 11), true)
-	    << std::endl;
-  std::cout << "test action Score calculation in 0 0: "
-	    << minMax.calculateActionScore(map, Map::Coordinates(0, 0), true)
-	    << std::endl;
-  std::cout << "test action Score calculation in 8 1: "
-	    << minMax.calculateActionScore(map, Map::Coordinates(8, 3), true)
-	    << std::endl;
-  std::cout << "test action Score calculation in 12 11: "
-	    << minMax.calculateActionScore(map, Map::Coordinates(12, 11), true)
-	    << std::endl;
-  std::cout << "test action Score calculation in 17 3: "
-	    << minMax.calculateActionScore(map, Map::Coordinates(17, 3), true)
-	    << std::endl;
-  std::cout << "test action Score calculation in 3 18: "
-	    << minMax.calculateActionScore(map, Map::Coordinates(3, 18), true)
-	    << std::endl;
-  std::cout << "test action Score calculation in 15 18: "
-	    << minMax.calculateActionScore(map, Map::Coordinates(15, 18), true)
-	    << std::endl;
-  std::cout << "test action Score calculation in 15 15: "
-	    << minMax.calculateActionScore(map, Map::Coordinates(15, 15), true)
-	    << std::endl;
-  std::cout << "test action Score calculation in 18 6: "
-	    << minMax.calculateActionScore(map, Map::Coordinates(18, 6), true)
-	    << std::endl;
-
-  // Map::Coordinates result = minMax.computeNextAction(map);
-  // std::cout << "min max result x: " << result.x << " y: "
-  // 	    << result.y << std::endl;
-  
+  Map::Coordinates result = minMax.computeNextAction(map);
+  std::cout << "min max result x: " << result.x << " y: "
+  	    << result.y << std::endl;    
+    
   // map.setCaseAt(Map::Coordinates(9, 10), Map::CaseState::WHITE);
   // map.setCaseAt(Map::Coordinates(10, 10), Map::CaseState::BLACK);
   // map.setCaseAt(Map::Coordinates(11, 10), Map::CaseState::BLACK);

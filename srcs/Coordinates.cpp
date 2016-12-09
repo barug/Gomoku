@@ -10,6 +10,9 @@
 
 #include		"Map.hpp"
 
+Map::Coordinates::Coordinates()
+{}
+
 Map::Coordinates::Coordinates(const unsigned int x,
 			      const unsigned int y)
   : x(x),
