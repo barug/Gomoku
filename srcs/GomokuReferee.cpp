@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Fri Dec  9 18:05:47 2016 Thomas Billot
+// Last update Fri Dec  9 19:30:36 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -23,7 +23,10 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 {
   std::cout << "Test Double Three begin" << std::endl;
   std::cout << coordinates.x << " " << coordinates.y << std::endl;
-  //DETECT PATTERN 1 *-*-*
+  std::vector<int> v = testAlignement(_map, coordinates);
+  for (auto it : v)
+    std::cout << "v=" << it << std::endl;
+  std::cout << "Test Double Three end" << std::endl;
   return false;
 }
 
@@ -273,7 +276,7 @@ void				GomokuReferee::capturePieces(Map &map, Map::Coordinates coordinates, int
 
   map.setCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc), Map::CaseState::EMPTY);
   map.setCaseAtIndex(MAP_WIDTH * (coordinates.y + (yInc * 2)) + (coordinates.x + (xInc * 2)), Map::CaseState::EMPTY);
-
+  
   std::cerr << "Capture !" << std::endl;//////////////////////////////////////////////debug
   if (rivals == Map::CaseState::WHITE)
     this->_blackCapturedPieces += 2;
