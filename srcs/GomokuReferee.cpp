@@ -4,11 +4,13 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Fri Dec  9 16:29:36 2016 Josselin
+// Last update Fri Dec  9 16:31:43 2016 Josselin
 //
 
 #include <iostream>
 #include "GomokuReferee.hpp"
+
+constexpr GomokuReferee::Direction GomokuReferee::directions[8];
 
 GomokuReferee::GomokuReferee(Map &map) : _map(map), _whiteCapturedPieces(0), _blackCapturedPieces(0)
 {}
@@ -328,4 +330,55 @@ int			GomokuReferee::getWhiteCapturedPieces()
 int			GomokuReferee::getBlackCapturedPieces()
 {
   return this->_blackCapturedPieces;
+}
+
+int			testAlignementInDirection(GomokuReferee::Direction direction,
+						  const Map &map,
+						  Map::Coordinates coordinates,
+						  Map::CaseState color)
+{
+  int index = map.convertToIndex(coordinates);
+  int nextCaseIndex;
+  int				count = 1;
+  const std::bitset<Map::boardSize>	&bitset = map.getBitSet(color);
+
+  if (!((coordinates.x == 18
+	 && (direction == GomokuReferee::NORTH_EAST
+	     || direction == GomokuReferee::SOUTH_EAST
+	     || direction == GomokuReferee::EAST))
+	|| (coordinates.x == 0
+	    && (direction == GomokuReferee::NORTH_WEST
+		|| direction == GomokuReferee::SOUTH_WEST
+		|| direction == GomokuReferee::WEST))))
+    {
+      for (int i = 1; i <= 5; i++)
+	{
+	  nextCaseIndex = index + i * direction;
+	  if (nextCaseIndex < 0
+	      || nextCaseIndex > Map::boardSize
+	      || bitset[nextCaseIndex] != true)
+	    break;
+	  count++;
+	}
+    }
+  if (!((coordinates.x == 18
+	 && (-direction == GomokuReferee::NORTH_EAST
+	     || -direction == GomokuReferee::SOUTH_EAST
+	     || -direction == GomokuReferee::EAST))
+	|| (coordinates.x == 0
+	    && (-direction == GomokuReferee::NORTH_WEST
+		|| -direction == GomokuReferee::SOUTH_WEST
+		|| -direction == GomokuReferee::WEST))))
+    {
+      for (int i = 1; i <= 5; i++)
+	{
+	  nextCaseIndex = index - i * direction;
+	  if (nextCaseIndex < 0
+	      || nextCaseIndex > Map::boardSize
+	      || bitset[nextCaseIndex] != true)
+	    break;
+	  count++;
+	}
+    }
+  return count;
 }

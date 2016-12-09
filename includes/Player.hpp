@@ -16,9 +16,8 @@ class		Player
 public:
   enum Type
     {
-      NONE = 0,
-      HUMAN = 1,
-      AI = 2
+      HUMAN = 0,
+      AI = 1
     };
 
   Player(const Player::Type &type = HUMAN);

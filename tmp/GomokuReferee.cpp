@@ -18,8 +18,8 @@ GomokuReferee::GomokuReferee(Map &map) : _map(map)
 GomokuReferee::~GomokuReferee()
 {}
 
-IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int CoordX,
-							    const unsigned int CoordY,
+IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX,
+							    int CoordY,
 							    const bool turn)
 {
   (void) turn;
