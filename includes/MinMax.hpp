@@ -5,7 +5,7 @@
 # include "IArtificialInteligence.hpp"
 # include "GomokuReferee.hpp"
 
-# define RECURSION_DEPTH	(3)
+# define RECURSION_DEPTH	(1)
 
 class				GomokuMinMax : public IArtificialInteligence
 {

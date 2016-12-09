@@ -4,11 +4,13 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Thu Dec  8 19:51:12 2016 Josselin
+// Last update Fri Dec  9 14:54:03 2016 Josselin
 //
 
 #include <iostream>
 #include "GomokuReferee.hpp"
+
+constexpr GomokuReferee::Direction GomokuReferee::directions[8];
 
 GomokuReferee::GomokuReferee(Map &map) : _map(map), _whiteCapturedPieces(0), _blackCapturedPieces(0)
 {}
@@ -20,52 +22,58 @@ GomokuReferee::~GomokuReferee()
 /*
 ** Check player action
 */
-IReferee::gameState	GomokuReferee::validatePlayerAction(const unsigned int CoordX,
-							    const unsigned int CoordY,
-							    const bool turn)
+IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, const bool turn)
 {
+  return IReferee::ONGOING;
   //check regle double trois
 	//-> return UNVALID
 
 
+  std::cerr << "Validate player action" << std::endl;//////////////////////////////////////////////debug
   testCapture(this->_map, Map::Coordinates(CoordX, CoordY));
+  std::cerr << "Test Capture OK" << std::endl;//////////////////////////////////////////////debug
   if (this->_whiteCapturedPieces >= 10)
-    return IReferee::GameState::P1_WIN;
+    return IReferee::gameState::P1_WIN;
   else if (this->_blackCapturedPieces >= 10)
-    return IReferee::GameState::P2_WIN;
+    return IReferee::gameState::P2_WIN;
 
   std::vector<int> vec = testAlignement(this->_map, Map::Coordinates(CoordX, CoordY));
-  for (int i = 0; i < vec.size(); i++)
-    if (vec[i] >= 5)
-      {
-	GomokuReferee::Direction direction;
-	direction =
-	  i == 0 ? GomokuReferee::Direction::NORTH :
-	  i == 1 ? GomokuReferee::Direction::WEST :
-	  i == 2 ? GomokuReferee::Direction::NORTH_EAST :
-	  GomokuReferee::Direction::SOUTH_EAST;
+  for (unsigned int i = 0; i < vec.size(); i++)
+    {
+      std::cerr << "alignement : " << vec[i] << std::endl;//////////////////////////////////////////////debug
+      if (vec[i] >= 5)
+	{
+	  std::cerr << "test five in a row" << std::endl;//////////////////////////////////////////////debug
+	  GomokuReferee::Direction direction;
+	  direction =
+	    i == 0 ? GomokuReferee::Direction::NORTH :
+	    i == 1 ? GomokuReferee::Direction::WEST :
+	    i == 2 ? GomokuReferee::Direction::NORTH_EAST :
+	    GomokuReferee::Direction::SOUTH_EAST;
 
-	int xInc;
-	int yInc;
-	initIncDirection(direction, xInc, yInc);
+	  int xInc;
+	  int yInc;
+	  initIncDirection(direction, xInc, yInc);
 
-	while (CoordX + xInc >= 0 && CoordX + xInc <= 19 &&
-	       CoordY + yInc >= 0 && CoordY + yInc <= 19 &&
-	       map.getCaseAtIndex(MAP_WIDTH * CoordY + CoordX) ==
-	       map.getCaseAtIndex(MAP_WIDTH * (CoordY + yInc) + (CoordX + xInc)))
-	  {
-	    CoordX += xInc;
-	    CoordY += yInc;
-	  }
+	  while (CoordX + xInc >= 0 && CoordX + xInc <= 19 &&
+		 CoordY + yInc >= 0 && CoordY + yInc <= 19 &&
+		 this->_map.getCaseAtIndex(MAP_WIDTH * CoordY + CoordX) ==
+		 this->_map.getCaseAtIndex(MAP_WIDTH * (CoordY + yInc) + (CoordX + xInc)))
+	    {
+	      CoordX += xInc;
+	      CoordY += yInc;
+	    }
 
-	if (hasFiveInARow(invertDirection(direction), this->_map, Map::Coordinates(CoordX, CoordY)))
-	  {
-	    if (turn)
-	      return IReferee::GameState::P2_WIN;
-	    else
-	      return IReferee::GameState::P1_WIN;
-	  }
-      }
+	  if (hasFiveInARow(invertDirection(direction), this->_map, Map::Coordinates(CoordX, CoordY)))
+	    {
+	      std::cerr << "five in a row ok, game over" << std::endl;//////////////////////////////////////////////debug
+	      if (turn)
+		return IReferee::gameState::P2_WIN;
+	      else
+		return IReferee::gameState::P1_WIN;
+	    }
+	}
+    }
   std::cout << CoordX << " " << CoordY << std::endl;
   return IReferee::gameState::ONGOING;
 }
@@ -197,7 +205,7 @@ bool			GomokuReferee::hasFiveInARow(GomokuReferee::Direction direction,
 /*
 ** Alignement Tests
 */
-int			GomokuReferee::countAlignement(Map &map, Map::Coordinates coordinates,
+int			GomokuReferee::countAlignement(const Map &map, Map::Coordinates coordinates,
 					int xInc, int yInc)
   {
     int			count = 0;
@@ -214,11 +222,11 @@ int			GomokuReferee::countAlignement(Map &map, Map::Coordinates coordinates,
     return count;
   }
 
-int				GomokuReferee::testAlignementInDirection(GomokuReferee::Direction direction, Map &map,
-							  Map::Coordinates coordinates)
+int				GomokuReferee::testAlignementInDirection(GomokuReferee::Direction direction, const Map &map, Map::Coordinates coordinates)
 {
   int				count;
 
+  std::cerr << "test alignement in direction " << direction << std::endl;//////////////////////////////////////////////debug
   if (direction == GomokuReferee::Direction::NORTH)
     count = countAlignement(map, coordinates, 0, 1) + countAlignement(map, coordinates, 0, -1);
   else if (direction == GomokuReferee::Direction::WEST)
@@ -230,10 +238,11 @@ int				GomokuReferee::testAlignementInDirection(GomokuReferee::Direction directi
   return count + 1;
 }
 
-std::vector<int>	GomokuReferee::testAlignement(Map &map, Map::Coordinates coordinates)
+std::vector<int>	GomokuReferee::testAlignement(const Map &map, Map::Coordinates coordinates)
 {
   std::vector<int> vec;
 
+  std::cerr << "start alignement test" << std::endl;//////////////////////////////////////////////debug
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH, map, coordinates));
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::WEST, map, coordinates));
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_EAST, map, coordinates));
@@ -252,6 +261,7 @@ void				GomokuReferee::capturePieces(Map &map, Map::Coordinates coordinates, int
   map.setCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc), Map::CaseState::EMPTY);
   map.setCaseAtIndex(MAP_WIDTH * (coordinates.y + (yInc * 2)) + (coordinates.x + (xInc * 2)), Map::CaseState::EMPTY);
 
+  std::cerr << "Capture !" << std::endl;//////////////////////////////////////////////debug
   if (rivals == Map::CaseState::WHITE)
     this->_blackCapturedPieces += 2;
   else
@@ -276,6 +286,7 @@ void				GomokuReferee::testCaptureInDirection(GomokuReferee::Direction direction
   int xInc = 0;
   int yInc = 0;
 
+  std::cerr << "test capture in direction " << direction << std::endl;//////////////////////////////////////////////debug
   initIncDirection(direction, xInc, yInc);
   if (coordinates.x + (xInc * 3) >= 0 && coordinates.x + (xInc * 3) <= 19 &&
       coordinates.y + (yInc * 3) >= 0 && coordinates.y + (yInc * 3) <= 19)
@@ -285,6 +296,7 @@ void				GomokuReferee::testCaptureInDirection(GomokuReferee::Direction direction
 
 void				GomokuReferee::testCapture(Map &map, Map::Coordinates coordinates)
 {
+  std::cerr << "start capture test" << std::endl;//////////////////////////////////////////////debug
   testCaptureInDirection(GomokuReferee::Direction::NORTH, map, coordinates);
   testCaptureInDirection(GomokuReferee::Direction::NORTH_EAST, map, coordinates);
   testCaptureInDirection(GomokuReferee::Direction::EAST, map, coordinates);
@@ -308,4 +320,55 @@ int			GomokuReferee::getWhiteCapturedPieces()
 int			GomokuReferee::getBlackCapturedPieces()
 {
   return this->_blackCapturedPieces;
+}
+
+int			testAlignementInDirection(GomokuReferee::Direction direction,
+						  const Map &map,
+						  Map::Coordinates coordinates,
+						  Map::CaseState color)
+{
+  int index = map.convertToIndex(coordinates);
+  int nextCaseIndex;
+  int				count = 1;
+  const std::bitset<Map::boardSize>	&bitset = map.getBitSet(color);
+
+  if (!((coordinates.x == 18
+	 && (direction == GomokuReferee::NORTH_EAST
+	     || direction == GomokuReferee::SOUTH_EAST
+	     || direction == GomokuReferee::EAST))
+	|| (coordinates.x == 0
+	    && (direction == GomokuReferee::NORTH_WEST
+		|| direction == GomokuReferee::SOUTH_WEST
+		|| direction == GomokuReferee::WEST))))
+    {
+      for (int i = 1; i <= 5; i++)
+	{
+	  nextCaseIndex = index + i * direction;
+	  if (nextCaseIndex < 0
+	      || nextCaseIndex > Map::boardSize
+	      || bitset[nextCaseIndex] != true)
+	    break;
+	  count++;
+	}
+    }
+  if (!((coordinates.x == 18
+	 && (-direction == GomokuReferee::NORTH_EAST
+	     || -direction == GomokuReferee::SOUTH_EAST
+	     || -direction == GomokuReferee::EAST))
+	|| (coordinates.x == 0
+	    && (-direction == GomokuReferee::NORTH_WEST
+		|| -direction == GomokuReferee::SOUTH_WEST
+		|| -direction == GomokuReferee::WEST))))
+    {
+      for (int i = 1; i <= 5; i++)
+	{
+	  nextCaseIndex = index - i * direction;
+	  if (nextCaseIndex < 0
+	      || nextCaseIndex > Map::boardSize
+	      || bitset[nextCaseIndex] != true)
+	    break; 
+	  count++;
+	}
+    }
+  return count;
 }

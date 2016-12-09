@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Thu Dec  8 17:49:13 2016 bogard_t
+// Last update Thu Dec  8 20:17:26 2016 Josselin
 //
 
 # include	<cstdio>
@@ -18,10 +18,11 @@
 Game::Game() : _gui(new mSFML_Window("./font/digital.otf", "Gomoku - 2016")),
 	       _referee(new GomokuReferee(_map)),
 	       _gomokuUI(*_gui, _map),
-	       _gameHandler({{GomokuUI::Context::STARTSCREEN,	&Game::_handleStartScreen},
-			     {GomokuUI::Context::WAITING,	&Game::_handleWaiting},
-			     {GomokuUI::Context::GAME,		&Game::_handleGame},
-			     {GomokuUI::Context::MENU,		&Game::_handleMenu}})
+	       _gameHandler({{GomokuUI::Context::STARTSCREEN, &Game::_handleStartScreen},
+		             {GomokuUI::Context::WAITING, &Game::_handleWaiting},
+		             {GomokuUI::Context::GAME, &Game::_handleGame},
+			     {GomokuUI::Context::MENU, &Game::_handleMenu}}),
+	       _turn(Game::Turn::PLAYER1)
 {
 }
 

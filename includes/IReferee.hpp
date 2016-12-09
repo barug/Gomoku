@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:17:28 2016 Thomas Billot
-// Last update Thu Dec  8 19:34:47 2016 Josselin
+// Last update Thu Dec  8 20:06:43 2016 Josselin
 //
 
 #ifndef			_IREFEREE_HPP_
@@ -24,8 +24,7 @@ public:
     };
 
   virtual			~IReferee() {}
-  virtual IReferee::gameState	validatePlayerAction(const unsigned int CoordX,
-						     const unsigned int CoordY,
+  virtual IReferee::gameState	validatePlayerAction(int CoordX, int CoordY,
 						     const bool turn) = 0;
 };
 

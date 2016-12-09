@@ -43,7 +43,7 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
     }
   for (unsigned int i = 0; i <= 7; i++)
     {
-      actionScore += testCaptureInDirection(GomokuReferee::directions[i], map, Action);
+      // actionScore += testCaptureInDirection(GomokuReferee::directions[i], map, Action);
     }
   return actionScore;
 }
