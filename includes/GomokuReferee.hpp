@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Fri Dec  9 15:59:12 2016 Thomas Billot
+// Last update Fri Dec  9 16:49:41 2016 Thomas Billot
 //
 
 #ifndef			_GOMOKUREFEREE_HPP_
@@ -50,7 +50,7 @@ public:
 
   virtual IReferee::gameState	validatePlayerAction(int CoordX, int CoordY, const bool turn);
 
-  bool				testDoubleTree(Map &map, Map::Coordinates coordinates);
+  bool				testDoubleThree(Map::Coordinates coordinates);
   void				testCapture(Map &map, Map::Coordinates coordinates);
   void				testCaptureInDirection(GomokuReferee::Direction direction, Map &map, Map::Coordinates coordinates);
   bool				hasCapture(Map &map, Map::Coordinates coordinates, int xInc, int yInc);

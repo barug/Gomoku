@@ -14,7 +14,7 @@
 # include	"Map.hpp"
 # include	"IGui.hpp"
 # include	"Timer.hpp"
-# include	"Player.hpp"
+# include	"IPlayer.hpp"
 
 class	        GomokuUI
 {
@@ -32,7 +32,7 @@ public:
 
   void					displayMenu(void);
   void				        displayWaiting(void);
-  Player::Type				displayStartScreen(void);
+  IPlayer::Type				displayStartScreen(void);
   void					displayGame(void);
   void				        updateMap(void);
 

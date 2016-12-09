@@ -82,7 +82,7 @@ void		        GomokuUI::displayMenu(void)
     }
 }
 
-Player::Type		GomokuUI::displayStartScreen(void)
+IPlayer::Type		GomokuUI::displayStartScreen(void)
 {
   if (_restart)
     _restart = !_restart;
@@ -92,7 +92,7 @@ Player::Type		GomokuUI::displayStartScreen(void)
   if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 400, 340, 40, 40))
     {
       if (_gui.buttonLeftIsClicked())
-	return Player::Type::HUMAN;
+	return IPlayer::Type::HUMAN;
       _gui.fillRec(300, 300, 200, 80, 0x000000, 180);
       _gui.writeAt("Player vs Player", 315, 325, 0x00ff00, 0.8);
     }
@@ -104,7 +104,7 @@ Player::Type		GomokuUI::displayStartScreen(void)
   if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 400, 440, 40, 40))
     {
       if (_gui.buttonLeftIsClicked())
-	return Player::Type::AI;
+	return IPlayer::Type::AI;
       _gui.fillRec(300, 400, 200, 80, 0x000000, 180);
       _gui.writeAt("Player vs AI", 340, 425, 0x00ff00, 0.8);
     }
@@ -113,7 +113,7 @@ Player::Type		GomokuUI::displayStartScreen(void)
       _gui.fillRec(300, 400, 200, 80, 0xffffff, 180);
       _gui.writeAt("Player vs AI", 340, 425, 0x000000, 0.8);
     }
-  return Player::Type::NONE;
+  return IPlayer::Type::NONE;
 }
 
 void			GomokuUI::displayWaiting(void)

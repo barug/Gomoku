@@ -4,11 +4,13 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Fri Dec  9 16:16:59 2016 Thomas Billot
+// Last update Fri Dec  9 18:01:49 2016 Thomas Billot
 //
 
 #include <iostream>
 #include "GomokuReferee.hpp"
+
+constexpr GomokuReferee::Direction GomokuReferee::directions[8];
 
 GomokuReferee::GomokuReferee(Map &map) : _map(map), _whiteCapturedPieces(0), _blackCapturedPieces(0)
 {}
@@ -17,8 +19,11 @@ GomokuReferee::~GomokuReferee()
 {}
 
 
-bool			GomokuReferee::testDoubleTree(Map::Coordinates coordinates)
+bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 {
+  std::cout << "Test Double Three begin" << std::endl;
+  std::cout << coordinates.x << " " << coordinates.y << std::endl;
+  //DETECT PATTERN 1 *-*-*
   return false;
 }
 
@@ -27,10 +32,10 @@ bool			GomokuReferee::testDoubleTree(Map::Coordinates coordinates)
 */
 IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, const bool turn)
 {
-
   std::cerr << "Validate player action" << std::endl;//////////////////////////////////////////////debug
-  if (testDoubleTree(Map::Coordinates(CoordX, CoordY)) == true)
-    return IReferee::gameState::INVALID;
+  std::cout << CoordX << " " << CoordY << std::endl;
+  if (testDoubleThree(Map::Coordinates(CoordX, CoordY)) == true)
+    return IReferee::gameState::UNVALID;
   testCapture(this->_map, Map::Coordinates(CoordX, CoordY));
   std::cerr << "Test Capture OK" << std::endl;//////////////////////////////////////////////debug
   if (this->_whiteCapturedPieces >= 10)
@@ -65,17 +70,17 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, 
 	      CoordY += yInc;
 	    }
 
-	  if (hasFiveInARow(invertDirection(direction), this->_map, Map::Coordinates(CoordX, CoordY)))
-	    {
-	      std::cerr << "five in a row ok, game over" << std::endl;//////////////////////////////////////////////debug
-	      if (turn)
-		return IReferee::gameState::P2_WIN;
-	      else
-		return IReferee::gameState::P1_WIN;
-	    }
+	  // if (hasFiveInARow(invertDirection(direction), this->_map, Map::Coordinates(CoordX, CoordY)) == false)
+	  //   {
+	  //     std::cerr << "five in a row ok, game over" << std::endl;//////////////////////////////////////////////debug
+	  //     if (turn)
+	  // 	return IReferee::gameState::P2_WIN;
+	  //     else
+	  // 	return IReferee::gameState::P1_WIN;
+	  //   }
+	  (void)turn;
 	}
     }
-  std::cout << CoordX << " " << CoordY << std::endl;
   return IReferee::gameState::ONGOING;
 }
 
@@ -320,4 +325,55 @@ int			GomokuReferee::getWhiteCapturedPieces()
 int			GomokuReferee::getBlackCapturedPieces()
 {
   return this->_blackCapturedPieces;
+}
+
+int			testAlignementInDirection(GomokuReferee::Direction direction,
+						  const Map &map,
+						  Map::Coordinates coordinates,
+						  Map::CaseState color)
+{
+  int index = map.convertToIndex(coordinates);
+  int nextCaseIndex;
+  int				count = 1;
+  const std::bitset<Map::boardSize>	&bitset = map.getBitSet(color);
+
+  if (!((coordinates.x == 18
+	 && (direction == GomokuReferee::NORTH_EAST
+	     || direction == GomokuReferee::SOUTH_EAST
+	     || direction == GomokuReferee::EAST))
+	|| (coordinates.x == 0
+	    && (direction == GomokuReferee::NORTH_WEST
+		|| direction == GomokuReferee::SOUTH_WEST
+		|| direction == GomokuReferee::WEST))))
+    {
+      for (int i = 1; i <= 5; i++)
+	{
+	  nextCaseIndex = index + i * direction;
+	  if (nextCaseIndex < 0
+	      || nextCaseIndex > Map::boardSize
+	      || bitset[nextCaseIndex] != true)
+	    break;
+	  count++;
+	}
+    }
+  if (!((coordinates.x == 18
+	 && (-direction == GomokuReferee::NORTH_EAST
+	     || -direction == GomokuReferee::SOUTH_EAST
+	     || -direction == GomokuReferee::EAST))
+	|| (coordinates.x == 0
+	    && (-direction == GomokuReferee::NORTH_WEST
+		|| -direction == GomokuReferee::SOUTH_WEST
+		|| -direction == GomokuReferee::WEST))))
+    {
+      for (int i = 1; i <= 5; i++)
+	{
+	  nextCaseIndex = index - i * direction;
+	  if (nextCaseIndex < 0
+	      || nextCaseIndex > Map::boardSize
+	      || bitset[nextCaseIndex] != true)
+	    break; 
+	  count++;
+	}
+    }
+  return count;
 }

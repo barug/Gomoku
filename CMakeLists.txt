@@ -23,18 +23,20 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
  link_libraries(-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio)
 
 add_executable(Gomoku
-#  srcs/Game.cpp
+   srcs/Game.cpp
   srcs/Player.cpp
-  srcs/Main_jo.cpp
+  srcs/Main.cpp
   srcs/Timer.cpp
   srcs/GomokuUI.cpp
-  tmp/GomokuReferee.cpp
+  srcs/GomokuReferee.cpp
   srcs/TextureManager.cpp
   srcs/mSFML_Audio.cpp
   srcs/mSFML_Window.cpp
   srcs/Map.cpp
   srcs/Coordinates.cpp
   srcs/MinMax.cpp
+  srcs/HumanPlayer.cpp
+  srcs/ArtificialPlayer.cpp
   )
 
 target_link_libraries(Gomoku sfml-window sfml-system sfml-audio sfml-graphics)
