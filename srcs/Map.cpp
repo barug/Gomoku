@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <algorithm>
 #include "Map.hpp"
 
 Map::Map()
@@ -51,16 +52,22 @@ int				Map::convertToIndex(const Map::Coordinates &coord) const
 void				Map::setCaseAt(const Map::Coordinates &coordinates,
 					       const Map::CaseState &state)
 {
+  unsigned int index = convertToIndex(coordinates);
   if (state == Map::EMPTY)
     {
-      _blackBoard[convertToIndex(coordinates)] = false;
-      _whiteBoard[convertToIndex(coordinates)] = false;
+      _blackBoard[index] = false;
+      _whiteBoard[index] = false;
+      _pawnOnBoardIndexes.erase(std::remove(_pawnOnBoardIndexes.begin(),
+					    _pawnOnBoardIndexes.end(),
+					    index),
+			        _pawnOnBoardIndexes.end());
       return;
     }
   if (state == Map::BLACK)
-    _blackBoard[convertToIndex(coordinates)] = true;
+    _blackBoard[index] = true;
   else
-    _whiteBoard[convertToIndex(coordinates)] = true;
+    _whiteBoard[index] = true;
+  _pawnOnBoardIndexes.push_back(index);
 }
 
 void				Map::setCaseAtIndex(int index, Map::CaseState state)
