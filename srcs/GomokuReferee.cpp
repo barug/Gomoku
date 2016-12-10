@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sat Dec 10 18:36:00 2016 Josselin
+// Last update Sat Dec 10 18:39:25 2016 Josselin
 //
 
 #include <iostream>
@@ -153,7 +153,7 @@ void debug(Map &map, int CoordX, int CoordY)
 
 IReferee::GameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, const bool turn)
 {
-
+  IReferee::GameState state;
   setTurn(CoordX, CoordY, turn);
 
   if (testDoubleThree(Map::Coordinates(CoordX, CoordY)))
@@ -174,7 +174,7 @@ IReferee::GameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, 
   std::vector<int> vec = testAlignement(Map::Coordinates(CoordX, CoordY));
   for (unsigned int i = 0; i < vec.size(); i++)
     if (vec[i] >= 5)
-      if ((IReferee::GameState state = TestFiveInARow(CoordX, CoordY, i, turn)) != IReferee::GameState::ONGOING)
+      if ((state = TestFiveInARow(CoordX, CoordY, i, turn)) != IReferee::GameState::ONGOING)
 	return state;
   return IReferee::GameState::ONGOING;
 }
