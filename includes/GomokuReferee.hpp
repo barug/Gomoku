@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Fri Dec  9 22:11:26 2016 Josselin
+// Last update Sat Dec 10 19:02:34 2016 Thomas Billot
 //
 
 #ifndef			_GOMOKUREFEREE_HPP_
@@ -43,7 +43,8 @@ private:
   Map				_map;
   int				_whiteCapturedPieces;
   int				_blackCapturedPieces;
-
+  Map::CaseState		_pawnToCheck;
+  
 public:
   explicit			GomokuReferee(Map &map);
   virtual			~GomokuReferee();
@@ -62,6 +63,12 @@ public:
   bool				simulateCapture(Map::Coordinates coordinates, Map::CaseState rivals, int xInc, int yInc, int xIncBack, int yIncBack, int i);
   void				initIncDirection(GomokuReferee::Direction direction, int &xInc, int &yInc);
   GomokuReferee::Direction	invertDirection(GomokuReferee::Direction direction);
+  bool				FindPattern3inLine(Map::Coordinates coordinates);
+  bool				FindPattern2inLine1Empty(Map::Coordinates coordinates);
+  bool				checkPattern1(Map::Coordinates c, Map::Coordinates d);
+  bool				checkPattern2(Map::Coordinates c, Map::Coordinates d);
+  Map::Coordinates		Pattern1(Map::Coordinates c);
+  Map::Coordinates		Pattern2(Map::Coordinates c);  
   int				getWhiteCapturedPieces();
   int				getBlackCapturedPieces();
 
