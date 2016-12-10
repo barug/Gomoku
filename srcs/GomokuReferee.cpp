@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sat Dec 10 14:24:58 2016 Josselin
+// Last update Sat Dec 10 17:16:44 2016 Josselin
 //
 
 #include <iostream>
@@ -59,8 +59,6 @@ bool			checkPattern2(Map &map, Map::Coordinates coordinates, Map::Coordinates di
     return true;
   return false;
 }
-
-#include <algorithm>
 
 Map::Coordinates	Pattern1(Map &map, Map::Coordinates coordinates)
 {
@@ -131,23 +129,27 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 IReferee::GameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, const bool turn)
 {
 
+  setTurn(CoordX, CoordY, turn);
 
   if (testDoubleThree(Map::Coordinates(CoordX, CoordY)))
-    return IReferee::GameState::UNVALID;
+    {
+      this->_map.setCaseAt(Map::Coordinates((CoordX), (CoordY)), Map::CaseState::EMPTY);
+      return IReferee::GameState::UNVALID;
+    }
 
-  if (turn) {
-    std::cerr << "[WHITE TURN]" << std::endl;//////////////////////////////////////////////debug
-    this->_map.setCaseAtIndex(MAP_WIDTH * CoordY + CoordX, Map::CaseState::WHITE);
-  } else {
-    std::cerr << "[BLACK TURN]" << std::endl;//////////////////////////////////////////////debug
-    this->_map.setCaseAtIndex(MAP_WIDTH * CoordY + CoordX, Map::CaseState::BLACK);
+  //////////////////////////////////////////////debug
+  for (int i = 0; i < 19; i++) {
+    for (int j = 0; j < 19; j++) {
+      std::cout << this->_map.getCaseAtIndex(MAP_WIDTH * i + j) << " ";
+    }
+    std::cout << std::endl;
   }
-
   std::cerr << "[REFEREE DEBUG]Validate player action" << std::endl;//////////////////////////////////////////////debug
-  std::cout << "[REFEREE DEBUG]Position : " << CoordX << " " << CoordY << std::endl;//////////////////////////////////////////////debug
+  std::cerr << "[REFEREE DEBUG]Position : " << CoordX << " " << CoordY << std::endl;//////////////////////////////////////////////debug
+  //////////////////////////////////////////////debug
 
   testCapture(Map::Coordinates(CoordX, CoordY));
-  std::cerr << "[REFEREE DEBUG]Test Capture OK" << std::endl;//////////////////////////////////////////////debug
+  std::cerr << "[REFEREE DEBUG]End Test Capture" << std::endl;//////////////////////////////////////////////debug
   if (this->_whiteCapturedPieces >= 10)
     return IReferee::GameState::P1_WIN;
   else if (this->_blackCapturedPieces >= 10)
@@ -156,42 +158,22 @@ IReferee::GameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, 
   std::vector<int> vec = testAlignement(Map::Coordinates(CoordX, CoordY));
   for (unsigned int i = 0; i < vec.size(); i++)
     if (vec[i] >= 5)
-      {
-	std::cerr << "[REFEREE DEBUG]Test five in a row" << std::endl;//////////////////////////////////////////////debug
-	GomokuReferee::Direction direction;
-	direction =
-	  i == 0 ? GomokuReferee::Direction::NORTH :
-	  i == 1 ? GomokuReferee::Direction::WEST :
-	  i == 2 ? GomokuReferee::Direction::NORTH_EAST :
-	  GomokuReferee::Direction::SOUTH_EAST;
-
-	int xInc;
-	int yInc;
-
-	initIncDirection(direction, xInc, yInc);
-
-
-	while (CoordX + xInc >= 0 && CoordX + xInc <= 19 &&
-	       CoordY + yInc >= 0 && CoordY + yInc <= 19 &&
-	       this->_map.getCaseAtIndex(MAP_WIDTH * CoordY + CoordX) ==
-	       this->_map.getCaseAtIndex(MAP_WIDTH * (CoordY + yInc) + (CoordX + xInc)))
-	  {
-	    CoordX += xInc;
-	    CoordY += yInc;
-	  }
-
-	if (hasFiveInARow(invertDirection(direction), Map::Coordinates(CoordX, CoordY)))
-	  {
-	    std::cerr << "[REFEREE DEBUG]Five in a row ok, game over" << std::endl;//////////////////////////////////////////////debug
-	    if (turn)
-	      return IReferee::GameState::P1_WIN;
-	    else
-	      return IReferee::GameState::P2_WIN;
-	  }
-	else//////////////////////////////////////////////debug
-	  std::cerr << "[REFEREE DEBUG]Five in a row can be break" << std::endl;//////////////////////////////////////////////debug
-      }
+      return TestFiveInARow(CoordX, CoordY, i, turn);
   return IReferee::GameState::ONGOING;
+}
+
+void			GomokuReferee::setTurn(int CoordX, int CoordY, const bool turn)
+{
+  if (turn)
+    {
+      std::cerr << "[BLACK TURN]" << std::endl;//////////////////////////////////////////////debug
+      this->_map.setCaseAtIndex(MAP_WIDTH * CoordY + CoordX, Map::CaseState::BLACK);
+    }
+  else
+    {
+      std::cerr << "[WHITE TURN]" << std::endl;//////////////////////////////////////////////debug
+      this->_map.setCaseAtIndex(MAP_WIDTH * CoordY + CoordX, Map::CaseState::WHITE);
+    }
 }
 
 
@@ -283,9 +265,12 @@ bool			GomokuReferee::simulateCapture(Map::Coordinates coordinates, Map::CaseSta
 		  (xPos + xBack >= 0 && xPos + xBack <= 19) &&
 		  (yPos + y * 2 >= 0 && yPos + y * 2 <= 19) &&
 		  (xPos + x * 2 >= 0 && xPos + x * 2 <= 19) &&
-		  this->_map.getCaseAtIndex(MAP_WIDTH * (yPos + yBack) + (xPos + xBack)) == Map::CaseState::EMPTY &&
-		  this->_map.getCaseAtIndex(MAP_WIDTH * (yPos + y) + (xPos + x)) == this->_map.getCaseAtIndex(MAP_WIDTH * yPos + xPos) &&
-		  this->_map.getCaseAtIndex(MAP_WIDTH * (yPos + y * 2) + (xPos + x * 2)) == rivals)
+		  ((this->_map.getCaseAtIndex(MAP_WIDTH * (yPos + yBack) + (xPos + xBack)) == Map::CaseState::EMPTY &&
+		    this->_map.getCaseAtIndex(MAP_WIDTH * (yPos + y) + (xPos + x)) == this->_map.getCaseAtIndex(MAP_WIDTH * yPos + xPos) &&
+		    this->_map.getCaseAtIndex(MAP_WIDTH * (yPos + y * 2) + (xPos + x * 2)) == rivals) ||
+		   (this->_map.getCaseAtIndex(MAP_WIDTH * (yPos + yBack) + (xPos + xBack)) == rivals &&
+		    this->_map.getCaseAtIndex(MAP_WIDTH * (yPos + y) + (xPos + x)) == this->_map.getCaseAtIndex(MAP_WIDTH * yPos + xPos) &&
+		    this->_map.getCaseAtIndex(MAP_WIDTH * (yPos + y * 2) + (xPos + x * 2)) == Map::CaseState::EMPTY)))
 		return true;
 	    }
 	}
@@ -311,6 +296,42 @@ bool			GomokuReferee::hasFiveInARow(GomokuReferee::Direction direction, Map::Coo
     if (simulateCapture(coordinates, rivals, xInc, yInc, xIncBack, yIncBack, i++))
       return false;
   return true;
+}
+
+IReferee::GameState		GomokuReferee::TestFiveInARow(int CoordX, int CoordY, int i, const bool turn)
+{
+  std::cerr << "[REFEREE DEBUG]Test five in a row" << std::endl;//////////////////////////////////////////////debug
+  GomokuReferee::Direction	direction;
+  int				xInc;
+  int				yInc;
+
+  direction =
+    i == 0 ? GomokuReferee::Direction::NORTH :
+    i == 1 ? GomokuReferee::Direction::WEST :
+    i == 2 ? GomokuReferee::Direction::NORTH_EAST :
+    GomokuReferee::Direction::SOUTH_EAST;
+
+  initIncDirection(direction, xInc, yInc);
+
+  while (CoordX + xInc >= 0 && CoordX + xInc <= 19 &&
+	 CoordY + yInc >= 0 && CoordY + yInc <= 19 &&
+	 this->_map.getCaseAtIndex(MAP_WIDTH * CoordY + CoordX) ==
+	 this->_map.getCaseAtIndex(MAP_WIDTH * (CoordY + yInc) + (CoordX + xInc)))
+    {
+      CoordX += xInc;
+      CoordY += yInc;
+    }
+
+  if (hasFiveInARow(invertDirection(direction), Map::Coordinates(CoordX, CoordY)))
+    {
+      std::cerr << "[REFEREE DEBUG]Five in a row ok, game over" << std::endl;//////////////////////////////////////////////debug
+      if (turn)
+	return IReferee::GameState::P2_WIN;
+      else
+	return IReferee::GameState::P1_WIN;
+    }
+  std::cerr << "[REFEREE DEBUG]Five in a row can be break" << std::endl;//////////////////////////////////////////////debug
+  return IReferee::GameState::ONGOING;
 }
 
 
@@ -374,8 +395,8 @@ void				GomokuReferee::capturePieces(Map::Coordinates coordinates, int xInc, int
   Map::CaseState rivals = this->_map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x) ==
 			Map::CaseState::WHITE ? Map::CaseState::BLACK : Map::CaseState::WHITE;
 
-  this->_map.setCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc), Map::CaseState::EMPTY);
-  this->_map.setCaseAtIndex(MAP_WIDTH * (coordinates.y + (yInc * 2)) + (coordinates.x + (xInc * 2)), Map::CaseState::EMPTY);
+  this->_map.setCaseAt(Map::Coordinates((coordinates.x + xInc), (coordinates.y + yInc)), Map::CaseState::EMPTY);
+  this->_map.setCaseAt(Map::Coordinates((coordinates.x + (xInc * 2)), (coordinates.y + (yInc * 2))), Map::CaseState::EMPTY);
 
   std::cerr << "[REFEREE DEBUG]Capture !" << std::endl;//////////////////////////////////////////////debug
   if (rivals == Map::CaseState::WHITE)
