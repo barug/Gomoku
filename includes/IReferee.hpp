@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:17:28 2016 Thomas Billot
-// Last update Thu Dec  8 20:06:43 2016 Josselin
+// Last update Sat Dec 10 14:18:53 2016 Josselin
 //
 
 #ifndef			_IREFEREE_HPP_
@@ -15,7 +15,7 @@ class			IReferee
 {
 public:
 
-  enum			gameState
+  enum			GameState
     {
       ONGOING,
       UNVALID,
@@ -24,7 +24,7 @@ public:
     };
 
   virtual			~IReferee() {}
-  virtual IReferee::gameState	validatePlayerAction(int CoordX, int CoordY,
+  virtual IReferee::GameState	validatePlayerAction(int CoordX, int CoordY,
 						     const bool turn) = 0;
 };
 

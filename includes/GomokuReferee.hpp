@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Fri Dec  9 16:49:41 2016 Thomas Billot
+// Last update Sat Dec 10 14:19:32 2016 Josselin
 //
 
 #ifndef			_GOMOKUREFEREE_HPP_
@@ -38,7 +38,7 @@ public:
 							      SOUTH_WEST,
 							      WEST,
 							      NORTH_WEST};
-  
+
 private:
   Map				_map;
   int				_whiteCapturedPieces;
@@ -48,18 +48,18 @@ public:
   explicit			GomokuReferee(Map &map);
   virtual			~GomokuReferee();
 
-  virtual IReferee::gameState	validatePlayerAction(int CoordX, int CoordY, const bool turn);
+  virtual IReferee::GameState	validatePlayerAction(int CoordX, int CoordY, const bool turn);
 
   bool				testDoubleThree(Map::Coordinates coordinates);
-  void				testCapture(Map &map, Map::Coordinates coordinates);
-  void				testCaptureInDirection(GomokuReferee::Direction direction, Map &map, Map::Coordinates coordinates);
-  bool				hasCapture(Map &map, Map::Coordinates coordinates, int xInc, int yInc);
-  void				capturePieces(Map &map, Map::Coordinates coordinates, int xInc, int yInc);
-  std::vector<int>		testAlignement(const Map &map, Map::Coordinates coordinates);
-  int				testAlignementInDirection(GomokuReferee::Direction direction, const Map &map, Map::Coordinates coordinates);
-  int				countAlignement(const Map &map, Map::Coordinates coordinates, int xInc, int yInc);
-  bool				hasFiveInARow(GomokuReferee::Direction direction, Map &map, Map::Coordinates coordinates);
-  bool				simulateCapture(Map &map, Map::Coordinates coordinates, Map::CaseState rivals, int xInc, int yInc, int xIncBack, int yIncBack, int i);
+  void				testCapture(Map::Coordinates coordinates);
+  void				testCaptureInDirection(GomokuReferee::Direction direction, Map::Coordinates coordinates);
+  bool				hasCapture(Map::Coordinates coordinates, int xInc, int yInc);
+  void				capturePieces(Map::Coordinates coordinates, int xInc, int yInc);
+  std::vector<int>		testAlignement(Map::Coordinates coordinates);
+  int				testAlignementInDirection(GomokuReferee::Direction direction, Map::Coordinates coordinates);
+  int				countAlignement(Map::Coordinates coordinates, int xInc, int yInc);
+  bool				hasFiveInARow(GomokuReferee::Direction direction, Map::Coordinates coordinates);
+  bool				simulateCapture(Map::Coordinates coordinates, Map::CaseState rivals, int xInc, int yInc, int xIncBack, int yIncBack, int i);
   void				initIncDirection(GomokuReferee::Direction direction, int &xInc, int &yInc);
   GomokuReferee::Direction	invertDirection(GomokuReferee::Direction direction);
   int				getWhiteCapturedPieces();

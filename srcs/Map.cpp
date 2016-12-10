@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 15:28:50 2016 Thomas Billot
-// Last update Fri Dec  9 19:44:36 2016 Thomas Billot
+// Last update Sat Dec 10 00:47:26 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -80,6 +80,8 @@ void				Map::setCaseAtIndex(int index, Map::CaseState state)
 
 Map::CaseState 			Map::getCaseAt(const Map::Coordinates &coordinates) const
 {
+  if (convertToIndex(coordinates) < 0 || convertToIndex(coordinates) > Map::boardSize)
+    return Map::EMPTY;
   if (_blackBoard[convertToIndex(coordinates)])
     return Map::BLACK;
   if (_whiteBoard[convertToIndex(coordinates)])
