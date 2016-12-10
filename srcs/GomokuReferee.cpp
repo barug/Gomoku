@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sat Dec 10 17:46:47 2016 Josselin
+// Last update Sat Dec 10 17:50:47 2016 Josselin
 //
 
 #include <iostream>
@@ -457,12 +457,12 @@ void				GomokuReferee::testCapture(Map::Coordinates coordinates)
 /*
 ** Set & Get
 */
-int			GomokuReferee::getWhiteCapturedPieces()
+int			GomokuReferee::getP1Score()
 {
   return this->_whiteCapturedPieces;
 }
 
-int			GomokuReferee::getBlackCapturedPieces()
+int			GomokuReferee::getP2Score()
 {
   return this->_blackCapturedPieces;
 }
