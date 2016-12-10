@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Sat Dec 10 18:16:56 2016 Josselin
+// Last update Sat Dec 10 18:20:57 2016 Josselin
 //
 
 #ifndef			_GOMOKUREFEREE_HPP_
@@ -53,6 +53,7 @@ public:
   virtual int			getP1Score();
   virtual int			getP2Score();
 
+private:
   void				setTurn(int CoordX, int CoordY, const bool turn);
   bool				testDoubleThree(Map::Coordinates coordinates);
   void				testCapture(Map::Coordinates coordinates);
