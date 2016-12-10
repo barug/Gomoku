@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sat Dec 10 17:50:47 2016 Josselin
+// Last update Sat Dec 10 18:16:17 2016 Josselin
 //
 
 #include <iostream>
@@ -131,6 +131,12 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 /*
 ** Check player action
 */
+void			GomokuReferee::resetReferee()
+{
+  this->_whiteCapturedPieces = 0;
+  this->_blackCapturedPieces = 0;
+}
+
 void debug(Map &map, int CoordX, int CoordY)
 {
   //////////////////////////////////////////////debug
