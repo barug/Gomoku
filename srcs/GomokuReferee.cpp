@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sat Dec 10 17:25:07 2016 Josselin
+// Last update Sat Dec 10 17:46:47 2016 Josselin
 //
 
 #include <iostream>
@@ -18,6 +18,10 @@ GomokuReferee::GomokuReferee(Map &map) : _map(map), _whiteCapturedPieces(0), _bl
 GomokuReferee::~GomokuReferee()
 {}
 
+
+/*
+** Test Double Trois
+*/
 bool			checkPattern1(Map &map, Map::Coordinates coordinates, Map::Coordinates direction)
 {
   int			i = 0;
@@ -123,6 +127,7 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
   return false;
 }
 
+
 /*
 ** Check player action
 */
@@ -154,11 +159,11 @@ IReferee::GameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, 
   debug(this->_map, CoordX, CoordY);//////////////////////////////////////////////debug
 
   testCapture(Map::Coordinates(CoordX, CoordY));
-  std::cerr << "[REFEREE DEBUG]End Test Capture" << std::endl;//////////////////////////////////////////////debug
   if (this->_whiteCapturedPieces >= 10)
     return IReferee::GameState::P1_WIN;
   else if (this->_blackCapturedPieces >= 10)
     return IReferee::GameState::P2_WIN;
+  std::cerr << "[REFEREE DEBUG]End Test Capture" << std::endl;//////////////////////////////////////////////debug
 
   std::vector<int> vec = testAlignement(Map::Coordinates(CoordX, CoordY));
   for (unsigned int i = 0; i < vec.size(); i++)

@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Sat Dec 10 17:13:42 2016 Josselin
+// Last update Sat Dec 10 17:47:32 2016 Josselin
 //
 
 #ifndef			_GOMOKUREFEREE_HPP_
@@ -49,6 +49,8 @@ public:
   virtual			~GomokuReferee();
 
   virtual IReferee::GameState	validatePlayerAction(int CoordX, int CoordY, const bool turn);
+  virtual int			getWhiteCapturedPieces();
+  virtual int			getBlackCapturedPieces();
 
   void				setTurn(int CoordX, int CoordY, const bool turn);
   bool				testDoubleThree(Map::Coordinates coordinates);
@@ -64,8 +66,6 @@ public:
   bool				simulateCapture(Map::Coordinates coordinates, Map::CaseState rivals, int xInc, int yInc, int xIncBack, int yIncBack, int i);
   void				initIncDirection(GomokuReferee::Direction direction, int &xInc, int &yInc);
   GomokuReferee::Direction	invertDirection(GomokuReferee::Direction direction);
-  int				getWhiteCapturedPieces();
-  int				getBlackCapturedPieces();
 
 };
 
