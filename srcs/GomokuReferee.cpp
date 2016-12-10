@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Fri Dec  9 22:19:29 2016 Josselin
+// Last update Sat Dec 10 14:18:11 2016 Josselin
 //
 
 #include <iostream>
@@ -32,12 +32,12 @@ GomokuReferee::~GomokuReferee()
 /*
 ** Check player action
 */
-IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, const bool turn)
+IReferee::GameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, const bool turn)
 {
 
 
   // if (testDoubleThree(Map::Coordinates(CoordX, CoordY)) == true)
-  //   return IReferee::gameState::UNVALID;
+  //   return IReferee::GameState::UNVALID;
 
 
   if (turn) {
@@ -54,9 +54,9 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, 
   testCapture(Map::Coordinates(CoordX, CoordY));
   std::cerr << "[REFEREE DEBUG]Test Capture OK" << std::endl;//////////////////////////////////////////////debug
   if (this->_whiteCapturedPieces >= 10)
-    return IReferee::gameState::P1_WIN;
+    return IReferee::GameState::P1_WIN;
   else if (this->_blackCapturedPieces >= 10)
-    return IReferee::gameState::P2_WIN;
+    return IReferee::GameState::P2_WIN;
 
   std::vector<int> vec = testAlignement(Map::Coordinates(CoordX, CoordY));
   for (unsigned int i = 0; i < vec.size(); i++)
@@ -89,14 +89,14 @@ IReferee::gameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, 
 	  {
 	    std::cerr << "[REFEREE DEBUG]Five in a row ok, game over" << std::endl;//////////////////////////////////////////////debug
 	    if (turn)
-	      return IReferee::gameState::P1_WIN;
+	      return IReferee::GameState::P1_WIN;
 	    else
-	      return IReferee::gameState::P2_WIN;
+	      return IReferee::GameState::P2_WIN;
 	  }
-	else
+	else//////////////////////////////////////////////debug
 	  std::cerr << "[REFEREE DEBUG]Five in a row can be break" << std::endl;//////////////////////////////////////////////debug
       }
-  return IReferee::gameState::ONGOING;
+  return IReferee::GameState::ONGOING;
 }
 
 
@@ -270,6 +270,7 @@ std::vector<int>	GomokuReferee::testAlignement(Map::Coordinates coordinates)
   return vec;
 }
 
+
 /*
 ** Capture Tests
 */
@@ -295,7 +296,8 @@ bool				GomokuReferee::hasCapture(Map::Coordinates coordinates, int xInc, int yI
 
   if (this->_map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + yInc) + (coordinates.x + xInc)) == rivals &&
       this->_map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + (yInc * 2)) + (coordinates.x + (xInc * 2))) == rivals &&
-      this->_map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + (yInc * 3)) + (coordinates.x + (xInc * 3))) == this->_map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x))
+      this->_map.getCaseAtIndex(MAP_WIDTH * (coordinates.y + (yInc * 3)) + (coordinates.x + (xInc * 3))) ==
+      this->_map.getCaseAtIndex(MAP_WIDTH * coordinates.y + coordinates.x))
     return true;
   return false;
 }
