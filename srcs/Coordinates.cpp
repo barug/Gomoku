@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Tue Dec  6 19:08:55 2016 Thomas Billot
-// Last update Tue Dec  6 19:45:15 2016 Thomas Billot
+// Last update Sat Dec 10 15:48:00 2016 Thomas Billot
 //
 
 #include		"Map.hpp"
@@ -32,4 +32,9 @@ Map::Coordinates	        Map::Coordinates::operator-(const Map::Coordinates &rhs
 bool				Map::Coordinates::operator==(const Map::Coordinates &rhs)
 {
   return x == rhs.x && y == rhs.y;
+}
+
+bool				Map::Coordinates::operator!=(const Map::Coordinates &rhs)
+{
+  return x != rhs.x && y != rhs.y;
 }

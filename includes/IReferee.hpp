@@ -25,6 +25,7 @@ public:
 
   virtual			~IReferee() {}
   virtual IReferee::GameState	validatePlayerAction(int CoordX, int CoordY, const bool turn) = 0;
+  virtual void			resetReferee() = 0;
   virtual int			getP1Score() = 0;
   virtual int			getP2Score() = 0;
   virtual void			reset() = 0;
