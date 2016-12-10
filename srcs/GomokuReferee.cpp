@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sat Dec 10 17:50:47 2016 Josselin
+// Last update Sat Dec 10 19:22:43 2016 bogard_t
 //
 
 #include <iostream>
@@ -186,6 +186,14 @@ void			GomokuReferee::setTurn(int CoordX, int CoordY, const bool turn)
     }
 }
 
+/*
+** Reset game
+*/
+void				GomokuReferee::reset()
+{
+  this->_whiteCapturedPieces = 0;
+  this->_blackCapturedPieces = 0;
+}
 
 /*
 ** Get Direction

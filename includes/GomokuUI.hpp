@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Tue Dec  6 02:06:57 2016 bogard_t
-// Last update Tue Dec  6 16:32:24 2016 bogard_t
+// Last update Sat Dec 10 18:24:32 2016 bogard_t
 //
 
 #ifndef	        __GOMOKU_UI_HPP__
@@ -24,11 +24,18 @@ public:
       STARTSCREEN = 0,
       WAITING = 1,
       GAME = 2,
-      MENU = 3
+      MENU = 3,
+      WIN_SCREEN = 4
     };
 
-  GomokuUI(IGui &gui, Map &map);
+  explicit GomokuUI(IGui &gui, Map &map);
   ~GomokuUI();
+
+  void				        displayUI(const unsigned int scoreJ1,
+						  const unsigned int scoreJ2,
+						  const unsigned int captureJ1,
+						  const unsigned int captureJ2);
+  void					displayWinScreen(const std::string &msg);
 
   void					displayMenu(void);
   void				        displayWaiting(void);

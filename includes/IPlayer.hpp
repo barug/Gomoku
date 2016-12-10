@@ -13,7 +13,7 @@ public:
       AI = 1,
       NONE = 2
     };
-  
+
   virtual ~IPlayer() {}
   virtual IPlayer::Type		getType() = 0;
   virtual Map::Coordinates	*getNextAction() = 0;

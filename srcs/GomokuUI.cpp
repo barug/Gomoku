@@ -1,11 +1,11 @@
 //
-// GomokuUI.cpp for Gomoku in /home/bogard_t/rendu/tek3/Gomoku/srcs
+// GomokuUI.cpp for Gomoku
 //
 // Made by bogard_t
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Tue Dec  6 02:06:49 2016 bogard_t
-// Last update Thu Dec  8 17:53:59 2016 bogard_t
+// Last update Sat Dec 10 19:38:21 2016 bogard_t
 //
 
 # include	<iostream>
@@ -43,13 +43,13 @@ Map::Coordinates	*GomokuUI::getClickedTile(void)
 			  IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY)))
 	if (_map.getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
 	    == Map::CaseState::EMPTY)
-	  return (new Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize));
-  return (NULL);
+	  return new Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize);
+  return NULL;
 }
 
 bool			GomokuUI::getClicked(void) const
 {
-  return (_gui.buttonLeftIsClicked());
+  return _gui.buttonLeftIsClicked();
 }
 
 void		        GomokuUI::displayMenu(void)
@@ -63,23 +63,34 @@ void		        GomokuUI::displayMenu(void)
   _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
   _gui.writeAt("MENU", 400, 70, 0x00ff00, 1.2);
   _gui.fillRec(390, 115, 100, 2, 0x00ff00);
-  _gui.writeAt("BACK TO GAME", 330, 270, 0x00ff00, 1.2);
-  _gui.writeAt("BACK TO HOME", 330, 370, 0x00ff00, 1.2);
 
-  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 370, 60, 30) and
-      _gui.buttonLeftIsClicked())
+  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 170, 60, 30))
     {
-      _context = Context::WAITING;
-      _timer->setState(Timer::State::NONE);
-      _restart = true;
-      _map.resetAllCases();
+      if (_gui.buttonLeftIsClicked())
+	{
+	  _context = Context::WAITING;
+	  _timer->setState(Timer::State::NONE);
+	  _restart = true;
+	  _map.resetAllCases();
+	}
+      else
+	_gui.writeAt("> HOME", 380, 170, 0x00ff00, 1.2);
     }
-  else if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 270, 60, 30) and
-	   _gui.buttonLeftIsClicked())
+  else
+    _gui.writeAt("HOME", 390, 170, 0xc60000, 1.2);
+  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 270, 60, 30))
     {
-      _context = Context::WAITING;
-      _timer->setState(Timer::State::NONE);
+      if (_gui.buttonLeftIsClicked())
+	{
+	  _context = Context::WAITING;
+	  _timer->setState(Timer::State::NONE);
+	}
+      else
+	_gui.writeAt("> BACK TO GAME", 320, 270, 0x00ff00, 1.2);
     }
+  else
+    _gui.writeAt("BACK TO GAME", 330, 270, 0xc60000, 1.2);
+
 }
 
 IPlayer::Type		GomokuUI::displayStartScreen(void)
@@ -143,31 +154,49 @@ void			GomokuUI::displayGame(void)
     }
 }
 
-// update map
-void		        GomokuUI::updateMap(void)
+void			GomokuUI::displayUI(const unsigned int scoreJ1,
+					    const unsigned int scoreJ2,
+					    const unsigned int captureJ1,
+					    const unsigned int captureJ2)
 {
-
-  // display background
   _gui.setTextureAt("./sprites/horrible.jpg", 0, 0);
   _gui.fillRec(10, 10, 180, 290, 0x000000);
   _gui.fillRec(10, 310, 180, 280, 0x000000);
   _gui.setTextureAt("./sprites/wood.jpg", 205, 9, 0.975);
 
-  // display players infos
-  _gui.writeAt("SCORE J1 :", 30, 50, 0xffffff, 0.7);
-  _gui.fillRec(30, 70, 60, 1, 0xffffff);
-  _gui.writeAt("ALIGNEMENT :", 40, 100, 0xffffff, 0.7);
-  _gui.fillRec(30, 120, 80, 1, 0xffffff);
-  _gui.writeAt("CAPTURE :", 40, 150, 0xffffff, 0.7);
-  _gui.fillRec(30, 170, 60, 1, 0xffffff);
-  _gui.writeAt("SCORE J2 :", 40, 350, 0xffffff, 0.7);
-  _gui.fillRec(30, 370, 60, 1, 0xffffff);
-  _gui.writeAt("ALIGNEMENT :", 40, 400, 0xffffff, 0.7);
-  _gui.fillRec(30, 420, 80, 1, 0xffffff);
-  _gui.writeAt("CAPTURE :", 40, 450, 0xffffff, 0.7);
-  _gui.fillRec(30, 470, 60, 1, 0xffffff);
+  _gui.writeAt("SCORE J1 : " + std::to_string(scoreJ1), 30, 50, 0xffffff, 0.7);
+  _gui.fillRec(30, 75, 88, 1, 0xffffff);
+  _gui.writeAt("CAPTURE : " + std::to_string(captureJ1), 30, 150, 0xffffff, 0.7);
+  _gui.fillRec(30, 175, 80, 1, 0xffffff);
 
-  // display checkerboard
+  _gui.writeAt("SCORE J2 : " + std::to_string(scoreJ2), 30, 350, 0xffffff, 0.7);
+  _gui.fillRec(30, 375, 88, 1, 0xffffff);
+  _gui.writeAt("CAPTURE : " + std::to_string(captureJ2), 30, 450, 0xffffff, 0.7);
+  _gui.fillRec(30, 475, 80, 1, 0xffffff);
+}
+
+void			GomokuUI::displayWinScreen(const std::string &msg)
+{
+  _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
+  _gui.writeAt(msg, 300+msg.size()*5, 120, 0xffffff, 1.);
+  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 270, 60, 30))
+    {
+      if (_gui.buttonLeftIsClicked())
+	{
+	  _context = Context::STARTSCREEN;
+	  _restart = true;
+	  _timer->setState(Timer::State::NONE);
+	  _map.resetAllCases();
+	}
+      else
+	_gui.writeAt("BACK TO HOME", 330, 270, 0x00ff00, 1.2);
+    }
+  else
+    _gui.writeAt("BACK TO HOME", 330, 270, 0xc60000, 1.2);
+}
+
+void		        GomokuUI::updateMap(void)
+{
   for (unsigned int x = 0; x < IGui::mapSize - 1; x++)
     {
       for (unsigned int y = 0; y < IGui::mapSize - 1; y++)
@@ -185,7 +214,6 @@ void		        GomokuUI::updateMap(void)
 	       IGui::offsetMapY + ((IGui::mapSize - 1) * IGui::offsetY),
 	       (IGui::offsetX * (IGui::mapSize - 1)) + 1, 2, 0x000000);
 
-  // update map
   for (unsigned int i = 0; i < Map::boardSize; i++)
     {
       if (_map.getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
