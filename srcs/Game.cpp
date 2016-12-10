@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:20:55 2016 bogard_t
-// Last update Fri Dec  9 17:13:18 2016 Thomas Billot
+// Last update Sat Dec 10 14:20:10 2016 Josselin
 //
 
 # include	<cstdio>
@@ -19,8 +19,8 @@ Game::Game() : _gui(new mSFML_Window("./font/digital.otf", "Gomoku - 2016")),
 	       _referee(new GomokuReferee(_map)),
 	       _gomokuUI(*_gui, _map),
 	       _gameHandler({{GomokuUI::Context::STARTSCREEN, &Game::_handleStartScreen},
-		             {GomokuUI::Context::WAITING, &Game::_handleWaiting},
-		             {GomokuUI::Context::GAME, &Game::_handleGame},
+			     {GomokuUI::Context::WAITING, &Game::_handleWaiting},
+			     {GomokuUI::Context::GAME, &Game::_handleGame},
 			     {GomokuUI::Context::MENU, &Game::_handleMenu}}),
 	       _turn(Game::Turn::PLAYER1)
 {
@@ -73,9 +73,9 @@ void					Game::_handleMenu()
 
 void					Game::_handleGame()
 {
-  IReferee::gameState			gameState;
+  IReferee::GameState			gameState;
   Map::CaseState			color;
-  
+
   try
     {
       _gomokuUI.updateMap();
@@ -91,7 +91,7 @@ void					Game::_handleGame()
 						    _turn);
 	  switch (gameState)
 	    {
-	    case IReferee::gameState::ONGOING:
+	    case IReferee::GameState::ONGOING:
 	      if (_turn == Game::Turn::PLAYER1)
 		{
 		  color = _player1->getColor();
@@ -104,11 +104,11 @@ void					Game::_handleGame()
 		}
 	      _map.setCaseAt(*newCoordinates, color);
 	      break;
-	    case IReferee::gameState::UNVALID:
+	    case IReferee::GameState::UNVALID:
 	      break;
-	    case IReferee::gameState::P1_WIN:
+	    case IReferee::GameState::P1_WIN:
 	      break;
-	    case IReferee::gameState::P2_WIN:
+	    case IReferee::GameState::P2_WIN:
 	      break;
 	    }
 	}
