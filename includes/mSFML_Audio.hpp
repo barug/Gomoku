@@ -10,8 +10,8 @@ public:
   mSFML_Audio();
   virtual ~mSFML_Audio();
 
-  virtual void		loadSound(const std::string &file);
-  virtual void		loadMusic(const std::string &file);
+  virtual void		loadSound(const std::string &path);
+  virtual void		loadMusic(const std::string &path);
 
   virtual void		musicPlay();
   virtual void		musicPause();

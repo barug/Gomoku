@@ -7,8 +7,8 @@ class		IAudio
 {
 public:
   virtual ~IAudio() {}
-  virtual void		loadSound(const std::string &file) = 0;
-  virtual void		loadMusic(const std::string &file) = 0;
+  virtual void		loadSound(const std::string &path) = 0;
+  virtual void		loadMusic(const std::string &path) = 0;
 
   virtual void		musicPlay() = 0;
   virtual void		musicPause() = 0;
