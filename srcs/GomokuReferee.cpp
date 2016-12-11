@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sun Dec 11 22:28:26 2016 Thomas Billot
+// Last update Sun Dec 11 23:05:22 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -507,8 +507,6 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 
 	      if (!(extrimitie1 || extrimitie2))
 		{
-		  if (!(vP2[1] == testEx1[1] || vP2[2] == testEx1[3]))
-		    return false;
 		  if (isSameDirection(vP2[0], testEx1[0]) == true)
 		    return false;
 		}
@@ -529,11 +527,9 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 		  std::cout << vP2[2].x << " " << vP2[2].y << std::endl;
 		  std::cout << testEx2[1].x << " " << testEx2[1].y << std::endl;
 		  std::cout << testEx2[3].x << " " << testEx2[3].y << std::endl;
-		  if (!(vP2[1] == testEx2[1] || vP2[2] == testEx2[3]) ||
-		      !(vP2[2] == testEx2[1] || vP2[2] == testEx2[3]))
-		    return false;
 		  if (isSameDirection(vP2[0], testEx2[0]) == true)
 		    return false;
+		  std::cout << "okay" << std::endl;
 		}
 	      std::cout << "Test failed" << std::endl;
 	    }
