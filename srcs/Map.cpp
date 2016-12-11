@@ -106,6 +106,11 @@ const std::bitset<Map::boardSize>	&Map::getBitSet(Map::CaseState color) const
     return _blackBoard;
 }
 
+const std::vector<unsigned int>		&Map::GetPawnBoardIndexes() const
+{
+  return _pawnOnBoardIndexes;
+}
+
 // void				Map::mapDump() const
 // {
 //   std::cout << "map dump: ----------------";

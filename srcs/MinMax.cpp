@@ -66,10 +66,11 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
   return actionScore;
 }
 
-void			GomokuMinMax::_evaluateAction(const Map &map,
+bool			GomokuMinMax::_evaluateAction(const Map &map,
 						      unsigned int &depth,
 						      int &alpha,
 						      int &beta,
+						      GomokuMinMax::turn turn,
 						      GomokuMinMax::turn nextTurn,
 						      int &actionScore,
 						      unsigned int i,
@@ -77,7 +78,8 @@ void			GomokuMinMax::_evaluateAction(const Map &map,
 {
   Map			newMap;
   Map::Coordinates	nextMove;
-
+  int			resultScore;
+  GomokuMinMax::Result	result;
     
   newMap = map;
   nextMove.x = i % MAP_WIDTH;
@@ -96,7 +98,7 @@ void			GomokuMinMax::_evaluateAction(const Map &map,
 	  bestResult.coordinates.y = nextMove.y;
 	  bestResult.actionScore = result.actionScore;
 	  if (alpha >= beta)
-	    return bestResult;
+	    return false;
 	}
     }
   else
@@ -113,9 +115,10 @@ void			GomokuMinMax::_evaluateAction(const Map &map,
 	  bestResult.coordinates.y = nextMove.y;
 	  bestResult.actionScore = result.actionScore;
 	  if (alpha >= beta)
-	    return bestResult;
+	    return false;
 	}
     }
+  return true;
 }
 				       
 GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
@@ -141,12 +144,57 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
     }  
   if (depth < RECURSION_DEPTH)
     {
-      depth++;
-      
+      ++depth;
+      std::vector<unsigned int> pawnBoardIndexes = map.GetPawnBoardIndexes();
+      int nextCaseIndex;
+      for (unsigned int index: pawnBoardIndexes)
+	{
+	  std::cout << "testing cases around case: " << index << std::endl;
+	  for (unsigned int i = 0; i < 8; i++)
+	    {
+	      nextCaseIndex = index + GomokuReferee::directions[i];
+	      if (nextCaseIndex > 0 && nextCaseIndex < MAP_SIZE)
+		{
+		  std::cout << "    testing case : " << nextCaseIndex << std::endl;
+		  if (map.getCaseAtIndex(nextCaseIndex) == Map::EMPTY)
+		    {
+		      std::cout << "    case available" << std::endl;
+		      if (!_evaluateAction(map,
+					   depth,
+					   alpha,
+					   beta,
+					   turn,
+					   nextTurn,
+					   actionScore,
+					   nextCaseIndex,
+					   bestResult))
+			{
+			  std::cout << "    cutoff" << std::endl;
+			  return bestResult;
+			}
+		    }
+		  std::cout << "    finished testing" << std::endl;
+		}
+	    }
+	}
       for (unsigned int i = 0; i < MAP_SIZE; i++)
 	{
 	  if (map.getCaseAtIndex(i) == Map::EMPTY)
-	    _evaluateAction(map, depth, alpha, beta, nextTurn, actionScore, i);
+	    {
+	      if (!_evaluateAction(map,
+				   depth,
+				   alpha,
+				   beta,
+				   turn,
+				   nextTurn,
+				   actionScore,
+				   i,
+				   bestResult))
+		{
+		  std::cout << "regular cutoff" << std::endl;
+		  return bestResult;
+		}
+	    }
 	}
     }
   else

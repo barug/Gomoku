@@ -33,13 +33,15 @@ public:
   unsigned int			calculateActionScore(const Map &map,
 						     Map::Coordinates Action,
 						     Map::CaseState color);
-  void				_evaluateAction(const Map &map,
+  bool				_evaluateAction(const Map &map,
 						unsigned int &depth,
 						int &alpha,
 						int &beta,
+						GomokuMinMax::turn turn,
 						GomokuMinMax::turn nextTurn,
 						int &actionScore,
-						unsigned int i);
+						unsigned int i,
+						GomokuMinMax::Result &bestResult);
   GomokuMinMax::Result		_minMax(const Map &map,
 					unsigned int depth,
 					int alpha,
