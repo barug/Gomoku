@@ -32,11 +32,12 @@ public:
 
   static const int		boardWidth = 19;
   static const int		boardSize = boardWidth * boardWidth;
-
+  
 private:
   std::bitset<boardSize>	_whiteBoard;
   std::bitset<boardSize>	_blackBoard;
-
+  std::vector<unsigned int>	_pawnOnBoardIndexes;
+  
 public:
   Map();
   Map(std::vector<char> initVect);
@@ -45,7 +46,7 @@ public:
 
   void				resetAllCases();
   void				setCaseAt(const Map::Coordinates &coordinates,
-					  const Map::CaseState &state);
+						  const Map::CaseState &state);
   Map::CaseState		getCaseAt(const Map::Coordinates &coordinates) const;
   Map::CaseState		getCaseAtIndex(const int index) const;
   const std::bitset<Map::boardSize>   &getBitSet(Map::CaseState color) const;
@@ -53,6 +54,7 @@ public:
   int				convertToIndex(const Map::Coordinates &coordinates) const;
   const std::vector<char>	&getMapData() const;
   void			        mapDump() const;
+  const std::vector<unsigned int>	&GetPawnBoardIndexes() const;
 };
 
 #endif /* GOMOKU_MAP_HPP */
