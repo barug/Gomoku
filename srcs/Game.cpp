@@ -16,6 +16,7 @@
 # include	"mSFML_Audio.hpp"
 
 Game::Game() : _gui(new mSFML_Window("./font/digital.otf", "Gomoku - 2016")),
+               _audio(new mSFML_Audio),
 	       _referee(new GomokuReferee(_map)),
 	       _gomokuUI(*_gui, _map),
 	       _gameHandler({{GomokuUI::Context::START_SCREEN, &Game::_handleStartScreen},
@@ -25,6 +26,8 @@ Game::Game() : _gui(new mSFML_Window("./font/digital.otf", "Gomoku - 2016")),
 			     {GomokuUI::Context::MENU, &Game::_handleMenu}}),
 	       _turn(Game::Turn::PLAYER1)
 {
+  _audio->loadSound("./sound/signal.wav");
+  _audio->soundSetVolume(10);
 }
 
 Game::~Game()
@@ -52,7 +55,9 @@ void					Game::_handleStartScreen()
     {
       _player1 = std::unique_ptr<IPlayer>(new HumanPlayer(_gomokuUI, Map::WHITE));
       if (player2Type == IPlayer::HUMAN)
-        _player2 = std::unique_ptr<IPlayer>(new HumanPlayer(_gomokuUI, Map::BLACK));
+        {
+          _player2 = std::unique_ptr<IPlayer>(new HumanPlayer(_gomokuUI, Map::BLACK));
+        }
       else if (player2Type == IPlayer::AI)
         {
           _player2 = std::unique_ptr<IPlayer>
@@ -85,7 +90,7 @@ void					Game::_handleWinScreen()
   else if (_gameState == IReferee::GameState::P2_WIN and _player2->getType() != IPlayer::AI)
     _gomokuUI.displayWinScreen("PLAYER 2 WIN");
   else
-    _gomokuUI.displayWinScreen("YOU LOOSE VS AI, YOU SUCH A DUMB");
+    _gomokuUI.displayWinScreen("YOU LOOSE VS AI, YOU SUCH A DUMB!");
 }
 
 void					Game::_handleGame()
@@ -110,6 +115,7 @@ void					Game::_handleGame()
 	  switch (_gameState)
 	    {
 	    case IReferee::GameState::ONGOING:
+              _audio->soundPlay();
 	      _turn = (_turn == Game::Turn::PLAYER1 ? Game::Turn::PLAYER2 : Game::Turn::PLAYER1);
 	      break;
 	    case IReferee::GameState::UNVALID:
@@ -133,5 +139,4 @@ void					Game::_handleGame()
       std::cerr << e.what() << std::endl;
       std::abort();
     }
-
 }
