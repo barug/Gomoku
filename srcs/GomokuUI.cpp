@@ -97,14 +97,14 @@ IPlayer::Type		GomokuUI::displayStartScreen(void)
 {
   if (_restart)
     _restart = !_restart;
-  _gui.setTextureAt("./sprites/background.jpg", 0, 0, 0.5);
+  _gui.setTextureAt("./sprites/background.jpg", 0, 0, 1.);
   _gui.setTextureAt("./sprites/gomoku.png", 130, 100, 0.4);
   _gui.writeAt("project for tek3 by : barthe_g, billot_t, bloy_j, bogard_t", 230, 560, 0xffffff, 0.5);
   if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 400, 340, 40, 40))
     {
       if (_gui.buttonLeftIsClicked())
 	return IPlayer::Type::HUMAN;
-      _gui.fillRec(300, 300, 200, 80, 0x000000, 180);
+      _gui.fillRec(300, 300, 200, 80, 0x000000, 150);
       _gui.writeAt("Player vs Player", 315, 325, 0x00ff00, 0.8);
     }
   else
@@ -116,7 +116,7 @@ IPlayer::Type		GomokuUI::displayStartScreen(void)
     {
       if (_gui.buttonLeftIsClicked())
 	return IPlayer::Type::AI;
-      _gui.fillRec(300, 400, 200, 80, 0x000000, 180);
+      _gui.fillRec(300, 400, 200, 80, 0x000000, 150);
       _gui.writeAt("Player vs AI", 340, 425, 0x00ff00, 0.8);
     }
   else
@@ -135,7 +135,7 @@ void			GomokuUI::displayWaiting(void)
     {
       for (unsigned int i = 0; i < _timer->timeLeft() / 100 && i < 3; i++)
 	displayDot += ".";
-      _gui.fillRec(0, 0, 800, 600, 0x000000);
+      _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
       _gui.writeAt("waiting" + displayDot, (800/2) - 50, (600/2) - 50, 0x00ff00, 1.2);
     }
   else
@@ -159,9 +159,9 @@ void			GomokuUI::displayUI(const unsigned int scoreJ1,
 					    const unsigned int captureJ1,
 					    const unsigned int captureJ2)
 {
-  _gui.setTextureAt("./sprites/horrible.jpg", 0, 0);
-  _gui.fillRec(10, 10, 180, 290, 0x000000);
-  _gui.fillRec(10, 310, 180, 280, 0x000000);
+  _gui.setTextureAt("./sprites/background.jpg", 0, 0);
+  _gui.fillRec(10, 10, 180, 290, 0x000000, 100);
+  _gui.fillRec(10, 310, 180, 280, 0x000000, 100);
   _gui.setTextureAt("./sprites/wood.jpg", 205, 9, 0.975);
 
   _gui.writeAt("SCORE J1 : " + std::to_string(scoreJ1), 30, 50, 0xffffff, 0.7);
