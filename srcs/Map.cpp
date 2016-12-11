@@ -72,10 +72,21 @@ void				Map::setCaseAt(const Map::Coordinates &coordinates,
 
 void				Map::setCaseAtIndex(int index, Map::CaseState state)
 {
+  if (state == Map::EMPTY)
+    {
+      _blackBoard[index] = false;
+      _whiteBoard[index] = false;
+      _pawnOnBoardIndexes.erase(std::remove(_pawnOnBoardIndexes.begin(),
+					    _pawnOnBoardIndexes.end(),
+					    index),
+			        _pawnOnBoardIndexes.end());
+      return;
+    }
   if (state == Map::BLACK)
     _blackBoard[index] = true;
   else
     _whiteBoard[index] = true;
+  _pawnOnBoardIndexes.push_back(index);
 }
 
 Map::CaseState 			Map::getCaseAt(const Map::Coordinates &coordinates) const

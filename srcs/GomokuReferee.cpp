@@ -553,19 +553,20 @@ int			GomokuReferee::getP2Score()
 */
 int			testAlignementInDirection(GomokuReferee::Direction direction,
 						  const Map &map,
-						  Map::Coordinates coordinates,
+						  int index,
 						  Map::CaseState color)
 {
-  int			index = map.convertToIndex(coordinates);
   int			nextCaseIndex;
+  int			x;
   int				count = 0;
   const std::bitset<Map::boardSize>	&bitset = map.getBitSet(color);
 
-  if (!((coordinates.x == 18
+  x = index % MAP_SIZE;
+  if (!((x == 18
 	 && (direction == GomokuReferee::NORTH_EAST
 	     || direction == GomokuReferee::SOUTH_EAST
 	     || direction == GomokuReferee::EAST))
-	|| (coordinates.x == 0
+	|| (x == 0
 	    && (direction == GomokuReferee::NORTH_WEST
 		|| direction == GomokuReferee::SOUTH_WEST
 		|| direction == GomokuReferee::WEST))))
@@ -580,11 +581,11 @@ int			testAlignementInDirection(GomokuReferee::Direction direction,
 	  count++;
 	}
     }
-  if (!((coordinates.x == 18
+  if (!((x == 18
 	 && (-direction == GomokuReferee::NORTH_EAST
 	     || -direction == GomokuReferee::SOUTH_EAST
 	     || -direction == GomokuReferee::EAST))
-	|| (coordinates.x == 0
+	|| (x == 0
 	    && (-direction == GomokuReferee::NORTH_WEST
 		|| -direction == GomokuReferee::SOUTH_WEST
 		|| -direction == GomokuReferee::WEST))))
