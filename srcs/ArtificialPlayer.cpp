@@ -6,6 +6,7 @@ ArtificialPlayer::ArtificialPlayer(IArtificialInteligence *AI,
 		 Map::CaseState color)
   : _AI(AI),
     _map(map),
+    _score(0),
     _color(color)
 {}
 

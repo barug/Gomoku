@@ -25,6 +25,7 @@ public:
     Coordinates operator+(const Map::Coordinates &rhs);
     Coordinates operator-(const Map::Coordinates &rhs);
     bool	operator==(const Map::Coordinates &rhs);
+    bool        operator!=(const Map::Coordinates &rhs);
     int					x;
     int					y;
   };

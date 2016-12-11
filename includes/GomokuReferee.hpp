@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Sat Dec 10 14:19:32 2016 Josselin
+// Last update Sat Dec 10 19:21:26 2016 bogard_t
 //
 
 #ifndef			_GOMOKUREFEREE_HPP_
@@ -40,16 +40,22 @@ public:
 							      NORTH_WEST};
 
 private:
-  Map				_map;
+  Map				&_map;
   int				_whiteCapturedPieces;
   int				_blackCapturedPieces;
+  Map::CaseState		_pawnToCheck;
 
 public:
   explicit			GomokuReferee(Map &map);
   virtual			~GomokuReferee();
 
   virtual IReferee::GameState	validatePlayerAction(int CoordX, int CoordY, const bool turn);
+  virtual void			resetReferee();
+  virtual int			getP1Score();
+  virtual int			getP2Score();
 
+private:
+  void				setTurn(int CoordX, int CoordY, const bool turn);
   bool				testDoubleThree(Map::Coordinates coordinates);
   void				testCapture(Map::Coordinates coordinates);
   void				testCaptureInDirection(GomokuReferee::Direction direction, Map::Coordinates coordinates);
@@ -59,21 +65,28 @@ public:
   int				testAlignementInDirection(GomokuReferee::Direction direction, Map::Coordinates coordinates);
   int				countAlignement(Map::Coordinates coordinates, int xInc, int yInc);
   bool				hasFiveInARow(GomokuReferee::Direction direction, Map::Coordinates coordinates);
+  IReferee::GameState		TestFiveInARow(int CoordX, int CoordY, int i, const bool turn);
   bool				simulateCapture(Map::Coordinates coordinates, Map::CaseState rivals, int xInc, int yInc, int xIncBack, int yIncBack, int i);
   void				initIncDirection(GomokuReferee::Direction direction, int &xInc, int &yInc);
   GomokuReferee::Direction	invertDirection(GomokuReferee::Direction direction);
+  bool				FindPattern3inLine(Map::Coordinates coordinates);
+  bool				FindPattern2inLine1Empty(Map::Coordinates coordinates);
+  bool				checkPattern1(Map::Coordinates c, Map::Coordinates d);
+  bool				checkPattern2(Map::Coordinates c, Map::Coordinates d);
+  Map::Coordinates		Pattern1(Map::Coordinates c);
+  Map::Coordinates		Pattern2(Map::Coordinates c);
   int				getWhiteCapturedPieces();
   int				getBlackCapturedPieces();
 
 };
 
-int			testAlignementInDirection(GomokuReferee::Direction direction,
-						  const Map &map,
-						  Map::Coordinates coordinates,
-						  Map::CaseState color);
-bool			testCaptureInDirection(GomokuReferee::Direction direction,
-					       const Map &map,
-					       Map::Coordinates coordinates);
+int				testAlignementInDirection(GomokuReferee::Direction direction,
+							  const Map &map,
+							  Map::Coordinates coordinates,
+							  Map::CaseState color);
+bool				testCaptureInDirection(GomokuReferee::Direction direction,
+						       const Map &map,
+						       Map::Coordinates coordinates);
 
 
 #endif			/* _GOMOKUREFEREE_HPP_ */

@@ -1,10 +1,9 @@
 #!/bin/bash
-if [ -f Gomoku ]; then
+if [ -f Gomoku ]; then
     rm Gomoku
 fi
 if [ -d build ]; then
     cd build; make -j4; cd ..; ./Gomoku
-    # rm -rf build
 else
     ls && mkdir build && cd build && cmake .. && make -j4 && cd .. && ls
 fi

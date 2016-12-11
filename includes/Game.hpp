@@ -5,7 +5,7 @@
 // Login   <bogard_t@epitech.net>
 //
 // Started on  Wed Nov 30 13:17:52 2016 bogard_t
-// Last update Thu Dec  8 17:30:33 2016 bogard_t
+// Last update Sat Dec 10 18:29:11 2016 bogard_t
 //
 
 #ifndef					__GAME_HPP__
@@ -48,6 +48,7 @@ private:
   std::map<GomokuUI::Context, f>	_gameHandler;
 
   Game::Turn		       		_turn;
+  IReferee::GameState			_gameState;
 
   /*
   ** private methods
@@ -57,6 +58,7 @@ private:
   void					_handleMenu();
   void					_handleGame();
   void					_handleWaiting();
+  void				        _handleWinScreen();
 
 };
 
