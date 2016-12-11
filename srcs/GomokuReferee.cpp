@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sun Dec 11 22:20:03 2016 Thomas Billot
+// Last update Sun Dec 11 22:28:26 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -560,8 +560,9 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 	    return false;
 	  if (_map.getCaseAt(Map::Coordinates(coordinates + vP2[0])) != _pawnToCheck)
 	    return false;
+	  return true;
 	}
-      return true;
+      return false;
     }
   return false;
 }
