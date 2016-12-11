@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sun Dec 11 18:39:10 2016 Thomas Billot
+// Last update Sun Dec 11 20:11:44 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -400,6 +400,20 @@ bool			GomokuReferee::FindPattern2inLine1Empty(std::vector<Map::Coordinates> &v,
   return false;
 }
 
+bool			isSameDirection(Map::Coordinates c1, Map::Coordinates c2)
+{
+  bool			ligne = false;
+  bool			diagonale = false;
+  
+  if ((c1.x == c2.x || c1.y == c2.x))
+    ligne = true;
+  if (c1.x == c2.y && c1.y == c2.x)
+    diagonale = true;
+  if (ligne || diagonale)
+    return true;
+  return false;
+}
+
 bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 {
   std::vector<Map::Coordinates> vP1;
@@ -407,26 +421,63 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
   std::vector<Map::Coordinates> vP2;
   FindPattern2inLine1Empty(vP2, coordinates);
 
+  std::cout << "verif" << std::endl;
+  std::cout << "vp1.size()" << vP1.size();
+  std::cout << " vp2.size()" << vP2.size() << std::endl;
+
+  // if (vP1.size() > 0 && vP2.size() > 0 && vP1[0] == vP2[0])
+  //   return false;
+  for (auto it : vP1)
+    std::cout << it.x << std::endl;
   if (vP1.size() >= 1 && vP2.size() == 0)
     {
       Map::Coordinates		ex1(vP1[1]);
       Map::Coordinates		ex2(vP1[3]);
-      if (FindPattern2inLine1Empty(vP2, ex1) == true ||
-	  FindPattern2inLine1Empty(vP2, ex2) == true)
-	return true;
+
+      std::vector<Map::Coordinates> testEx1;
+      std::vector<Map::Coordinates> testEx2;
+      if (FindPattern2inLine1Empty(testEx1, ex1) == true ||
+	  FindPattern2inLine1Empty(testEx2, ex2) == true)
+	{
+	  if (testEx1.size() > 0 && testEx2.size() == 0)
+	    {
+	      if (isSameDirection(vP1[0], testEx1[0]) == true)
+	  	return false;
+	    }
+	  if (testEx1.size() == 0 && testEx2.size() > 0)
+	    {
+	      if (isSameDirection(vP1[0], testEx2[0]) == true)
+	  	return false;
+	    }
+	  return true;
+	}
     }
   else if (vP1.size() == 0 && vP2.size() >= 1)
     {
       Map::Coordinates		ex1(vP2[1]);
       Map::Coordinates		ex2(vP2[2]);
-      if (FindPattern3inLine(vP1, ex1) == true ||
-	  FindPattern3inLine(vP1, ex2) == true)
-	return true;
+
+      std::vector<Map::Coordinates> testEx1;
+      std::vector<Map::Coordinates> testEx2;
+      if (FindPattern3inLine(testEx1, ex1) == true ||
+	  FindPattern3inLine(testEx2, ex2) == true)
+	{
+	  if (testEx1.size() > 0 && testEx2.size() == 0)
+	    {
+	      if (isSameDirection(vP2[0], testEx1[0]) == true)
+	  	return false;
+	    }
+	  if (testEx1.size() == 0 && testEx2.size() > 0)
+	    {
+	      if (isSameDirection(vP2[0], testEx2[0]) == true)
+	  	return false;
+	    }
+	  return true;
+	}
     }
   else if (vP1.size() >= 1 && vP2.size() >= 1)
     {
-      if (vP1[0] != vP2[0])
-	return true;
+      return true;
     }
   return false;
 }
