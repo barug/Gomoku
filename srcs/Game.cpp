@@ -19,15 +19,14 @@ Game::Game() : _gui(new mSFML_Window("./font/digital.otf", "Gomoku - 2016")),
                _audio(new mSFML_Audio),
 	       _referee(new GomokuReferee(_map)),
 	       _gomokuUI(*_gui, _map),
-	       _gameHandler({{GomokuUI::Context::START_SCREEN, &Game::_handleStartScreen},
-			     {GomokuUI::Context::WAITING, &Game::_handleWaiting},
-			     {GomokuUI::Context::GAME, &Game::_handleGame},
-			     {GomokuUI::Context::WIN_SCREEN, &Game::_handleWinScreen},
-			     {GomokuUI::Context::MENU, &Game::_handleMenu}}),
+	       _gameHandler({{GomokuUI::Context::START_SCREEN,  &Game::_handleStartScreen},
+			     {GomokuUI::Context::WAITING,       &Game::_handleWaiting},
+			     {GomokuUI::Context::GAME,          &Game::_handleGame},
+			     {GomokuUI::Context::WIN_SCREEN,    &Game::_handleWinScreen},
+			     {GomokuUI::Context::MENU,          &Game::_handleMenu}}),
 	       _turn(Game::Turn::PLAYER1)
 {
-  _audio->loadSound("./sound/signal.wav");
-  _audio->soundSetVolume(10);
+  _audio->soundSetVolume(1);
 }
 
 Game::~Game()
@@ -69,6 +68,9 @@ void					Game::_handleStartScreen()
 
 void					Game::_handleWaiting()
 {
+  _gomokuUI.displayUI(_player1->getScore(), _player2->getScore(),
+		      _referee->getP1Score(), _referee->getP2Score());
+  _gomokuUI.updateMap();
   _gomokuUI.displayWaiting();
 }
 
@@ -108,13 +110,15 @@ void					Game::_handleGame()
 
       if (newCoordinates)
 	{
-	  std::cout << newCoordinates->x << " " << newCoordinates->y << std::endl;
-	  _gameState =_referee->validatePlayerAction(newCoordinates->x,
-						     newCoordinates->y,
-						     _turn);
+	  // std::cout << newCoordinates->x << " " << newCoordinates->y << std::endl;
+	  _gameState = _referee->validatePlayerAction(newCoordinates->x,
+                                                      newCoordinates->y,
+                                                      _turn);
+
 	  switch (_gameState)
 	    {
 	    case IReferee::GameState::ONGOING:
+              _audio->loadSound("./sound/signal.wav");
               _audio->soundPlay();
 	      _turn = (_turn == Game::Turn::PLAYER1 ? Game::Turn::PLAYER2 : Game::Turn::PLAYER1);
 	      break;
@@ -130,6 +134,9 @@ void					Game::_handleGame()
 	      _player2->setScore(_player2->getScore() + 1);
 	      _gomokuUI.setContext(GomokuUI::Context::WIN_SCREEN);
 	      break;
+            default:
+              break;
+
 	    }
 	}
 
