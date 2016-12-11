@@ -17,6 +17,7 @@
 # include				"GomokuUI.hpp"
 # include				"IReferee.hpp"
 # include				"IPlayer.hpp"
+# include                               "IAudio.hpp"
 # include				"HumanPlayer.hpp"
 # include				"ArtificialPlayer.hpp"
 # include				"MinMax.hpp"
@@ -24,7 +25,7 @@
 class					Game
 {
 public:
-  Game();
+  explicit Game();
   ~Game();
   int					start();
 
@@ -39,6 +40,7 @@ private:
 
   Map					_map;
   std::shared_ptr<IGui>		        _gui;
+  std::unique_ptr<IAudio>               _audio;
   std::unique_ptr<IReferee>	        _referee;
   std::unique_ptr<IPlayer>	        _player1;
   std::unique_ptr<IPlayer>	        _player2;

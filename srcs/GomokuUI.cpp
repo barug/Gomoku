@@ -129,10 +129,10 @@ IPlayer::Type		GomokuUI::displayStartScreen(void)
 
 void			GomokuUI::displayWaiting(void)
 {
+  std::string           displayDot;
+
   if (_timer->currentTimer(500))
     {
-      std::string	displayDot;
-
       for (unsigned int i = 0; i < _timer->timeLeft() / 100 && i < 3; i++)
 	displayDot += ".";
       _gui.fillRec(0, 0, 800, 600, 0x000000);

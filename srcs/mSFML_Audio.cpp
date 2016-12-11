@@ -7,14 +7,14 @@ mSFML_Audio::mSFML_Audio()
 mSFML_Audio::~mSFML_Audio()
 {}
 
-void		mSFML_Audio::loadSound(const std::string &file)
+void		mSFML_Audio::loadSound(const std::string &path)
 {
   if (this->_sound.getBuffer())
     this->_sound.resetBuffer();
   try
     {
-      if (!this->_buffer.loadFromFile(file))
-	throw ("-> [makeSound] Impossible to load" + file);
+      if (!this->_buffer.loadFromFile(path))
+	throw ("[SFML::AUDIO::loadSound] Impossible to load" + path);
     }
   catch (const std::string & error)
     {
@@ -23,12 +23,12 @@ void		mSFML_Audio::loadSound(const std::string &file)
   this->_sound.setBuffer(this->_buffer);
 }
 
-void	        mSFML_Audio::loadMusic(const std::string &file)
+void	        mSFML_Audio::loadMusic(const std::string &path)
 {
   try
     {
-      if (!this->_music.openFromFile(file))
-	throw ("-> [makeMusic] Impossible to load" + file);
+      if (!this->_music.openFromFile(path))
+	throw ("[SFML::AUDIO::loadMusic] Impossible to load" + path);
     }
   catch (const std::string & error)
     {
