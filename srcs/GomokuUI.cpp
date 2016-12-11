@@ -14,7 +14,7 @@
 GomokuUI::GomokuUI(IGui &gui, Map &map) : _gui(gui),
 					  _map(map),
 					  _timer(new Timer),
-					  _context(Context::STARTSCREEN),
+					  _context(Context::START_SCREEN),
 					  _restart(false)
 {
   _map.resetAllCases();
@@ -64,7 +64,7 @@ void		        GomokuUI::displayMenu(void)
   _gui.writeAt("MENU", 400, 70, 0x00ff00, 1.2);
   _gui.fillRec(390, 115, 100, 2, 0x00ff00);
 
-  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 170, 60, 30))
+  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 170, 40, 40))
     {
       if (_gui.buttonLeftIsClicked())
 	{
@@ -78,7 +78,7 @@ void		        GomokuUI::displayMenu(void)
     }
   else
     _gui.writeAt("HOME", 390, 170, 0xc60000, 1.2);
-  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 270, 60, 30))
+  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 270, 40, 40))
     {
       if (_gui.buttonLeftIsClicked())
 	{
@@ -140,7 +140,7 @@ void			GomokuUI::displayWaiting(void)
     }
   else
     {
-      _context = _restart ? Context::STARTSCREEN : Context::GAME;
+      _context = _restart ? Context::START_SCREEN : Context::GAME;
       _timer->setState(Timer::State::NONE);
     }
 }
@@ -178,18 +178,18 @@ void			GomokuUI::displayUI(const unsigned int scoreJ1,
 void			GomokuUI::displayWinScreen(const std::string &msg)
 {
   _gui.fillRec(0, 0, 800, 600, 0x000000, 180);
-  _gui.writeAt(msg, 300+msg.size()*5, 120, 0xffffff, 1.);
-  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 270, 60, 30))
+  _gui.writeAt(msg, 300-(msg.size()*2) + 50, 120, 0xffffff, 1.);
+  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(), 410, 270, 40, 40))
     {
       if (_gui.buttonLeftIsClicked())
 	{
-	  _context = Context::STARTSCREEN;
+	  _context = Context::START_SCREEN;
 	  _restart = true;
 	  _timer->setState(Timer::State::NONE);
 	  _map.resetAllCases();
 	}
       else
-	_gui.writeAt("BACK TO HOME", 330, 270, 0x00ff00, 1.2);
+	_gui.writeAt("> BACK TO HOME", 320, 270, 0x00ff00, 1.2);
     }
   else
     _gui.writeAt("BACK TO HOME", 330, 270, 0xc60000, 1.2);

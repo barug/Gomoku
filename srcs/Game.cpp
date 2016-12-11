@@ -18,7 +18,7 @@
 Game::Game() : _gui(new mSFML_Window("./font/digital.otf", "Gomoku - 2016")),
 	       _referee(new GomokuReferee(_map)),
 	       _gomokuUI(*_gui, _map),
-	       _gameHandler({{GomokuUI::Context::STARTSCREEN, &Game::_handleStartScreen},
+	       _gameHandler({{GomokuUI::Context::START_SCREEN, &Game::_handleStartScreen},
 			     {GomokuUI::Context::WAITING, &Game::_handleWaiting},
 			     {GomokuUI::Context::GAME, &Game::_handleGame},
 			     {GomokuUI::Context::WIN_SCREEN, &Game::_handleWinScreen},
@@ -47,20 +47,19 @@ void					Game::_handleStartScreen()
 {
   IPlayer::Type				player2Type;
 
-  _referee->reset();
-  // if (_gameState == IReferee::GameState::ONGOING)
-  //   {
+  _referee->resetReferee();
   if ((player2Type = _gomokuUI.displayStartScreen()) != IPlayer::Type::NONE)
     {
       _player1 = std::unique_ptr<IPlayer>(new HumanPlayer(_gomokuUI, Map::WHITE));
       if (player2Type == IPlayer::HUMAN)
-	_player2 = std::unique_ptr<IPlayer>(new HumanPlayer(_gomokuUI, Map::BLACK));
+        _player2 = std::unique_ptr<IPlayer>(new HumanPlayer(_gomokuUI, Map::BLACK));
       else if (player2Type == IPlayer::AI)
-	_player2 = std::unique_ptr<IPlayer>
-	  (new ArtificialPlayer(new GomokuMinMax(Map::BLACK), _map, Map::BLACK));
+        {
+          _player2 = std::unique_ptr<IPlayer>
+            (new ArtificialPlayer(new GomokuMinMax(Map::BLACK), _map, Map::BLACK));
+        }
       _gomokuUI.setContext(GomokuUI::Context::WAITING);
     }
-  // }
 }
 
 void					Game::_handleWaiting()
@@ -116,15 +115,18 @@ void					Game::_handleGame()
 	    case IReferee::GameState::UNVALID:
 	      break;
 	    case IReferee::GameState::P1_WIN:
+              _turn = Game::Turn::PLAYER1;
 	      _player1->setScore(_player1->getScore() + 1);
 	      _gomokuUI.setContext(GomokuUI::Context::WIN_SCREEN);
 	      break;
 	    case IReferee::GameState::P2_WIN:
+              _turn = Game::Turn::PLAYER1;
 	      _player2->setScore(_player2->getScore() + 1);
 	      _gomokuUI.setContext(GomokuUI::Context::WIN_SCREEN);
 	      break;
 	    }
 	}
+
     }
   catch (const std::exception &e)
     {

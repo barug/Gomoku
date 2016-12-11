@@ -53,7 +53,6 @@ public:
   virtual void			resetReferee();
   virtual int			getP1Score();
   virtual int			getP2Score();
-  virtual void			reset();
 
 private:
   void				setTurn(int CoordX, int CoordY, const bool turn);
@@ -75,7 +74,7 @@ private:
   bool				checkPattern1(Map::Coordinates c, Map::Coordinates d);
   bool				checkPattern2(Map::Coordinates c, Map::Coordinates d);
   Map::Coordinates		Pattern1(Map::Coordinates c);
-  Map::Coordinates		Pattern2(Map::Coordinates c);  
+  Map::Coordinates		Pattern2(Map::Coordinates c);
   int				getWhiteCapturedPieces();
   int				getBlackCapturedPieces();
 

@@ -21,7 +21,7 @@ class	        GomokuUI
 public:
   enum		Context
     {
-      STARTSCREEN = 0,
+      START_SCREEN = 0,
       WAITING = 1,
       GAME = 2,
       MENU = 3,

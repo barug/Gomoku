@@ -28,7 +28,6 @@ public:
   virtual void			resetReferee() = 0;
   virtual int			getP1Score() = 0;
   virtual int			getP2Score() = 0;
-  virtual void			reset() = 0;
 };
 
 #endif			/* _IREFEREE_HPP_ */

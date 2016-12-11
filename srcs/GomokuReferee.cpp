@@ -44,7 +44,7 @@ bool			GomokuReferee::checkPattern1(Map::Coordinates coordinates, Map::Coordinat
 bool			GomokuReferee::checkPattern2(Map::Coordinates coordinates, Map::Coordinates direction)
 {
   bool			mustBePawn;
-  
+
   if (_map.getCaseAt(coordinates) == _pawnToCheck)
     {
       coordinates = coordinates + direction;
@@ -222,7 +222,7 @@ void debug(Map &map, int CoordX, int CoordY)
   std::cerr << "[REFEREE DEBUG]Position : " << CoordX << " " << CoordY << std::endl;//////////////////////////////////////////////debug
   //////////////////////////////////////////////debug
 }
- 
+
 IReferee::GameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, const bool turn)
 {
   IReferee::GameState state;
@@ -265,15 +265,6 @@ void			GomokuReferee::setTurn(int CoordX, int CoordY, const bool turn)
           _pawnToCheck = Map::CaseState::WHITE;
       this->_map.setCaseAtIndex(MAP_WIDTH * CoordY + CoordX, Map::CaseState::WHITE);
     }
-}
-
-/*
-** Reset game
-*/
-void				GomokuReferee::reset()
-{
-  this->_whiteCapturedPieces = 0;
-  this->_blackCapturedPieces = 0;
 }
 
 /*
