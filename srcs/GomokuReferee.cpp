@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sun Dec 11 23:19:32 2016 Josselin
+// Last update Sun Dec 11 23:36:29 2016 Josselin
 //
 
 #include <iostream>
@@ -270,7 +270,6 @@ std::vector<int>	GomokuReferee::testAlignement(Map::Coordinates coordinates)
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_EAST, coordinates));
   return vec;
 }
-
 
 /*
 ** Capture Tests
