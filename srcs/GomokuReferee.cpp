@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sun Dec 11 20:22:12 2016 Thomas Billot
+// Last update Sun Dec 11 22:00:11 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -414,6 +414,11 @@ bool			isSameDirection(Map::Coordinates c1, Map::Coordinates c2)
   return false;
 }
 
+// bool			validateCoordinates(std::vector<Map::Coordinates> &v1, std::vector<Map::Coordinates> &v2)
+// {
+ 
+// }
+
 bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 {
   std::vector<Map::Coordinates> vP1;
@@ -425,10 +430,6 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
   std::cout << "vp1.size()" << vP1.size();
   std::cout << " vp2.size()" << vP2.size() << std::endl;
 
-  // if (vP1.size() > 0 && vP2.size() > 0 && vP1[0] == vP2[0])
-  //   return false;
-  for (auto it : vP1)
-    std::cout << it.x << std::endl;
   if (vP1.size() >= 1 && vP2.size() == 0)
     {
       Map::Coordinates		ex1(vP1[1]);
@@ -464,13 +465,44 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 	{
 	  if (testEx1.size() > 0 && testEx2.size() == 0)
 	    {
-	      if (isSameDirection(vP2[0], testEx1[0]) == true)
-	  	return false;
+	      bool	extrimitie1;
+	      bool	extrimitie2;
+
+	      if (vP2[2] == testEx1[1] || vP2[2] == testEx2[3])
+		extrimitie1 = true;
+	      if (vP2[1] == testEx2[1] || vP2[1] == testEx2[3])
+		extrimitie2 = true;
+
+	      if (!(extrimitie1 || extrimitie2))
+		{
+		  if (!(vP2[1] == testEx1[1] || vP2[2] == testEx1[3]))
+		    return false;
+		  if (isSameDirection(vP2[0], testEx1[0]) == true)
+		    return false;
+		}
 	    }
 	  if (testEx1.size() == 0 && testEx2.size() > 0)
 	    {
-	      if (isSameDirection(vP2[0], testEx2[0]) == true)
-	  	return false;
+	      bool	extrimitie1;
+	      bool	extrimitie2;
+
+	      if (vP2[2] == testEx2[1] || vP2[2] == testEx2[2])
+		extrimitie1 = true;
+	      if (vP2[1] == testEx2[1] || vP2[1] == testEx2[2])
+		extrimitie2 = true;
+
+	      if (!(extrimitie1 || extrimitie2))
+		{
+		  std::cout << vP2[1].x << " " << vP2[1].y << std::endl;
+		  std::cout << vP2[2].x << " " << vP2[2].y << std::endl;
+		  std::cout << testEx2[1].x << " " << testEx2[1].y << std::endl;
+		  std::cout << testEx2[3].x << " " << testEx2[3].y << std::endl;
+		  if (!(vP2[1] == testEx2[1] || vP2[2] == testEx2[3]) ||
+		      !(vP2[2] == testEx2[1] || vP2[2] == testEx2[3]))
+		    return false;
+		  if (isSameDirection(vP2[0], testEx2[0]) == true)
+		    return false;
+		}
 	    }
 	  return true;
 	}
@@ -478,9 +510,9 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
   else if (vP1.size() >= 1 && vP2.size() >= 1)
     {
       if (_map.getCaseAt(Map::Coordinates(coordinates + vP1[0])) != _pawnToCheck)
-	  return false;
+	return false;
       if (_map.getCaseAt(Map::Coordinates(coordinates + vP2[0])) != _pawnToCheck)
-	  return false;
+	return false;
       return true;
     }
   return false;
