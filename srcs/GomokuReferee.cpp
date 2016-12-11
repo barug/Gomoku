@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sun Dec 11 20:11:44 2016 Thomas Billot
+// Last update Sun Dec 11 20:22:12 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -477,6 +477,10 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
     }
   else if (vP1.size() >= 1 && vP2.size() >= 1)
     {
+      if (_map.getCaseAt(Map::Coordinates(coordinates + vP1[0])) != _pawnToCheck)
+	  return false;
+      if (_map.getCaseAt(Map::Coordinates(coordinates + vP2[0])) != _pawnToCheck)
+	  return false;
       return true;
     }
   return false;
