@@ -110,10 +110,8 @@ void					Game::_handleGame()
 
       if (newCoordinates)
 	{
-	  // std::cout << newCoordinates->x << " " << newCoordinates->y << std::endl;
-	  _gameState = _referee->validatePlayerAction(newCoordinates->x,
-                                                      newCoordinates->y,
-                                                      _turn);
+	  std::cout << newCoordinates->x << " " << newCoordinates->y << std::endl;
+	  _gameState = _referee->validatePlayerAction(newCoordinates->x, newCoordinates->y, _turn);
 
 	  switch (_gameState)
 	    {
