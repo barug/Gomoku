@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sun Dec 11 22:00:11 2016 Thomas Billot
+// Last update Sun Dec 11 22:20:03 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -440,15 +440,47 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
       if (FindPattern2inLine1Empty(testEx1, ex1) == true ||
 	  FindPattern2inLine1Empty(testEx2, ex2) == true)
 	{
+	  
 	  if (testEx1.size() > 0 && testEx2.size() == 0)
 	    {
-	      if (isSameDirection(vP1[0], testEx1[0]) == true)
-	  	return false;
+	      bool	extrimitie1;
+	      bool	extrimitie2;
+
+	      if (vP1[1] == testEx1[1] || vP1[1] == testEx1[2])
+		extrimitie1 = true;
+	      if (vP1[3] == testEx1[1] || vP1[3] == testEx1[2])
+		extrimitie2 = true;
+
+	      if (!(extrimitie1 || extrimitie2))
+		{
+		  std::cout << vP1[1].x << " " << vP1[1].y << std::endl;
+		  std::cout << vP1[3].x << " " << vP1[3].y << std::endl;
+		  std::cout << testEx2[1].x << " " << testEx2[1].y << std::endl;
+		  std::cout << testEx2[2].x << " " << testEx2[2].y << std::endl;
+	      
+		  if (isSameDirection(vP1[0], testEx1[0]) == true)
+		    return false;
+		}
 	    }
 	  if (testEx1.size() == 0 && testEx2.size() > 0)
 	    {
-	      if (isSameDirection(vP1[0], testEx2[0]) == true)
-	  	return false;
+	      bool	extrimitie1;
+	      bool	extrimitie2;
+
+	      if (vP1[1] == testEx2[1] || vP1[1] == testEx2[2])
+		extrimitie1 = true;
+	      if (vP1[3] == testEx2[1] || vP1[3] == testEx2[2])
+		extrimitie2 = true;
+
+	      if (!(extrimitie1 || extrimitie2))
+		{
+		  std::cout << vP1[1].x << " " << vP1[1].y << std::endl;
+		  std::cout << vP1[3].x << " " << vP1[3].y << std::endl;
+		  std::cout << testEx2[1].x << " " << testEx2[1].y << std::endl;
+		  std::cout << testEx2[2].x << " " << testEx2[2].y << std::endl;
+		  if (isSameDirection(vP1[0], testEx2[0]) == true)
+		    return false;
+		}
 	    }
 	  return true;
 	}
@@ -468,9 +500,9 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 	      bool	extrimitie1;
 	      bool	extrimitie2;
 
-	      if (vP2[2] == testEx1[1] || vP2[2] == testEx2[3])
+	      if (vP2[2] == testEx1[1] || vP2[2] == testEx1[3])
 		extrimitie1 = true;
-	      if (vP2[1] == testEx2[1] || vP2[1] == testEx2[3])
+	      if (vP2[1] == testEx1[1] || vP2[1] == testEx1[3])
 		extrimitie2 = true;
 
 	      if (!(extrimitie1 || extrimitie2))
@@ -486,9 +518,9 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 	      bool	extrimitie1;
 	      bool	extrimitie2;
 
-	      if (vP2[2] == testEx2[1] || vP2[2] == testEx2[2])
+	      if (vP2[2] == testEx2[1] || vP2[2] == testEx2[3])
 		extrimitie1 = true;
-	      if (vP2[1] == testEx2[1] || vP2[1] == testEx2[2])
+	      if (vP2[1] == testEx2[1] || vP2[1] == testEx2[3])
 		extrimitie2 = true;
 
 	      if (!(extrimitie1 || extrimitie2))
@@ -503,16 +535,32 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 		  if (isSameDirection(vP2[0], testEx2[0]) == true)
 		    return false;
 		}
+	      std::cout << "Test failed" << std::endl;
 	    }
 	  return true;
 	}
     }
   else if (vP1.size() >= 1 && vP2.size() >= 1)
     {
-      if (_map.getCaseAt(Map::Coordinates(coordinates + vP1[0])) != _pawnToCheck)
-	return false;
-      if (_map.getCaseAt(Map::Coordinates(coordinates + vP2[0])) != _pawnToCheck)
-	return false;
+      std::cout << vP2[1].x << " " << vP2[1].y << std::endl;
+      std::cout << vP2[2].x << " " << vP2[2].y << std::endl;
+      std::cout << vP1[1].x << " " << vP1[1].y << std::endl;
+      std::cout << vP1[3].x << " " << vP1[3].y << std::endl;
+      bool	extrimitie1;
+      bool	extrimitie2;
+
+      if (vP2[2] == vP1[1] || vP2[2] == vP1[3])
+	extrimitie1 = true;
+      if (vP2[1] == vP1[1] || vP2[1] == vP1[3])
+	extrimitie2 = true;
+
+      if (!(extrimitie1 || extrimitie2))
+	{
+	  if (_map.getCaseAt(Map::Coordinates(coordinates + vP1[0])) != _pawnToCheck)
+	    return false;
+	  if (_map.getCaseAt(Map::Coordinates(coordinates + vP2[0])) != _pawnToCheck)
+	    return false;
+	}
       return true;
     }
   return false;
