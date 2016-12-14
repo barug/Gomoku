@@ -57,6 +57,8 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
 						   map,
 						   Action,
 						   enemyColor), 2);
+      if (actionScore == 16)
+	actionScore = -12345678;
     }
   for (unsigned int i = 0; i <= 7; i++)
     {
