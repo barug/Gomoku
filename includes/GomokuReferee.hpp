@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Wed Dec 14 18:37:32 2016 Thomas Billot
+// Last update Wed Dec 14 22:53:43 2016 Thomas Billot
 //
 
 #ifndef			_GOMOKUREFEREE_HPP_
@@ -41,6 +41,7 @@ public:
 							      NORTH_WEST};
 
 private:
+  
   Map				&_map;
   int				_whiteCapturedPieces;
   int				_blackCapturedPieces;

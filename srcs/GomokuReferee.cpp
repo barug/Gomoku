@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Wed Dec 14 19:48:00 2016 Thomas Billot
+// Last update Wed Dec 14 22:56:24 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -17,7 +17,6 @@ GomokuReferee::GomokuReferee(Map &map) : _map(map), _whiteCapturedPieces(0), _bl
 
 GomokuReferee::~GomokuReferee()
 {}
-
 
 /*
 ** Check player action
@@ -46,20 +45,21 @@ std::unique_ptr<std::vector<Map::Coordinates>>	GomokuReferee::testPattern2inDire
   int			countEmpty = 0;
   
   pV->push_back(direction);
+  if (_map.getCaseAt(pos) != _pawnToCheck)
+    return nullptr;
   while (i < 4)
     {
       if (_map.getCaseAt(pos) == _pawnToCheck)
 	count++;	  
       if (_map.getCaseAt(pos) == 0)
-	{
-	  std::cout << pos.x << " " << pos.y << std::endl;
-	  countEmpty++;
-	}
+	countEmpty++;
       pV->push_back(pos);
-      pos = pos + direction;
+      if (i < 3)
+	pos = pos + direction;
       i++;
     }
-  std::cout << "count=" << count << " countEmpty=" << countEmpty << std::endl;
+  if (_map.getCaseAt(pos) != _pawnToCheck)
+    return nullptr;
   if (count == 3 && countEmpty == 1)
     return pV;
   return nullptr;
@@ -208,13 +208,16 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
   
   if (pV1)
     {
-      for (auto it : *pV1)
+      std::cout << "_\tP1\t__" << std::endl;
+      std::vector<Map::Coordinates> v1 = *(pV1.get());
+      for (unsigned int i = 1; i < v1.size(); ++i)
 	{
-	  std::cout << it.x << " " << it.y << std::endl;
+	  std::unique_ptr<std::vector<Map::Coordinates> > pV3;
 	}
     }
   if (pV2)
     {
+      std::cout << "_\tP2\t__" << std::endl;
       for (auto it : *pV2)
 	{
 	  std::cout << it.x << " " << it.y << std::endl;
