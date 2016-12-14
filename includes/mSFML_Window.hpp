@@ -64,6 +64,7 @@ public:
 				const float x, const float y,
 				const unsigned int hexaColorCode = 0x000000,
 				const float scale = 1.);
+
   /*
   ** Texture methods
   */
@@ -99,6 +100,7 @@ private:
   IGui::Key		_current_key;
   std::map<sf::Keyboard::Key, IGui::Key> _key_map;
   sf::Mouse		_mouse;
+
 };
 
 #endif		/* __MSFML__WINDOW__HPP__ */
