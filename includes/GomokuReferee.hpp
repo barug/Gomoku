@@ -89,7 +89,7 @@ private:
 
 int				testAlignementInDirection(GomokuReferee::Direction direction,
 							  const Map &map,
-							  int index,
+							  Map::Coordinates coordinates,
 							  Map::CaseState color);
 bool				testCaptureInDirection(GomokuReferee::Direction direction,
 						       const Map &map,

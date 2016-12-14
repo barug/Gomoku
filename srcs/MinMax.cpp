@@ -30,38 +30,14 @@ GomokuMinMax::GomokuMinMax()
 
 Map::Coordinates	*GomokuMinMax::computeNextAction(const Map &map)
 {
-  int			bestResult = -12345678;
-  Map::Coordinates	*bestResultCoordinates = new Map::Coordinates;
-  int			actionScore;
-  int			resultScore;
-  Map			newMap;
-  int			alpha = -12345678;
-  int			beta = 12345678;
-  
-  for (unsigned int i = 0; i < MAP_SIZE; i++)
-    {
-      if (map.getCaseAtIndex(i) == Map::EMPTY)
-	{
-	  newMap = map;
-	  newMap.setCaseAtIndex(i, _iaColor);
-	  actionScore = calculateActionScore(newMap,
-					     i,
-					     _iaColor);
-	  resultScore = _minMax(newMap, 0, alpha, beta, GomokuMinMax::MIN, actionScore);
-	  if (resultScore > bestResult)
-	    {
-	      alpha = resultScore;
-	      bestResult = resultScore;
-	      bestResultCoordinates->x = i % MAP_WIDTH;
-	      bestResultCoordinates->y = i / MAP_WIDTH;
-	    }
-	}
-    }
-  return (bestResultCoordinates);
+  GomokuMinMax::Result	result;
+
+  result = _minMax(map, 1, -12345678, 12345678, GomokuMinMax::MAX, 0);
+  return (new Map::Coordinates(result.coordinates));
 }
 
 unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
-							   int index,
+							   Map::Coordinates Action,
 							   Map::CaseState color)
 {
   unsigned int		actionScore = 0;
@@ -72,15 +48,17 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
     {
       testResult = pow(testAlignementInDirection(GomokuReferee::directions[i],
 						 map,
-						 index,
+						 Action,
 						 color), 2);
       if (testResult == 25)
 	testResult = 12345678;
       actionScore += testResult;
       actionScore += pow(testAlignementInDirection(GomokuReferee::directions[i],
 						   map,
-						   index,
+						   Action,
 						   enemyColor), 2);
+      if (actionScore == 16)
+	actionScore = -12345678;
     }
   for (unsigned int i = 0; i <= 7; i++)
     {
@@ -98,24 +76,29 @@ bool			GomokuMinMax::_evaluateAction(const Map &map,
 						      GomokuMinMax::turn nextTurn,
 						      int &actionScore,
 						      unsigned int i,
-						      int &bestResult)
+						      GomokuMinMax::Result &bestResult)
 {
   Map			newMap;
+  Map::Coordinates	nextMove;
   int			resultScore;
-  int			result;
+  GomokuMinMax::Result	result;
     
   newMap = map;
+  nextMove.x = i % MAP_WIDTH;
+  nextMove.y = i / MAP_WIDTH;
   if (turn == GomokuMinMax::MAX)
     {
       newMap.setCaseAtIndex(i, _iaColor);
       resultScore = calculateActionScore(newMap,
-					 i,
+					 nextMove,
 					 _iaColor);
       result = _minMax(newMap, depth, alpha, beta, nextTurn, actionScore + resultScore);
-      if (result > alpha)
+      if (result.actionScore > alpha)
 	{
-	  alpha = result;
-	  bestResult = result;
+	  alpha = result.actionScore;
+	  bestResult.coordinates.x = nextMove.x;
+	  bestResult.coordinates.y = nextMove.y;
+	  bestResult.actionScore = result.actionScore;
 	  if (alpha >= beta)
 	    return false;
 	}
@@ -124,13 +107,15 @@ bool			GomokuMinMax::_evaluateAction(const Map &map,
     {
       newMap.setCaseAtIndex(i, _enemyColor);
       resultScore = calculateActionScore(newMap,
-					 i,
+					 nextMove,
 					 _enemyColor);
       result = _minMax(newMap, depth, alpha, beta, nextTurn, actionScore - resultScore);
-      if (result < beta)
+      if (result.actionScore < beta)
 	{
-	  beta = result;
-	  bestResult = result;
+	  beta = result.actionScore;
+	  bestResult.coordinates.x = nextMove.x;
+	  bestResult.coordinates.y = nextMove.y;
+	  bestResult.actionScore = result.actionScore;
 	  if (alpha >= beta)
 	    return false;
 	}
@@ -138,81 +123,81 @@ bool			GomokuMinMax::_evaluateAction(const Map &map,
   return true;
 }
 				       
-int						GomokuMinMax::_minMax(const Map &map,
-								      unsigned int depth,
-								      int alpha,
-								      int beta,
-								      GomokuMinMax::turn turn,
-								      int actionScore)
+GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
+					      unsigned int depth,
+					      int alpha,
+					      int beta,
+					      GomokuMinMax::turn turn,
+					      int actionScore)
 {
   Map			newMap;
+  Map::Coordinates	nextMove;
   GomokuMinMax::turn	nextTurn;
-  int			bestResult = 12345678;
+  GomokuMinMax::Result	bestResult(0, 0,  12345678);
+  GomokuMinMax::Result	result;
   int			resultScore;
   
   if (turn == GomokuMinMax::MIN)
     nextTurn = GomokuMinMax::MAX;
   else
     {
-      bestResult = -12345678;
+      bestResult.actionScore = -12345678;
       nextTurn = GomokuMinMax::MIN;
     }  
   if (depth < RECURSION_DEPTH)
     {
       ++depth;
-      const std::vector<unsigned int> &pawnBoardIndexes = map.GetPawnBoardIndexes();
+      std::vector<unsigned int> pawnBoardIndexes = map.GetPawnBoardIndexes();
       int nextCaseIndex;
       for (unsigned int index: pawnBoardIndexes)
-      	{
-      	  // std::cout << "testing cases around case: " << index << std::endl;
-      	  for (unsigned int i = 0; i < 8; i++)
-      	    {
-      	      nextCaseIndex = index + GomokuReferee::directions[i];
-      	      if (nextCaseIndex > 0 && nextCaseIndex < MAP_SIZE)
-      		{
-      		  // std::cout << "    testing case : " << nextCaseIndex << std::endl;
-      		  if (map.getCaseAtIndex(nextCaseIndex) == Map::EMPTY)
-      		    {
-      		      // std::cout << "    case available" << std::endl;
-      		      if (_evaluateAction(map,
-      					   depth,
-      					   alpha,
-      					   beta,
-      					   turn,
-      					   nextTurn,
-      					   actionScore,
-      					   nextCaseIndex,
-      					   bestResult) == false)
-      			{
-      			  // std::cout << "    cutoff" << std::endl;
-      			  return bestResult;
-      			}
-      		    }
-      		  // std::cout << "    finished testing" << std::endl;
-      		}
-      	    }
-      	}
+	{
+	  // std::cout << "testing cases around case: " << index << std::endl;
+	  for (unsigned int i = 0; i < 8; i++)
+	    {
+	      nextCaseIndex = index + GomokuReferee::directions[i];
+	      if (nextCaseIndex > 0 && nextCaseIndex < MAP_SIZE)
+		{
+		  // std::cout << "    testing case : " << nextCaseIndex << std::endl;
+		  if (map.getCaseAtIndex(nextCaseIndex) == Map::EMPTY)
+		    {
+		      // std::cout << "    case available" << std::endl;
+		      if (!_evaluateAction(map,
+					   depth,
+					   alpha,
+					   beta,
+					   turn,
+					   nextTurn,
+					   actionScore,
+					   nextCaseIndex,
+					   bestResult))
+			{
+			  // std::cout << "    cutoff" << std::endl;
+			  return bestResult;
+			}
+		    }
+		  // std::cout << "    finished testing" << std::endl;
+		}
+	    }
+	}
       for (unsigned int i = 0; i < MAP_SIZE; i++)
-      	{
-      	  if (map.getCaseAtIndex(i) == Map::EMPTY)
-      	    {
-      	      // std::cout << "starting" << std::endl;
-      	      if (_evaluateAction(map,
-      				  depth,
-      				  alpha,
-      				  beta,
-      				  turn,
-      				  nextTurn,
-      				  actionScore,
-      				  i,
-      				   bestResult) == false)
-      		{
-      		  // std::cout << "regular cutoff" << std::endl;
-      		  return bestResult;
-      		}
-      	      // std::cout << "ending" << std::endl;
-      	    }
-      	}
+	{
+	  if (map.getCaseAtIndex(i) == Map::EMPTY)
+	    {
+	      if (!_evaluateAction(map,
+				   depth,
+				   alpha,
+				   beta,
+				   turn,
+				   nextTurn,
+				   actionScore,
+				   i,
+				   bestResult))
+		{
+		  // std::cout << "regular cutoff" << std::endl;
+		  return bestResult;
+		}
+	    }
+	}
     }
   else
     {
@@ -221,16 +206,18 @@ int						GomokuMinMax::_minMax(const Map &map,
 	  if (map.getCaseAtIndex(i) == Map::EMPTY)
 	    {
 	      newMap = map;
+	      nextMove.x = i % MAP_WIDTH;
+	      nextMove.y = i / MAP_WIDTH;
 	      if (turn == GomokuMinMax::MAX)
 		{
 		  newMap.setCaseAtIndex(i, _iaColor);
 		  resultScore = calculateActionScore(newMap,
-						     i,
+						     nextMove,
 						     _iaColor);
 		  if ((actionScore + resultScore) > alpha)
 		    {
 		      alpha = actionScore + resultScore;
-		      bestResult = alpha;
+		      bestResult.actionScore = alpha;
 		      if (alpha >= beta)
 			return bestResult;
 		    }
@@ -239,12 +226,12 @@ int						GomokuMinMax::_minMax(const Map &map,
 		{
 		  newMap.setCaseAtIndex(i, _enemyColor);
 		  resultScore = calculateActionScore(newMap,
-						     i,
+						     nextMove,
 						     _enemyColor);
 		  if ((actionScore - resultScore) < beta)
 		    {
 		      beta = actionScore - resultScore;
-		      bestResult = beta;
+		      bestResult.actionScore = actionScore - resultScore;
 		      if (beta <= alpha)
 			return bestResult;
 		    }
