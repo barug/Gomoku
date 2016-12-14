@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sun Dec 11 23:05:22 2016 Thomas Billot
+// Last update Wed Dec 14 19:41:51 2016 Thomas Billot
 //
 
 #include <iostream>
@@ -21,385 +21,6 @@ GomokuReferee::~GomokuReferee()
 /*
 ** Test Double Trois
 */
-bool			GomokuReferee::checkPattern1(Map::Coordinates coordinates, Map::Coordinates direction)
-{
-  int			i = 0;
-  int			count = 0;
-  int			countEmpty = 0;
-
-  while (i < 3)
-    {
-      if (_map.getCaseAt(coordinates) == _pawnToCheck)
-	count++;
-      else if (_map.getCaseAt(coordinates) == 0)
-	countEmpty++;
-      coordinates = coordinates + direction;
-      i++;
-    }
-  if (count == 3 && countEmpty == 0)
-    return true;
-  return false;
-}
-
-bool			GomokuReferee::checkPattern2(Map::Coordinates coordinates, Map::Coordinates direction)
-{
-  bool			mustBePawn;
-
-  if (_map.getCaseAt(coordinates) == _pawnToCheck)
-    {
-      coordinates = coordinates + direction;
-      if (_map.getCaseAt(coordinates) == 0)
-	mustBePawn = true;
-      else
-	mustBePawn = false;
-      coordinates = coordinates + direction;
-      if (_map.getCaseAt(coordinates) == 0 && mustBePawn == true)
-	return false;
-      else if (_map.getCaseAt(coordinates) == 0 && mustBePawn == false)
-	mustBePawn = true;
-      coordinates = coordinates + direction;
-      if (_map.getCaseAt(coordinates) == 0 && mustBePawn == true)
-	return false;
-      else if (_map.getCaseAt(coordinates) == _pawnToCheck && mustBePawn == true)
-	return true;
-    }
-  return false;
-}
-
-Map::Coordinates	GomokuReferee::Pattern1(Map::Coordinates coordinates)
-{
-  if (checkPattern1(coordinates, Map::Coordinates(-1, -1)) == true)
-    return (Map::Coordinates(-1, -1));
-  if (checkPattern1(coordinates, Map::Coordinates(0, -1)) == true)
-    return (Map::Coordinates(0, -1));
-  if (checkPattern1(coordinates, Map::Coordinates(1, -1)) == true)
-    return (Map::Coordinates(1, -1));
-  if (checkPattern1(coordinates, Map::Coordinates(1, 0)) == true)
-    return (Map::Coordinates(1, 0));
-  if (checkPattern1(coordinates, Map::Coordinates(1, 1)) == true)
-    return (Map::Coordinates(1, 1));
-  if (checkPattern1(coordinates, Map::Coordinates(0, 1)) == true)
-    return (Map::Coordinates(0, 1));
-  if (checkPattern1(coordinates, Map::Coordinates(-1, 1)) == true)
-    return (Map::Coordinates(-1, 1));
-  if (checkPattern1(coordinates, Map::Coordinates(-1, 0)) == true)
-    return (Map::Coordinates(-1, 0));
-  return (Map::Coordinates(-20, -20));
-}
-
-Map::Coordinates	GomokuReferee::Pattern2(Map::Coordinates coordinates)
-{
-  if (checkPattern2(coordinates, Map::Coordinates(-1, -1)) == true)
-    return (Map::Coordinates(-1, -1));
-  if (checkPattern2(coordinates, Map::Coordinates(0, -1)) == true)
-    return (Map::Coordinates(0, -1));
-  if (checkPattern2(coordinates, Map::Coordinates(1, -1)) == true)
-    return (Map::Coordinates(1, -1));
-  if (checkPattern2(coordinates, Map::Coordinates(1, 0)) == true)
-    return (Map::Coordinates(1, 0));
-  if (checkPattern2(coordinates, Map::Coordinates(1, 1)) == true)
-    return (Map::Coordinates(1, 1));
-  if (checkPattern2(coordinates, Map::Coordinates(0, 1)) == true)
-    return (Map::Coordinates(0, 1));
-  if (checkPattern2(coordinates, Map::Coordinates(-1, 1)) == true)
-    return (Map::Coordinates(-1, 1));
-  if (checkPattern2(coordinates, Map::Coordinates(-1, 0)) == true)
-    return (Map::Coordinates(-1, 0));
-  return (Map::Coordinates(-20, -20));
-}
-
-bool		        GomokuReferee::FindPattern3inLine(std::vector<Map::Coordinates> &v, Map::Coordinates coordinates)
-{
-  
-  Map::Coordinates	save = coordinates;
-  std::cout << "Trying to find Pattern *-*-*" << std::endl;
-  Map::Coordinates	currentCoord(Pattern1(coordinates));
-  std::cout << "Return value of Pattern1 for currentCoord()= " << currentCoord.x << " " << currentCoord.y << std::endl;
-  if (currentCoord != Map::Coordinates(-20, -20))
-    {
-      Map::Coordinates	startingPoint(save);
-
-      v.push_back(currentCoord);
-	
-      v.push_back(save);
-      save = save + currentCoord;
-      v.push_back(save);
-      save = save + currentCoord;
-      v.push_back(save);
-      if (!(_map.getCaseAt(startingPoint - currentCoord) == _ennemyPawn ||
-	    _map.getCaseAt(save + currentCoord) == _ennemyPawn))
-	return true;
-      v.clear();
-    }
-  coordinates = coordinates + Map::Coordinates(0, 1);
-  Map::Coordinates	S(Pattern1(coordinates));
-  std::cout << "Return value of Pattern1 for S()=" << S.x << " " << S.y << std::endl;
-  if (S != Map::Coordinates(-20, -20))
-    {
-      Map::Coordinates	startingPoint(coordinates);
-
-      v.push_back(S);
-      
-      v.push_back(coordinates);
-      coordinates = coordinates + S;
-      v.push_back(coordinates);
-      coordinates = coordinates + S;
-      v.push_back(coordinates);
-      if (!(_map.getCaseAt(startingPoint - S) == _ennemyPawn ||
-	    _map.getCaseAt(coordinates + S) == _ennemyPawn))
-	return true;
-      v.clear();
-    }
-  coordinates = save;
-  coordinates = coordinates + Map::Coordinates(-1, 1);
-  Map::Coordinates	SW(Pattern1(coordinates));
-  std::cout << "Return value of Pattern1 for SW()=" << SW.x << " " << SW.y << std::endl;
-  if (SW != Map::Coordinates(-20, -20))
-    {
-      Map::Coordinates	startingPoint(coordinates);
-
-      v.push_back(SW);
-
-      v.push_back(coordinates);
-      coordinates = coordinates + SW;
-      v.push_back(coordinates);
-      coordinates = coordinates + SW;
-      v.push_back(coordinates);
-      if (!(_map.getCaseAt(startingPoint - SW) == _ennemyPawn ||
-	    _map.getCaseAt(coordinates + SW) == _ennemyPawn))
-	return true;
-      v.clear();
-    }
-  coordinates = save;
-  coordinates = coordinates + Map::Coordinates(-1, 0);
-  Map::Coordinates	W(Pattern1(coordinates));
-  std::cout << "Return value of Pattern1 for W()=" << W.x << " " << W.y << std::endl;
-  if (W != Map::Coordinates(-20, -20))
-    {
-      Map::Coordinates	startingPoint(coordinates);
-
-      v.push_back(W);
-	    
-      v.push_back(coordinates);
-      coordinates = coordinates + W;
-      v.push_back(coordinates);
-      coordinates = coordinates + W;
-      v.push_back(coordinates);
-      if (!(_map.getCaseAt(startingPoint - W) == _ennemyPawn ||
-	    _map.getCaseAt(coordinates + W) == _ennemyPawn))
-	return true;
-      v.clear();
-    }
-  coordinates = save;
-  coordinates = coordinates + Map::Coordinates(1, 1);
-  Map::Coordinates	SE(Pattern1(coordinates));
-  std::cout << "Return value of Pattern1 for SE()=" << SE.x << " " << SE.y << std::endl;
-  if (SE != Map::Coordinates(-20, -20))
-    {
-      Map::Coordinates	startingPoint(coordinates);
-      
-      v.push_back(SE);
-
-      v.push_back(coordinates);
-      coordinates = coordinates + SE;
-      v.push_back(coordinates);
-      coordinates = coordinates + SE;
-      v.push_back(coordinates);
-      if (!(_map.getCaseAt(startingPoint - SE) == _ennemyPawn ||
-	    _map.getCaseAt(coordinates + SE) == _ennemyPawn))
-	return true;
-      v.clear();
-    }
-  return false;
-}
-
-bool			GomokuReferee::FindPattern2inLine1Empty(std::vector<Map::Coordinates> &v, Map::Coordinates coordinates)
-{
-  Map::Coordinates	save = coordinates;
-  std::cout << "Trying to find pattern *-*- -*" << std::endl;
-  Map::Coordinates	currentCoord(Pattern2(coordinates));
-  std::cout << "Return value of Pattern2 for currentCoord()=" << currentCoord.x << " " << currentCoord.y << std::endl;
-  if (currentCoord != Map::Coordinates(-20, -20))
-    {
-      Map::Coordinates	startingPoint(save);
-      bool			isBlockable = false;
-
-      v.push_back(currentCoord);
-      
-      if (_map.getCaseAt(startingPoint - currentCoord) == _ennemyPawn)
-	isBlockable = true;
-      v.push_back(save);
-      save = save + currentCoord;
-      if (_map.getCaseAt(save) == _ennemyPawn)
-	isBlockable = true;
-      save = save + currentCoord;
-      if (_map.getCaseAt(save) == _ennemyPawn)
-	isBlockable = true;
-      save = save + currentCoord;
-      v.push_back(save);
-      if (isBlockable == false)
-	return true;
-      v.clear();
-    }
-  coordinates = save;
-  coordinates = coordinates + Map::Coordinates(0, 1);
-  Map::Coordinates	S(Pattern2(coordinates));
-  std::cout << "Return value of Pattern2 for S()=" << S.x << " " << S.y << std::endl;
-  if (S != Map::Coordinates(-20, -20))
-    {
-      Map::Coordinates	startingPoint(coordinates);
-      bool			isBlockable = false;
-
-      v.push_back(S);
-
-      if (_map.getCaseAt(startingPoint - currentCoord) == _ennemyPawn)
-	isBlockable = true;
-      v.push_back(coordinates);
-      coordinates = coordinates + S;
-      if (_map.getCaseAt(coordinates) == _ennemyPawn)
-	isBlockable = true;
-      coordinates = coordinates + S;
-      if (_map.getCaseAt(coordinates) == _ennemyPawn)
-	isBlockable = true;
-      coordinates = coordinates + S;
-      v.push_back(coordinates);
-      if (isBlockable == false)
-	return true;
-      v.clear();
-    }
-  coordinates = save;
-  coordinates = coordinates + Map::Coordinates(0, -1);
-  Map::Coordinates	N(Pattern2(coordinates));
-  std::cout << "Return value of Pattern2 for N()=" << N.x << " " << N.y << std::endl;
-  if (N != Map::Coordinates(-20, -20))
-    {
-      Map::Coordinates	startingPoint(coordinates);
-      bool			isBlockable = false;
-      
-      v.push_back(N);
-
-      if (_map.getCaseAt(startingPoint - currentCoord) == _ennemyPawn)
-	isBlockable = true;
-      v.push_back(coordinates);
-      coordinates = coordinates + N;
-      if (_map.getCaseAt(coordinates) == _ennemyPawn)
-	isBlockable = true;
-      coordinates = coordinates + N;
-      if (_map.getCaseAt(coordinates) == _ennemyPawn)
-	isBlockable = true;
-      coordinates = coordinates + N;
-      v.push_back(coordinates);
-      if (isBlockable == false)
-	return true;
-      v.clear();
-    }
-  coordinates = save;
-  coordinates = coordinates + Map::Coordinates(-1, 1);
-  Map::Coordinates	SW(Pattern2(coordinates));
-  std::cout << "Return value of Pattern2 for SW()=" << SW.x << " " << SW.y << std::endl;
-  if (SW != Map::Coordinates(-20, -20))
-    {
-      Map::Coordinates	startingPoint(coordinates);
-      bool			isBlockable = false;
-
-      v.push_back(SW);
-
-      if (_map.getCaseAt(startingPoint - currentCoord) == _ennemyPawn)
-	isBlockable = true;
-      v.push_back(coordinates);
-      coordinates = coordinates + SW;
-      if (_map.getCaseAt(coordinates) == _ennemyPawn)
-	isBlockable = true;
-      coordinates = coordinates + SW;
-      if (_map.getCaseAt(coordinates) == _ennemyPawn)
-	isBlockable = true;
-      coordinates = coordinates + SW;
-      v.push_back(coordinates);
-      if (isBlockable == false)
-	return true;
-      v.clear();
-    }
-  coordinates = save;
-  coordinates = coordinates + Map::Coordinates(1, -1);
-  Map::Coordinates	NE(Pattern2(coordinates));
-  std::cout << "Return value of Pattern2 for NE()=" << NE.x << " " << NE.y << std::endl;
-  if (NE != Map::Coordinates(-20, -20))
-    {
-      Map::Coordinates	startingPoint(coordinates);
-      bool			isBlockable = false;
-
-      v.push_back(NE);
-
-      if (_map.getCaseAt(startingPoint - currentCoord) == _ennemyPawn)
-	isBlockable = true;
-      v.push_back(coordinates);
-      coordinates = coordinates + NE;
-      if (_map.getCaseAt(coordinates) == _ennemyPawn)
-	isBlockable = true;
-      coordinates = coordinates + NE;
-      if (_map.getCaseAt(coordinates) == _ennemyPawn)
-	isBlockable = true;
-      coordinates = coordinates + NE;
-      v.push_back(coordinates);
-      if (isBlockable == false)
-	return true;
-      v.clear();
-    }
-  coordinates = save;
-  coordinates = coordinates + Map::Coordinates(1, 1);
-  Map::Coordinates	SE(Pattern2(coordinates));
-  std::cout << "Return value of Pattern2 for SE()=" << SE.x << " " << SE.y << std::endl;
-  if (SE != Map::Coordinates(-20, -20))
-    {
-      Map::Coordinates	startingPoint(coordinates);
-      bool			isBlockable = false;
-
-      v.push_back(SE);
-
-      if (_map.getCaseAt(startingPoint - currentCoord) == _ennemyPawn)
-	isBlockable = true;
-      v.push_back(coordinates);
-      coordinates = coordinates + SE;
-      if (_map.getCaseAt(coordinates) == _ennemyPawn)
-	isBlockable = true;
-      coordinates = coordinates + SE;
-      if (_map.getCaseAt(coordinates) == _ennemyPawn)
-	isBlockable = true;
-      coordinates = coordinates + SE;
-      v.push_back(coordinates);
-      if (isBlockable == false)
-	return true;
-      v.clear();
-    }
-  coordinates = save;
-  coordinates = coordinates + Map::Coordinates(-1, -1);
-  Map::Coordinates	NW(Pattern2(coordinates));
-  std::cout << "Return value of Pattern2 for NW()=" << NW.x << " " << NW.y << std::endl;
-  if (NW != Map::Coordinates(-20, -20))
-    {
-      Map::Coordinates	startingPoint(coordinates);
-      bool			isBlockable = false;
-
-      v.push_back(NW);
-
-      if (_map.getCaseAt(startingPoint - currentCoord) == _ennemyPawn)
-	isBlockable = true;
-      v.push_back(coordinates);
-      coordinates = coordinates + NW;
-      if (_map.getCaseAt(coordinates) == _ennemyPawn)
-	isBlockable = true;
-      coordinates = coordinates + NW;
-      if (_map.getCaseAt(coordinates) == _ennemyPawn)
-	isBlockable = true;
-      coordinates = coordinates + NW;
-      v.push_back(coordinates);
-      if (isBlockable == false)
-	return true;
-      v.clear();
-    }
-  return false;
-}
-
 bool			isSameDirection(Map::Coordinates c1, Map::Coordinates c2)
 {
   bool			ligne = false;
@@ -414,151 +35,195 @@ bool			isSameDirection(Map::Coordinates c1, Map::Coordinates c2)
   return false;
 }
 
-// bool			validateCoordinates(std::vector<Map::Coordinates> &v1, std::vector<Map::Coordinates> &v2)
-// {
- 
-// }
+std::unique_ptr<std::vector<Map::Coordinates>>	GomokuReferee::testPattern2inDirection(const Map::Coordinates &coordinates, Map::Coordinates direction)
+{
+  std::vector<Map::Coordinates> *v = new std::vector<Map::Coordinates>;
+  std::unique_ptr<std::vector<Map::Coordinates> > pV(v); 
+  Map::Coordinates	pos(coordinates);
+  int			i = 0;
+  int			count = 0;
+  int			countEmpty = 0;
+  
+  pV->push_back(direction);
+  if (_map.getCaseAt(pos) != _pawnToCheck)
+    return nullptr;
+  while (i < 4)
+    {
+      if (_map.getCaseAt(pos) == _pawnToCheck)
+	count++;	  
+      if (_map.getCaseAt(pos) == 0)
+	{
+	  std::cout << pos.x << " " << pos.y << std::endl;
+	  countEmpty++;
+	}
+      pV->push_back(pos);
+      pos = pos + direction;
+      i++;
+    }
+  std::cout << "count=" << count << " countEmpty=" << countEmpty << std::endl;
+  if (count == 3 && countEmpty == 1)
+    return pV;
+  return nullptr;
+}
+
+std::unique_ptr<std::vector<Map::Coordinates>>	GomokuReferee::testPattern1inDirection(const Map::Coordinates &coordinates, Map::Coordinates direction)
+{
+  std::vector<Map::Coordinates> *v = new std::vector<Map::Coordinates>;
+  int			i = 0;
+  int			count = 0;
+  int			countEmpty = 0;
+  Map::Coordinates	pos(coordinates);
+
+  v->push_back(direction);
+  while (i < 3)
+    {
+      if (_map.getCaseAt(pos) == _pawnToCheck)
+	count++;
+      else if (_map.getCaseAt(pos) == 0)
+	countEmpty++;
+      v->push_back(pos);
+      pos = pos + direction;
+      i++;
+    }
+  if (count == 3 && countEmpty == 0)
+    return std::unique_ptr<std::vector<Map::Coordinates> >(v);
+  return nullptr;
+}
+
+std::unique_ptr<std::vector<Map::Coordinates>> GomokuReferee::testPattern1(const Map::Coordinates &coordinates)
+{
+  std::unique_ptr<std::vector<Map::Coordinates>> v;
+  std::cout << "SEARCHING IN CURRENT POSITION->" << coordinates.x << " " << coordinates.y << std::endl; 
+  if ((v = testPattern1inDirection(coordinates, Map::Coordinates(0, -1))) != nullptr) // NORTH
+    return v;
+  if ((v = testPattern1inDirection(coordinates, Map::Coordinates(0, 1))) != nullptr) // SOUTH
+    return v;
+  if ((v = testPattern1inDirection(coordinates, Map::Coordinates(1, -1))) != nullptr) // NORTH EAST
+    return v;
+  if ((v = testPattern1inDirection(coordinates, Map::Coordinates(-1, -1))) != nullptr) // NORTH WEST
+    return v;
+  if ((v = testPattern1inDirection(coordinates, Map::Coordinates(1, 1))) != nullptr) // SOUTH EAST
+    return v;
+  if ((v = testPattern1inDirection(coordinates, Map::Coordinates(-1, 1))) != nullptr) // SOUTH WEST
+    return v;
+  if ((v = testPattern1inDirection(coordinates, Map::Coordinates(1, 0))) != nullptr) // EAST
+    return v;
+  if ((v = testPattern1inDirection(coordinates, Map::Coordinates(-1, 0))) != nullptr) // WEST
+    return v;
+  return nullptr;
+}
+
+std::unique_ptr<std::vector<Map::Coordinates>> GomokuReferee::testPattern2(const Map::Coordinates &coordinates)
+{
+  std::unique_ptr<std::vector<Map::Coordinates>> v;
+  std::cout << "P2-> SEARCHING IN CURRENT POSITION->" << coordinates.x << " " << coordinates.y << std::endl; 
+  if ((v = testPattern2inDirection(coordinates, Map::Coordinates(0, -1))) != nullptr) // NORTH
+    return v;
+  if ((v = testPattern2inDirection(coordinates, Map::Coordinates(0, 1))) != nullptr) // SOUTH
+    return v;
+  if ((v = testPattern2inDirection(coordinates, Map::Coordinates(1, -1))) != nullptr) // NORTH EAST
+    return v;
+  if ((v = testPattern2inDirection(coordinates, Map::Coordinates(-1, -1))) != nullptr) // NORTH WEST
+    return v;
+  if ((v = testPattern2inDirection(coordinates, Map::Coordinates(1, 1))) != nullptr) // SOUTH EAST
+    return v;
+  if ((v = testPattern2inDirection(coordinates, Map::Coordinates(-1, 1))) != nullptr) // SOUTH WEST
+    return v;
+  if ((v = testPattern2inDirection(coordinates, Map::Coordinates(1, 0))) != nullptr) // EAST
+    return v;
+  if ((v = testPattern2inDirection(coordinates, Map::Coordinates(-1, 0))) != nullptr) // WEST
+    return v;
+  return nullptr;
+}
+
+std::unique_ptr<std::vector<Map::Coordinates>>	GomokuReferee::FindPattern3inLine(Map::Coordinates coordinates)
+{
+  std::unique_ptr<std::vector<Map::Coordinates>> pV;
+
+  if ((pV = testPattern1(coordinates)) != nullptr)
+    return pV;
+  std::cout << "Checking south" << std::endl;
+  Map::Coordinates S(coordinates + Map::Coordinates(0, 1));
+  if ((pV = testPattern1inDirection(S, Map::Coordinates(0, -1))) != nullptr)
+    return pV;
+  std::cout << "Checking south west" << std::endl;
+  Map::Coordinates SW(coordinates + Map::Coordinates(-1, 1));
+  if ((pV = testPattern1inDirection(SW, Map::Coordinates(1, -1))) != nullptr)
+    return pV;
+  std::cout << "Checking south east" << std::endl;
+  Map::Coordinates SE(coordinates + Map::Coordinates(1, 1));
+  if ((pV = testPattern1inDirection(SE, Map::Coordinates(-1, -1))) != nullptr)
+    return pV;
+  std::cout << "Checking east" << std::endl;
+  Map::Coordinates E(coordinates + Map::Coordinates(-1, 0));
+  if ((pV = testPattern1inDirection(E, Map::Coordinates(1, 0))) != nullptr)
+    return pV;
+  return nullptr;
+}
+
+std::unique_ptr<std::vector<Map::Coordinates> > GomokuReferee::FindPattern2inLine1Empty(Map::Coordinates coordinates)
+{
+  std::unique_ptr<std::vector<Map::Coordinates>> pV;
+
+  if ((pV = testPattern2(coordinates)) != nullptr)
+    return pV;
+  std::cout << "Checking North" << std::endl;
+  Map::Coordinates N(coordinates + Map::Coordinates(0, -1));
+  if ((pV = testPattern2inDirection(N, Map::Coordinates(0, 1))) != nullptr)
+    return pV;
+  std::cout << "Checking South" << std::endl;
+  Map::Coordinates S(coordinates + Map::Coordinates(0, 1));
+  if ((pV = testPattern2inDirection(S, Map::Coordinates(0, -1))) != nullptr)
+    return pV;
+  std::cout << "Checking South West" << std::endl;
+  Map::Coordinates SW(coordinates + Map::Coordinates(-1, 1));
+  if ((pV = testPattern2inDirection(SW, Map::Coordinates(1, -1))) != nullptr)
+    return pV;
+  std::cout << "Checking North East" << std::endl;
+  Map::Coordinates NE(coordinates + Map::Coordinates(1, -1));
+  if ((pV = testPattern2inDirection(NE, Map::Coordinates(-1, 1))) != nullptr)
+    return pV;
+  std::cout << "Checking North West" << std::endl;
+  Map::Coordinates NW(coordinates + Map::Coordinates(-1, -1));
+  if ((pV = testPattern2inDirection(NW, Map::Coordinates(1, 1))) != nullptr)
+    return pV;
+  std::cout << "Checking South East" << std::endl;
+  Map::Coordinates SE(coordinates + Map::Coordinates(1, 1));
+  if ((pV = testPattern2inDirection(SE, Map::Coordinates(-1, -1))) != nullptr)
+    return pV;
+  std::cout << "Checking East" << std::endl;
+  Map::Coordinates E(coordinates + Map::Coordinates(-1, 0));
+  if ((pV = testPattern2inDirection(E, Map::Coordinates(1, 0))) != nullptr)
+    return pV;
+  std::cout << "Checking West" << std::endl;
+  Map::Coordinates W(coordinates + Map::Coordinates(1, 0));
+  if ((pV = testPattern2inDirection(W, Map::Coordinates(-1, 0))) != nullptr)
+    return pV;
+  return nullptr;
+}
 
 bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 {
-  std::vector<Map::Coordinates> vP1;
-  FindPattern3inLine(vP1, coordinates);
-  std::vector<Map::Coordinates> vP2;
-  FindPattern2inLine1Empty(vP2, coordinates);
-
-  std::cout << "verif" << std::endl;
-  std::cout << "vp1.size()" << vP1.size();
-  std::cout << " vp2.size()" << vP2.size() << std::endl;
-
-  if (vP1.size() >= 1 && vP2.size() == 0)
+  std::unique_ptr<std::vector<Map::Coordinates> > pV1 = FindPattern3inLine(coordinates);
+  std::unique_ptr<std::vector<Map::Coordinates> > pV2 = FindPattern2inLine1Empty(coordinates);
+  
+  if (pV1)
     {
-      Map::Coordinates		ex1(vP1[1]);
-      Map::Coordinates		ex2(vP1[3]);
-
-      std::vector<Map::Coordinates> testEx1;
-      std::vector<Map::Coordinates> testEx2;
-      if (FindPattern2inLine1Empty(testEx1, ex1) == true ||
-	  FindPattern2inLine1Empty(testEx2, ex2) == true)
+      for (auto it : *pV1)
 	{
-	  
-	  if (testEx1.size() > 0 && testEx2.size() == 0)
-	    {
-	      bool	extrimitie1;
-	      bool	extrimitie2;
-
-	      if (vP1[1] == testEx1[1] || vP1[1] == testEx1[2])
-		extrimitie1 = true;
-	      if (vP1[3] == testEx1[1] || vP1[3] == testEx1[2])
-		extrimitie2 = true;
-
-	      if (!(extrimitie1 || extrimitie2))
-		{
-		  std::cout << vP1[1].x << " " << vP1[1].y << std::endl;
-		  std::cout << vP1[3].x << " " << vP1[3].y << std::endl;
-		  std::cout << testEx2[1].x << " " << testEx2[1].y << std::endl;
-		  std::cout << testEx2[2].x << " " << testEx2[2].y << std::endl;
-	      
-		  if (isSameDirection(vP1[0], testEx1[0]) == true)
-		    return false;
-		}
-	    }
-	  if (testEx1.size() == 0 && testEx2.size() > 0)
-	    {
-	      bool	extrimitie1;
-	      bool	extrimitie2;
-
-	      if (vP1[1] == testEx2[1] || vP1[1] == testEx2[2])
-		extrimitie1 = true;
-	      if (vP1[3] == testEx2[1] || vP1[3] == testEx2[2])
-		extrimitie2 = true;
-
-	      if (!(extrimitie1 || extrimitie2))
-		{
-		  std::cout << vP1[1].x << " " << vP1[1].y << std::endl;
-		  std::cout << vP1[3].x << " " << vP1[3].y << std::endl;
-		  std::cout << testEx2[1].x << " " << testEx2[1].y << std::endl;
-		  std::cout << testEx2[2].x << " " << testEx2[2].y << std::endl;
-		  if (isSameDirection(vP1[0], testEx2[0]) == true)
-		    return false;
-		}
-	    }
-	  return true;
+	  std::cout << it.x << " " << it.y << std::endl;
 	}
     }
-  else if (vP1.size() == 0 && vP2.size() >= 1)
+  if (pV2)
     {
-      Map::Coordinates		ex1(vP2[1]);
-      Map::Coordinates		ex2(vP2[2]);
-
-      std::vector<Map::Coordinates> testEx1;
-      std::vector<Map::Coordinates> testEx2;
-      if (FindPattern3inLine(testEx1, ex1) == true ||
-	  FindPattern3inLine(testEx2, ex2) == true)
+      for (auto it : *pV2)
 	{
-	  if (testEx1.size() > 0 && testEx2.size() == 0)
-	    {
-	      bool	extrimitie1;
-	      bool	extrimitie2;
-
-	      if (vP2[2] == testEx1[1] || vP2[2] == testEx1[3])
-		extrimitie1 = true;
-	      if (vP2[1] == testEx1[1] || vP2[1] == testEx1[3])
-		extrimitie2 = true;
-
-	      if (!(extrimitie1 || extrimitie2))
-		{
-		  if (isSameDirection(vP2[0], testEx1[0]) == true)
-		    return false;
-		}
-	    }
-	  if (testEx1.size() == 0 && testEx2.size() > 0)
-	    {
-	      bool	extrimitie1;
-	      bool	extrimitie2;
-
-	      if (vP2[2] == testEx2[1] || vP2[2] == testEx2[3])
-		extrimitie1 = true;
-	      if (vP2[1] == testEx2[1] || vP2[1] == testEx2[3])
-		extrimitie2 = true;
-
-	      if (!(extrimitie1 || extrimitie2))
-		{
-		  std::cout << vP2[1].x << " " << vP2[1].y << std::endl;
-		  std::cout << vP2[2].x << " " << vP2[2].y << std::endl;
-		  std::cout << testEx2[1].x << " " << testEx2[1].y << std::endl;
-		  std::cout << testEx2[3].x << " " << testEx2[3].y << std::endl;
-		  if (isSameDirection(vP2[0], testEx2[0]) == true)
-		    return false;
-		  std::cout << "okay" << std::endl;
-		}
-	      std::cout << "Test failed" << std::endl;
-	    }
-	  return true;
+	  std::cout << it.x << " " << it.y << std::endl;
 	}
     }
-  else if (vP1.size() >= 1 && vP2.size() >= 1)
+  if (pV1 && pV2)
     {
-      std::cout << vP2[1].x << " " << vP2[1].y << std::endl;
-      std::cout << vP2[2].x << " " << vP2[2].y << std::endl;
-      std::cout << vP1[1].x << " " << vP1[1].y << std::endl;
-      std::cout << vP1[3].x << " " << vP1[3].y << std::endl;
-      bool	extrimitie1;
-      bool	extrimitie2;
-
-      if (vP2[2] == vP1[1] || vP2[2] == vP1[3])
-	extrimitie1 = true;
-      if (vP2[1] == vP1[1] || vP2[1] == vP1[3])
-	extrimitie2 = true;
-
-      if (!(extrimitie1 || extrimitie2))
-	{
-	  if (_map.getCaseAt(Map::Coordinates(coordinates + vP1[0])) != _pawnToCheck)
-	    return false;
-	  if (_map.getCaseAt(Map::Coordinates(coordinates + vP2[0])) != _pawnToCheck)
-	    return false;
-	  return true;
-	}
-      return false;
+      return true;
     }
   return false;
 }
