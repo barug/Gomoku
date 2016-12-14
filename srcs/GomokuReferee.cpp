@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Sun Dec 11 23:36:29 2016 Josselin
+// Last update Wed Dec 14 16:50:29 2016 Josselin
 //
 
 #include <iostream>
@@ -196,7 +196,8 @@ IReferee::GameState		GomokuReferee::TestFiveInARow(int CoordX, int CoordY, int i
   GomokuReferee::Direction	direction;
   int				xInc;
   int				yInc;
-
+  int                           tmpX = CoordX;
+  int                           tmpY = CoordY;
   direction =
     i == 0 ? GomokuReferee::Direction::NORTH :
     i == 1 ? GomokuReferee::Direction::WEST :
@@ -204,7 +205,6 @@ IReferee::GameState		GomokuReferee::TestFiveInARow(int CoordX, int CoordY, int i
     GomokuReferee::Direction::SOUTH_EAST;
 
   initIncDirection(direction, xInc, yInc);
-
   while (CoordX + xInc >= 0 && CoordX + xInc <= 19 &&
 	 CoordY + yInc >= 0 && CoordY + yInc <= 19 &&
 	 this->_map.getCaseAtIndex(MAP_WIDTH * CoordY + CoordX) ==
@@ -214,7 +214,19 @@ IReferee::GameState		GomokuReferee::TestFiveInARow(int CoordX, int CoordY, int i
       CoordY += yInc;
     }
 
-  if (hasFiveInARow(invertDirection(direction), Map::Coordinates(CoordX, CoordY)))
+  initIncDirection(invertDirection(direction), xInc, yInc);
+  while (tmpX + xInc >= 0 && tmpX + xInc <= 19 &&
+	 tmpY + yInc >= 0 && tmpY + yInc <= 19 &&
+	 this->_map.getCaseAtIndex(MAP_WIDTH * tmpY + tmpX) ==
+	 this->_map.getCaseAtIndex(MAP_WIDTH * (tmpY + yInc) + (tmpX + xInc)))
+    {
+      tmpX += xInc;
+      tmpY += yInc;
+    }
+
+
+  if (hasFiveInARow(invertDirection(direction), Map::Coordinates(CoordX, CoordY)) ||
+      hasFiveInARow(direction, Map::Coordinates(tmpX, tmpY)))
     {
       if (turn)
 	return IReferee::GameState::P2_WIN;
