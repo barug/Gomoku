@@ -149,16 +149,16 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
       int nextCaseIndex;
       for (unsigned int index: pawnBoardIndexes)
 	{
-	  std::cout << "testing cases around case: " << index << std::endl;
+	  // std::cout << "testing cases around case: " << index << std::endl;
 	  for (unsigned int i = 0; i < 8; i++)
 	    {
 	      nextCaseIndex = index + GomokuReferee::directions[i];
 	      if (nextCaseIndex > 0 && nextCaseIndex < MAP_SIZE)
 		{
-		  std::cout << "    testing case : " << nextCaseIndex << std::endl;
+		  // std::cout << "    testing case : " << nextCaseIndex << std::endl;
 		  if (map.getCaseAtIndex(nextCaseIndex) == Map::EMPTY)
 		    {
-		      std::cout << "    case available" << std::endl;
+		      // std::cout << "    case available" << std::endl;
 		      if (!_evaluateAction(map,
 					   depth,
 					   alpha,
@@ -169,11 +169,11 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
 					   nextCaseIndex,
 					   bestResult))
 			{
-			  std::cout << "    cutoff" << std::endl;
+			  // std::cout << "    cutoff" << std::endl;
 			  return bestResult;
 			}
 		    }
-		  std::cout << "    finished testing" << std::endl;
+		  // std::cout << "    finished testing" << std::endl;
 		}
 	    }
 	}
@@ -191,7 +191,7 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
 				   i,
 				   bestResult))
 		{
-		  std::cout << "regular cutoff" << std::endl;
+		  // std::cout << "regular cutoff" << std::endl;
 		  return bestResult;
 		}
 	    }
