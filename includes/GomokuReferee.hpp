@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Sun Dec 11 17:46:41 2016 Thomas Billot
+// Last update Thu Dec 15 14:43:38 2016 Josselin
 //
 
 #ifndef			_GOMOKUREFEREE_HPP_
@@ -56,6 +56,7 @@ public:
   virtual int			getP2Score();
 
 private:
+  IReferee::GameState		testMap();
   void				setTurn(int CoordX, int CoordY, const bool turn);
   bool				testDoubleThree(Map::Coordinates coordinates);
   void				testCapture(Map::Coordinates coordinates);
@@ -64,9 +65,12 @@ private:
   void				capturePieces(Map::Coordinates coordinates, int xInc, int yInc);
   std::vector<int>		testAlignement(Map::Coordinates coordinates);
   int				testAlignementInDirection(GomokuReferee::Direction direction, Map::Coordinates coordinates);
+  int				testSimpleAlignementInDirection(GomokuReferee::Direction direction, Map::Coordinates coordinates);
+  std::vector<int>		testSimpleAlignement(Map::Coordinates coordinates);
+
   int				countAlignement(Map::Coordinates coordinates, int xInc, int yInc);
   bool				hasFiveInARow(GomokuReferee::Direction direction, Map::Coordinates coordinates);
-  IReferee::GameState		TestFiveInARow(int CoordX, int CoordY, int i, const bool turn);
+  IReferee::GameState		TestFiveInARow(int CoordX, int CoordY, int i, Map::CaseState player);
   bool				simulateCapture(Map::Coordinates coordinates, Map::CaseState rivals, int xInc, int yInc, int xIncBack, int yIncBack, int i);
   void				initIncDirection(GomokuReferee::Direction direction, int &xInc, int &yInc);
   GomokuReferee::Direction	invertDirection(GomokuReferee::Direction direction);
