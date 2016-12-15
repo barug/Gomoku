@@ -62,6 +62,7 @@ void					Game::_handleStartScreen()
 	  _player2 = std::unique_ptr<IPlayer>
 	    (new ArtificialPlayer(new GomokuMinMax(Map::BLACK), _map, Map::BLACK));
 	}
+      _turn = Game::Turn::PLAYER1;
       _gomokuUI.setContext(GomokuUI::Context::WAITING);
     }
 }
