@@ -28,5 +28,5 @@ add_executable(Gomoku
   mSFML/mSFML_Audio.cpp
   mSFML/mSFML_Window.cpp
   mSFML/TextureManager.cpp)
-
+  
 target_link_libraries(Gomoku sfml-window sfml-system sfml-audio sfml-graphics)
