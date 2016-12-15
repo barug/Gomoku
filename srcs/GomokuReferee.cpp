@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Thu Dec 15 15:34:05 2016 Josselin
+// Last update Thu Dec 15 15:38:07 2016 Josselin
 //
 
 #include <iostream>
@@ -38,7 +38,7 @@ IReferee::GameState	GomokuReferee::testMap()
 	{
 	  if (this->_map.getCaseAt(Map::Coordinates(x, y)) != Map::EMPTY)
 	    {
-	      vec = testSimpleAlignement(Map::Coordinates(x, y));
+	      vec = testAlignement(Map::Coordinates(x, y));
 	      for (unsigned int i = 0; i < vec.size(); i++)
 		if (vec[i] >= 5)
 		  {
@@ -255,21 +255,6 @@ int				GomokuReferee::testAlignementInDirection(GomokuReferee::Direction directi
 {
   int				count;
 
-  if (direction == GomokuReferee::Direction::NORTH)
-    count = countAlignement(coordinates, 0, 1) + countAlignement(coordinates, 0, -1);
-  else if (direction == GomokuReferee::Direction::WEST)
-    count = countAlignement(coordinates, 1, 0) + countAlignement(coordinates, -1, 0);
-  else if (direction == GomokuReferee::Direction::NORTH_EAST)
-    count = countAlignement(coordinates, 1, 1) + countAlignement(coordinates, -1, -1);
-  else
-    count = countAlignement(coordinates, 1, -1) + countAlignement(coordinates, -1, 1);
-  return count + 1;
-}
-
-int				GomokuReferee::testSimpleAlignementInDirection(GomokuReferee::Direction direction, Map::Coordinates coordinates)
-{
-  int				count;
-
   if (direction == GomokuReferee::Direction::SOUTH)
     count = countAlignement(coordinates, 0, -1);
   else if (direction == GomokuReferee::Direction::EAST)
@@ -285,21 +270,10 @@ std::vector<int>	GomokuReferee::testAlignement(Map::Coordinates coordinates)
 {
   std::vector<int> vec;
 
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::WEST, coordinates));
-  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::NORTH_EAST, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::EAST, coordinates));
   vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_EAST, coordinates));
-  return vec;
-}
-
-std::vector<int>	GomokuReferee::testSimpleAlignement(Map::Coordinates coordinates)
-{
-  std::vector<int> vec;
-
-  vec.push_back(testSimpleAlignementInDirection(GomokuReferee::Direction::SOUTH, coordinates));
-  vec.push_back(testSimpleAlignementInDirection(GomokuReferee::Direction::EAST, coordinates));
-  vec.push_back(testSimpleAlignementInDirection(GomokuReferee::Direction::SOUTH_EAST, coordinates));
-  vec.push_back(testSimpleAlignementInDirection(GomokuReferee::Direction::SOUTH_WEST, coordinates));
+  vec.push_back(testAlignementInDirection(GomokuReferee::Direction::SOUTH_WEST, coordinates));
   return vec;
 }
 
