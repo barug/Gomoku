@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 // 
 // Started on  Tue Dec  6 19:08:55 2016 Thomas Billot
-// Last update Sat Dec 10 15:48:00 2016 Thomas Billot
+// Last update Wed Dec 14 16:12:44 2016 Thomas Billot
 //
 
 #include		"Map.hpp"

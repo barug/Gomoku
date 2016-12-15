@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Thu Dec 15 14:43:38 2016 Josselin
+// Last update Thu Dec 15 15:17:29 2016 Josselin
 //
 
 #ifndef			_GOMOKUREFEREE_HPP_
@@ -13,6 +13,7 @@
 
 # include		"Map.hpp"
 # include		"IReferee.hpp"
+# include		<memory>
 
 class			GomokuReferee : public IReferee
 {
@@ -40,6 +41,7 @@ public:
 							      NORTH_WEST};
 
 private:
+
   Map				&_map;
   int				_whiteCapturedPieces;
   int				_blackCapturedPieces;
@@ -74,13 +76,17 @@ private:
   bool				simulateCapture(Map::Coordinates coordinates, Map::CaseState rivals, int xInc, int yInc, int xIncBack, int yIncBack, int i);
   void				initIncDirection(GomokuReferee::Direction direction, int &xInc, int &yInc);
   GomokuReferee::Direction	invertDirection(GomokuReferee::Direction direction);
-  bool				FindPattern3inLine(std::vector<Map::Coordinates> &v, Map::Coordinates coordinates);
-  bool				FindPattern2inLine1Empty(std::vector<Map::Coordinates> &v, Map::Coordinates coordinates);
+  std::unique_ptr<std::vector<Map::Coordinates>> FindPattern3inLine(Map::Coordinates coordinates);
+  std::unique_ptr<std::vector<Map::Coordinates>> FindPattern2inLine1Empty(Map::Coordinates coordinates);
   bool				checkPattern1(Map::Coordinates c, Map::Coordinates d);
   bool				checkPattern2(Map::Coordinates c, Map::Coordinates d);
   Map::Coordinates		Pattern1(Map::Coordinates c);
   Map::Coordinates		Pattern2(Map::Coordinates c);
   bool				checkForEnnemyPawn(std::vector<Map::Coordinates> &v);
+  std::unique_ptr<std::vector<Map::Coordinates>> testPattern1inDirection(const Map::Coordinates &coordinates, Map::Coordinates);
+  std::unique_ptr<std::vector<Map::Coordinates>> testPattern2inDirection(const Map::Coordinates &coordinates, Map::Coordinates);
+  std::unique_ptr<std::vector<Map::Coordinates>> testPattern1(const Map::Coordinates &coordinates);
+  std::unique_ptr<std::vector<Map::Coordinates>> testPattern2(const Map::Coordinates &coordinates);
   int				getWhiteCapturedPieces();
   int				getBlackCapturedPieces();
 
