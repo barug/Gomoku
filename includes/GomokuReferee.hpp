@@ -5,7 +5,7 @@
 // Login   <mikaz3@epitech.net>
 //
 // Started on  Wed Nov 30 12:23:53 2016 Thomas Billot
-// Last update Thu Dec 15 15:41:17 2016 Josselin
+// Last update Thu Dec 15 22:37:16 2016 Thomas Billot
 //
 
 #ifndef			_GOMOKUREFEREE_HPP_
@@ -19,6 +19,23 @@ class			GomokuReferee : public IReferee
 {
 public:
 
+  class DirectionsHelper
+  {
+    static const Map::Coordinates _directions[8];
+    
+  public:
+    DirectionsHelper() {}
+    ~DirectionsHelper() {}
+    Map::Coordinates getNextDirection() const
+    {
+      static int i = 0;
+
+      if (i == 7)
+	i = -1;
+      return _directions[++i];
+    }
+  };
+  
   enum			Direction
     {
       NORTH		= -19,
@@ -76,20 +93,23 @@ private:
 
 void				initIncDirection(GomokuReferee::Direction direction, int &xInc, int &yInc);
   GomokuReferee::Direction	invertDirection(GomokuReferee::Direction direction);
-
+  std::unique_ptr<std::vector<Map::Coordinates>> FindPattern3inLine(Map::Coordinates coordinates);
+  std::unique_ptr<std::vector<Map::Coordinates>> FindPattern3inLine(Map::Coordinates coordinates, Map::Coordinates forbiddenDir);
+  std::unique_ptr<std::vector<Map::Coordinates>> FindPattern2inLine1Empty(Map::Coordinates coordinates);
+  std::unique_ptr<std::vector<Map::Coordinates>> FindPattern2inLine1Empty(Map::Coordinates coordinates, Map::Coordinates forbiddenDir);
   bool				testDoubleThree(Map::Coordinates coordinates);
   bool				checkPattern1(Map::Coordinates c, Map::Coordinates d);
   bool				checkPattern2(Map::Coordinates c, Map::Coordinates d);
   Map::Coordinates		Pattern1(Map::Coordinates c);
   Map::Coordinates		Pattern2(Map::Coordinates c);
   bool				checkForEnnemyPawn(std::vector<Map::Coordinates> &v);
-  std::unique_ptr<std::vector<Map::Coordinates>> FindPattern3inLine(Map::Coordinates coordinates);
-  std::unique_ptr<std::vector<Map::Coordinates>> FindPattern2inLine1Empty(Map::Coordinates coordinates);
   std::unique_ptr<std::vector<Map::Coordinates>> testPattern1inDirection(const Map::Coordinates &coordinates, Map::Coordinates);
   std::unique_ptr<std::vector<Map::Coordinates>> testPattern2inDirection(const Map::Coordinates &coordinates, Map::Coordinates);
   std::unique_ptr<std::vector<Map::Coordinates>> testPattern1(const Map::Coordinates &coordinates);
+  std::unique_ptr<std::vector<Map::Coordinates>> testPattern1(const Map::Coordinates &coordinates, Map::Coordinates forbiddenDir);
   std::unique_ptr<std::vector<Map::Coordinates>> testPattern2(const Map::Coordinates &coordinates);
-
+  std::unique_ptr<std::vector<Map::Coordinates>> testPattern2(const Map::Coordinates &coordinates, Map::Coordinates forbiddenDir);
+  bool						checkIfFree(const std::vector<Map::Coordinates> &v);
   int				getWhiteCapturedPieces();
   int				getBlackCapturedPieces();
 
