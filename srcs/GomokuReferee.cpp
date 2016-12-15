@@ -4,7 +4,7 @@
 // Login   <josselin@epitech.net>
 //
 // Started on  Mon Dec  5 13:50:04 2016 Josselin
-// Last update Thu Dec 15 15:38:07 2016 Josselin
+// Last update Thu Dec 15 15:39:44 2016 Josselin
 //
 
 #include <iostream>
@@ -41,10 +41,8 @@ IReferee::GameState	GomokuReferee::testMap()
 	      vec = testAlignement(Map::Coordinates(x, y));
 	      for (unsigned int i = 0; i < vec.size(); i++)
 		if (vec[i] >= 5)
-		  {
-		    if ((state = TestFiveInARow((int)x, (int)y, (int)i, this->_map.getCaseAt(Map::Coordinates(x, y)))) != IReferee::GameState::ONGOING)
-		      return state;
-		  }
+		  if ((state = TestFiveInARow(x, y, i, this->_map.getCaseAt(Map::Coordinates(x, y)))) != IReferee::GameState::ONGOING)
+		    return state;
 	    }
 	}
     }
