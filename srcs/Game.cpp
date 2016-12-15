@@ -122,6 +122,7 @@ void					Game::_handleGame()
 	      break;
 	    case IReferee::GameState::UNVALID:
               _gomokuUI.unvalidStep(newCoordinates->x, newCoordinates->y);
+              std::cout << "UNVALIDDDD" << std::endl;
 	      break;
 	    case IReferee::GameState::P1_WIN:
 	      _turn = Game::Turn::PLAYER1;
@@ -135,8 +136,8 @@ void					Game::_handleGame()
 	      break;
 	    default:
 	      break;
-
 	    }
+          std::cout << "turn : " << _turn << std::endl;
 	}
 
     }
