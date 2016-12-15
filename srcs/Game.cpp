@@ -121,6 +121,7 @@ void					Game::_handleGame()
 	      _turn = (_turn == Game::Turn::PLAYER1 ? Game::Turn::PLAYER2 : Game::Turn::PLAYER1);
 	      break;
 	    case IReferee::GameState::UNVALID:
+              _gomokuUI.unvalidStep(newCoordinates->x, newCoordinates->y);
 	      break;
 	    case IReferee::GameState::P1_WIN:
 	      _turn = Game::Turn::PLAYER1;

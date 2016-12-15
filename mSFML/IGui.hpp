@@ -113,7 +113,6 @@ public:
 				   const unsigned int intensityX = 13,
 				   const unsigned int intensityY = 13) const = 0;
 
-
   /*
   ** Color converter
   */
