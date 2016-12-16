@@ -112,7 +112,6 @@ void					Game::_handleGame()
       if (newCoordinates)
 	{
 	  _gameState = _referee->validatePlayerAction(newCoordinates->x, newCoordinates->y, _turn);
-
 	  switch (_gameState)
 	    {
 	    case IReferee::GameState::ONGOING:
