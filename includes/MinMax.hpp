@@ -27,6 +27,8 @@ class				GomokuMinMax : public IArtificialInteligence
 
   Map::CaseState			_iaColor;
   Map::CaseState			_enemyColor;
+  GomokuReferee				_referee;
+  Map					_decoyMap;
 
 public:
   GomokuMinMax(Map::CaseState iaColor);
@@ -42,7 +44,7 @@ public:
 						int &actionScore,
 						unsigned int i,
 						GomokuMinMax::Result &bestResult);
-  GomokuMinMax::Result					_minMax(const Map &map,
+  GomokuMinMax::Result		_minMax(const Map &map,
 					unsigned int depth,
 					int alpha,
 					int beta,

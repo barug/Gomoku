@@ -12,6 +12,10 @@
 
 constexpr GomokuReferee::Direction GomokuReferee::directions[8];
 
+// GomokuReferee::GomokuReferee() :
+//   _map(Map()),
+//   _whiteCapturedPieces(0), _blackCapturedPieces(0)
+
 GomokuReferee::GomokuReferee(Map &map) : _map(map), _whiteCapturedPieces(0), _blackCapturedPieces(0)
 {}
 
@@ -92,7 +96,7 @@ std::unique_ptr<std::vector<Map::Coordinates>>	GomokuReferee::testPattern1inDire
 std::unique_ptr<std::vector<Map::Coordinates>> GomokuReferee::testPattern1(const Map::Coordinates &coordinates)
 {
   std::unique_ptr<std::vector<Map::Coordinates>> v;
-  std::cout << "SEARCHING IN CURRENT POSITION->" << coordinates.x << " " << coordinates.y << std::endl;
+  // std::cout << "SEARCHING IN CURRENT POSITION->" << coordinates.x << " " << coordinates.y << std::endl;
   if ((v = testPattern1inDirection(coordinates, Map::Coordinates(0, -1))) != nullptr) // NORTH
     return v;
   if ((v = testPattern1inDirection(coordinates, Map::Coordinates(0, 1))) != nullptr) // SOUTH
@@ -115,7 +119,7 @@ std::unique_ptr<std::vector<Map::Coordinates>> GomokuReferee::testPattern1(const
 std::unique_ptr<std::vector<Map::Coordinates>> GomokuReferee::testPattern2(const Map::Coordinates &coordinates)
 {
   std::unique_ptr<std::vector<Map::Coordinates>> v;
-  std::cout << "P2-> SEARCHING IN CURRENT POSITION->" << coordinates.x << " " << coordinates.y << std::endl;
+  // std::cout << "P2-> SEARCHING IN CURRENT POSITION->" << coordinates.x << " " << coordinates.y << std::endl;
   if ((v = testPattern2inDirection(coordinates, Map::Coordinates(0, -1))) != nullptr) // NORTH
     return v;
   if ((v = testPattern2inDirection(coordinates, Map::Coordinates(0, 1))) != nullptr) // SOUTH
@@ -141,19 +145,19 @@ std::unique_ptr<std::vector<Map::Coordinates>>	GomokuReferee::FindPattern3inLine
 
   if ((pV = testPattern1(coordinates)) != nullptr)
     return pV;
-  std::cout << "Checking south" << std::endl;
+  // std::cout << "Checking south" << std::endl;
   Map::Coordinates S(coordinates + Map::Coordinates(0, 1));
   if ((pV = testPattern1inDirection(S, Map::Coordinates(0, -1))) != nullptr)
     return pV;
-  std::cout << "Checking south west" << std::endl;
+  // std::cout << "Checking south west" << std::endl;
   Map::Coordinates SW(coordinates + Map::Coordinates(-1, 1));
   if ((pV = testPattern1inDirection(SW, Map::Coordinates(1, -1))) != nullptr)
     return pV;
-  std::cout << "Checking south east" << std::endl;
+  // std::cout << "Checking south east" << std::endl;
   Map::Coordinates SE(coordinates + Map::Coordinates(1, 1));
   if ((pV = testPattern1inDirection(SE, Map::Coordinates(-1, -1))) != nullptr)
     return pV;
-  std::cout << "Checking east" << std::endl;
+  // std::cout << "Checking east" << std::endl;
   Map::Coordinates E(coordinates + Map::Coordinates(-1, 0));
   if ((pV = testPattern1inDirection(E, Map::Coordinates(1, 0))) != nullptr)
     return pV;
@@ -166,35 +170,35 @@ std::unique_ptr<std::vector<Map::Coordinates> > GomokuReferee::FindPattern2inLin
 
   if ((pV = testPattern2(coordinates)) != nullptr)
     return pV;
-  std::cout << "Checking North" << std::endl;
+  // std::cout << "Checking North" << std::endl;
   Map::Coordinates N(coordinates + Map::Coordinates(0, -1));
   if ((pV = testPattern2inDirection(N, Map::Coordinates(0, 1))) != nullptr)
     return pV;
-  std::cout << "Checking South" << std::endl;
+  // std::cout << "Checking South" << std::endl;
   Map::Coordinates S(coordinates + Map::Coordinates(0, 1));
   if ((pV = testPattern2inDirection(S, Map::Coordinates(0, -1))) != nullptr)
     return pV;
-  std::cout << "Checking South West" << std::endl;
+  // std::cout << "Checking South West" << std::endl;
   Map::Coordinates SW(coordinates + Map::Coordinates(-1, 1));
   if ((pV = testPattern2inDirection(SW, Map::Coordinates(1, -1))) != nullptr)
     return pV;
-  std::cout << "Checking North East" << std::endl;
+  // std::cout << "Checking North East" << std::endl;
   Map::Coordinates NE(coordinates + Map::Coordinates(1, -1));
   if ((pV = testPattern2inDirection(NE, Map::Coordinates(-1, 1))) != nullptr)
     return pV;
-  std::cout << "Checking North West" << std::endl;
+  // std::cout << "Checking North West" << std::endl;
   Map::Coordinates NW(coordinates + Map::Coordinates(-1, -1));
   if ((pV = testPattern2inDirection(NW, Map::Coordinates(1, 1))) != nullptr)
     return pV;
-  std::cout << "Checking South East" << std::endl;
+  // std::cout << "Checking South East" << std::endl;
   Map::Coordinates SE(coordinates + Map::Coordinates(1, 1));
   if ((pV = testPattern2inDirection(SE, Map::Coordinates(-1, -1))) != nullptr)
     return pV;
-  std::cout << "Checking East" << std::endl;
+  // std::cout << "Checking East" << std::endl;
   Map::Coordinates E(coordinates + Map::Coordinates(-1, 0));
   if ((pV = testPattern2inDirection(E, Map::Coordinates(1, 0))) != nullptr)
     return pV;
-  std::cout << "Checking West" << std::endl;
+  // std::cout << "Checking West" << std::endl;
   Map::Coordinates W(coordinates + Map::Coordinates(1, 0));
   if ((pV = testPattern2inDirection(W, Map::Coordinates(-1, 0))) != nullptr)
     return pV;
@@ -208,21 +212,21 @@ bool			GomokuReferee::testDoubleThree(Map::Coordinates coordinates)
 
   if (pV1)
     {
-      std::cout << "_\tP1\t__" << std::endl;
+      // std::cout << "_\tP1\t__" << std::endl;
       std::vector<Map::Coordinates> v1 = *(pV1.get());
       for (unsigned int i = 1; i < v1.size(); ++i)
 	{
 	  std::unique_ptr<std::vector<Map::Coordinates> > pV3;
 	}
     }
-  if (pV2)
-    {
-      std::cout << "_\tP2\t__" << std::endl;
-      for (auto it : *pV2)
-	{
-	  std::cout << it.x << " " << it.y << std::endl;
-	}
-    }
+  // if (pV2)
+  //   {
+  //     std::cout << "_\tP2\t__" << std::endl;
+  //     for (auto it : *pV2)
+  // 	{
+  // 	  std::cout << it.x << " " << it.y << std::endl;
+  // 	}
+  //   }
   if (pV1 && pV2)
     {
       return true;
@@ -251,7 +255,7 @@ IReferee::GameState	GomokuReferee::testMap()
 	      for (unsigned int i = 0; i < vec.size(); i++)
 		if (vec[i] >= 5)
 		  {
-		    std::cout << "up to five" << std::endl;
+		    // std::cout << "up to five" << std::endl;
 		    if ((state = TestFiveInARow((int)x, (int)y, (int)i, this->_map.getCaseAt(Map::Coordinates(x, y)))) != IReferee::GameState::ONGOING)
 		      return state;
 		  }
@@ -259,6 +263,11 @@ IReferee::GameState	GomokuReferee::testMap()
 	}
     }
   return IReferee::GameState::ONGOING;
+}
+
+void			GomokuReferee::setMap(Map &map)
+{
+  _map = map;
 }
 
 IReferee::GameState	GomokuReferee::validatePlayerAction(int CoordX, int CoordY, const bool turn)

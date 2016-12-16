@@ -92,7 +92,7 @@ void					Game::_handleWinScreen()
   else if (_gameState == IReferee::GameState::P2_WIN and _player2->getType() != IPlayer::AI)
     _gomokuUI.displayWinScreen("PLAYER 2 WIN");
   else
-    _gomokuUI.displayWinScreen("YOU LOOSE VS AI, YOU SUCH A DUMB!");
+    _gomokuUI.displayWinScreen("YOU LOOSE VS AI, YOU DUMB FUCK!");
 }
 
 void					Game::_handleGame()
@@ -117,7 +117,8 @@ void					Game::_handleGame()
 	    case IReferee::GameState::ONGOING:
 	      _audio->loadSound("./sound/signal.wav");
 	      _audio->soundPlay();
-	      _turn = (_turn == Game::Turn::PLAYER1 ? Game::Turn::PLAYER2 : Game::Turn::PLAYER1);
+	      _turn = (_turn == Game::Turn::PLAYER1 ?
+		       Game::Turn::PLAYER2 : Game::Turn::PLAYER1);
 	      break;
 	    case IReferee::GameState::UNVALID:
 	      break;
@@ -136,7 +137,6 @@ void					Game::_handleGame()
 
 	    }
 	}
-
     }
   catch (const std::exception &e)
     {

@@ -49,9 +49,12 @@ private:
   Map::CaseState		_ennemyPawn;
 
 public:
+  // GomokuReferee();
   explicit			GomokuReferee(Map &map);
   virtual			~GomokuReferee();
 
+  void				setMap(Map &map);
+  
   virtual IReferee::GameState	validatePlayerAction(int CoordX, int CoordY, const bool turn);
   virtual void			resetReferee();
   virtual int			getP1Score();

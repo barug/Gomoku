@@ -15,7 +15,8 @@ GomokuMinMax::Result::Result(unsigned int x,
 {}
 
 GomokuMinMax::GomokuMinMax(Map::CaseState iaColor)
-  : _iaColor(iaColor)
+  : _iaColor(iaColor),
+    _referee(_decoyMap)
 {
   if (_iaColor == Map::BLACK)
     _enemyColor = Map::WHITE;
@@ -25,14 +26,15 @@ GomokuMinMax::GomokuMinMax(Map::CaseState iaColor)
 
 GomokuMinMax::GomokuMinMax()
   : _iaColor(Map::BLACK),
-    _enemyColor(Map::WHITE)
+    _enemyColor(Map::WHITE),
+    _referee(_decoyMap)
 {}
 
 Map::Coordinates	*GomokuMinMax::computeNextAction(const Map &map)
 {
   GomokuMinMax::Result	result;
 
-  result = _minMax(map, 1, -12345678, 12345678, GomokuMinMax::MAX, 0);
+  result = _minMax(map, 1, -123456789, 123456789, GomokuMinMax::MAX, 0);
   return (new Map::Coordinates(result.coordinates));
 }
 
@@ -49,16 +51,16 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
       testResult = pow(testAlignementInDirection(GomokuReferee::directions[i],
 						 map,
 						 Action,
-						 color), 2);
-      if (testResult == 25)
-	testResult = 12345678;
+						 color), 3);
+      // if (testResult == 25)
+      // 	testResult = 12345678;
       actionScore += testResult;
       actionScore += pow(testAlignementInDirection(GomokuReferee::directions[i],
-						   map,
-						   Action,
-						   enemyColor), 2);
-      if (actionScore == 16)
-	actionScore = -12345678;
+      						   map,
+      						   Action,
+      						   enemyColor), 3);
+      // if (actionScore == 16)
+      // 	actionScore = -12345678;
     }
   for (unsigned int i = 0; i <= 7; i++)
     {
@@ -67,6 +69,8 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
     }
   return actionScore;
 }
+
+
 
 bool			GomokuMinMax::_evaluateAction(const Map &map,
 						      unsigned int &depth,
@@ -82,6 +86,7 @@ bool			GomokuMinMax::_evaluateAction(const Map &map,
   Map::Coordinates	nextMove;
   int			resultScore;
   GomokuMinMax::Result	result;
+  IReferee::GameState	state;
     
   newMap = map;
   nextMove.x = i % MAP_WIDTH;
@@ -89,35 +94,71 @@ bool			GomokuMinMax::_evaluateAction(const Map &map,
   if (turn == GomokuMinMax::MAX)
     {
       newMap.setCaseAtIndex(i, _iaColor);
-      resultScore = calculateActionScore(newMap,
-					 nextMove,
-					 _iaColor);
-      result = _minMax(newMap, depth, alpha, beta, nextTurn, actionScore + resultScore);
-      if (result.actionScore > alpha)
+      // newMap.mapDump();
+      _referee.setMap(newMap);
+      _referee.resetReferee();
+      state = _referee.validatePlayerAction(i % MAP_WIDTH,
+					    i / MAP_WIDTH,
+					    _iaColor);
+      if (state == IReferee::GameState::P2_WIN)
 	{
-	  alpha = result.actionScore;
+	  bestResult.actionScore = 12345678;
 	  bestResult.coordinates.x = nextMove.x;
 	  bestResult.coordinates.y = nextMove.y;
-	  bestResult.actionScore = result.actionScore;
-	  if (alpha >= beta)
-	    return false;
+	  std::cout << "IA WINSTATE" << std::endl;
+	  return false;
+	}
+      if (state == IReferee::GameState::ONGOING)
+	{
+	  resultScore = calculateActionScore(newMap,
+					     nextMove,
+					     _iaColor);
+	  result = _minMax(newMap, depth, alpha, beta,
+			   nextTurn, actionScore + resultScore);
+	  if (result.actionScore > alpha)
+	    {
+	      alpha = result.actionScore;
+	      bestResult.coordinates.x = nextMove.x;
+	      bestResult.coordinates.y = nextMove.y;
+	      bestResult.actionScore = result.actionScore;
+	      if (alpha >= beta)
+		return false;
+	    }
 	}
     }
   else
     {
       newMap.setCaseAtIndex(i, _enemyColor);
-      resultScore = calculateActionScore(newMap,
-					 nextMove,
-					 _enemyColor);
-      result = _minMax(newMap, depth, alpha, beta, nextTurn, actionScore - resultScore);
-      if (result.actionScore < beta)
+      // newMap.mapDump();
+      _referee.setMap(newMap);
+      _referee.resetReferee();
+      state = _referee.validatePlayerAction(i % MAP_WIDTH,
+					    i / MAP_WIDTH,
+					    _enemyColor);
+      if (state == IReferee::GameState::P1_WIN)
 	{
-	  beta = result.actionScore;
+	  bestResult.actionScore = -12345678;
 	  bestResult.coordinates.x = nextMove.x;
 	  bestResult.coordinates.y = nextMove.y;
-	  bestResult.actionScore = result.actionScore;
-	  if (alpha >= beta)
-	    return false;
+	  std::cout << "PLAYER WINSTATE" << std::endl;
+	  return false;
+	}
+      if (state == IReferee::GameState::ONGOING)
+	{
+	  resultScore = calculateActionScore(newMap,
+					     nextMove,
+					     _enemyColor);
+	  result = _minMax(newMap, depth, alpha, beta,
+			   nextTurn, actionScore - resultScore);
+	  if (result.actionScore < beta)
+	    {
+	      beta = result.actionScore;
+	      bestResult.coordinates.x = nextMove.x;
+	      bestResult.coordinates.y = nextMove.y;
+	      bestResult.actionScore = result.actionScore;
+	      if (alpha >= beta)
+		return false;
+	    }
 	}
     }
   return true;
@@ -136,7 +177,8 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
   GomokuMinMax::Result	bestResult(0, 0,  12345678);
   GomokuMinMax::Result	result;
   int			resultScore;
-  
+  IReferee::GameState	state;
+
   if (turn == GomokuMinMax::MIN)
     nextTurn = GomokuMinMax::MAX;
   else
@@ -151,16 +193,15 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
       int nextCaseIndex;
       for (unsigned int index: pawnBoardIndexes)
 	{
-	  // std::cout << "testing cases around case: " << index << std::endl;
+	  std::cout << "testing cases around case: " << index << std::endl;
 	  for (unsigned int i = 0; i < 8; i++)
 	    {
 	      nextCaseIndex = index + GomokuReferee::directions[i];
 	      if (nextCaseIndex > 0 && nextCaseIndex < MAP_SIZE)
 		{
-		  // std::cout << "    testing case : " << nextCaseIndex << std::endl;
+		  std::cout << "testing case: " << nextCaseIndex << std::endl;
 		  if (map.getCaseAtIndex(nextCaseIndex) == Map::EMPTY)
 		    {
-		      // std::cout << "    case available" << std::endl;
 		      if (!_evaluateAction(map,
 					   depth,
 					   alpha,
@@ -171,11 +212,9 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
 					   nextCaseIndex,
 					   bestResult))
 			{
-			  // std::cout << "    cutoff" << std::endl;
 			  return bestResult;
 			}
 		    }
-		  // std::cout << "    finished testing" << std::endl;
 		}
 	    }
 	}
@@ -193,7 +232,6 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
 				   i,
 				   bestResult))
 		{
-		  // std::cout << "regular cutoff" << std::endl;
 		  return bestResult;
 		}
 	    }
@@ -211,29 +249,63 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
 	      if (turn == GomokuMinMax::MAX)
 		{
 		  newMap.setCaseAtIndex(i, _iaColor);
-		  resultScore = calculateActionScore(newMap,
-						     nextMove,
-						     _iaColor);
-		  if ((actionScore + resultScore) > alpha)
+		  // newMap.mapDump();
+		  _referee.resetReferee();
+		  _referee.setMap(newMap);
+		  state = _referee.validatePlayerAction(i % MAP_WIDTH,
+							i / MAP_WIDTH,
+						        _iaColor);
+		  if (state == IReferee::GameState::P2_WIN)
 		    {
-		      alpha = actionScore + resultScore;
-		      bestResult.actionScore = alpha;
-		      if (alpha >= beta)
-			return bestResult;
+		      bestResult.actionScore = 12345678;
+		      bestResult.coordinates.x = nextMove.x;
+		      bestResult.coordinates.y = nextMove.y;
+		      std::cout << "IA WINSTATE" << std::endl;
+		      return bestResult;
+		    }
+		  if (state == IReferee::GameState::ONGOING)
+		    {
+		      resultScore = calculateActionScore(newMap,
+							 nextMove,
+							 _iaColor);
+		      if ((actionScore + resultScore) > alpha)
+			{
+			  alpha = actionScore + resultScore;
+			  bestResult.actionScore = alpha;
+			  if (alpha >= beta)
+			    return bestResult;
+			}
 		    }
 		}
 	      else
 		{
 		  newMap.setCaseAtIndex(i, _enemyColor);
-		  resultScore = calculateActionScore(newMap,
-						     nextMove,
-						     _enemyColor);
-		  if ((actionScore - resultScore) < beta)
+		  // newMap.mapDump();
+		  _referee.resetReferee();
+		  _referee.setMap(newMap);
+		  state = _referee.validatePlayerAction(i % MAP_WIDTH,
+							i / MAP_WIDTH,
+						        _enemyColor);
+		  if (state == IReferee::GameState::P1_WIN)
 		    {
-		      beta = actionScore - resultScore;
-		      bestResult.actionScore = actionScore - resultScore;
-		      if (beta <= alpha)
-			return bestResult;
+		      bestResult.actionScore = -12345678;
+		      bestResult.coordinates.x = nextMove.x;
+		      bestResult.coordinates.y = nextMove.y;
+		      std::cout << "PLAYER WINSTATE" << std::endl;
+		      return bestResult;
+		    }
+		  if (state == IReferee::GameState::ONGOING)
+		    {
+		      resultScore = calculateActionScore(newMap,
+							 nextMove,
+							 _enemyColor);
+		      if ((actionScore - resultScore) < beta)
+			{
+			  beta = actionScore - resultScore;
+			  bestResult.actionScore = actionScore - resultScore;
+			  if (beta <= alpha)
+			    return bestResult;
+			}
 		    }
 		}
 	    }

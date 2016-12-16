@@ -122,14 +122,19 @@ const std::vector<unsigned int>		&Map::GetPawnBoardIndexes() const
   return _pawnOnBoardIndexes;
 }
 
-// void				Map::mapDump() const
-// {
-//   std::cout << "map dump: ----------------";
-//   for (int i = 0; i < MAP_SIZE; i++)
-//     {
-//       if (i % MAP_WIDTH == 0)
-// 	std::cout << std::endl;
-//       std::cout << (int)_mapData[i];
-//     }
-//   std::cout << std::endl;
-// }
+void				Map::mapDump() const
+{
+  std::cout << "map dump: ----------------";
+  for (int i = 0; i < MAP_SIZE; i++)
+    {
+      if (i % MAP_WIDTH == 0)
+	std::cout << std::endl;
+      if (_whiteBoard[i])
+	std::cout << "1";
+      else if (_blackBoard[i])
+	std::cout << "2";
+      else
+	std::cout << "0";
+    }
+  std::cout << std::endl;
+}
