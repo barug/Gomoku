@@ -42,6 +42,8 @@ public:
   IPlayer::Type				displayStartScreen(void);
   void					displayGame(void);
   void				        updateMap(void);
+  void                                  unvalidStep(const unsigned int x,
+                                                    const unsigned int y);
 
   bool					getClicked(void) const;
   Map::Coordinates*			getClickedTile(void);

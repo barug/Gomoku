@@ -54,7 +54,7 @@ bool			GomokuUI::getClicked(void) const
 
 void		        GomokuUI::displayMenu(void)
 {
-  if (!_timer->currentTimer(300) and _gui.getKey() == IGui::SPACE)
+  if (!_timer->currentTimer(300) && _gui.getKey() == IGui::SPACE)
     {
       _context = GomokuUI::Context::GAME;
       _timer->setState(Timer::State::NONE);
@@ -147,7 +147,7 @@ void			GomokuUI::displayWaiting(void)
 
 void			GomokuUI::displayGame(void)
 {
-  if (!_timer->currentTimer(300) and _gui.getKey() == IGui::SPACE)
+  if (!_timer->currentTimer(300) && _gui.getKey() == IGui::SPACE)
     {
       _context = GomokuUI::Context::MENU;
       _timer->setState(Timer::State::NONE);
@@ -229,7 +229,7 @@ void		        GomokuUI::updateMap(void)
       if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(),
 			  IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetY),
 			  IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetX))
-	  and _context == Context::GAME)
+	  && _context == Context::GAME)
 	(_map.getCaseAt(Map::Coordinates(i % IGui::mapSize, i / IGui::mapSize))
 	 == Map::CaseState::EMPTY) ?
 	  _gui.setTextureAt("./sprites/cercle_vert.png",
@@ -239,4 +239,16 @@ void		        GomokuUI::updateMap(void)
 			    IGui::offsetMapX + ((i % IGui::mapSize) * IGui::offsetX) - 9,
 			    IGui::offsetMapY + ((i / IGui::mapSize) * IGui::offsetY) - 9, 0.1);
     }
+}
+
+void                    GomokuUI::unvalidStep(const unsigned int x,
+                                              const unsigned int y)
+{
+  if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(),
+                      IGui::offsetMapX + ((x) * IGui::offsetY),
+                      IGui::offsetMapY + ((y) * IGui::offsetX))
+      && _context == Context::GAME)
+    _gui.setTextureAt("./sprites/cercle_rouge.png",
+                      IGui::offsetMapX + ((x) * IGui::offsetX) - 9,
+                      IGui::offsetMapY + ((y) * IGui::offsetY) - 9, 0.1);
 }
