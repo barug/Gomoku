@@ -22,8 +22,8 @@ public:
   public:
     Coordinates();
     Coordinates(const unsigned int x, const unsigned int y);
-    Coordinates operator+(const Map::Coordinates &rhs);
-    Coordinates operator-(const Map::Coordinates &rhs);
+    Coordinates operator+(const Map::Coordinates &rhs) const;
+    Coordinates operator-(const Map::Coordinates &rhs) const;
     bool	operator==(const Map::Coordinates &rhs);
     bool        operator!=(const Map::Coordinates &rhs);
     int					x;

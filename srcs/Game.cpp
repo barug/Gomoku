@@ -62,6 +62,7 @@ void					Game::_handleStartScreen()
 	  _player2 = std::unique_ptr<IPlayer>
 	    (new ArtificialPlayer(new GomokuMinMax(Map::BLACK), _map, Map::BLACK));
 	}
+      _turn = Game::Turn::PLAYER1;
       _gomokuUI.setContext(GomokuUI::Context::WAITING);
     }
 }
@@ -121,6 +122,8 @@ void					Game::_handleGame()
 		       Game::Turn::PLAYER2 : Game::Turn::PLAYER1);
 	      break;
 	    case IReferee::GameState::UNVALID:
+              _gomokuUI.unvalidStep(newCoordinates->x, newCoordinates->y);
+              std::cout << "UNVALIDDDD" << std::endl;
 	      break;
 	    case IReferee::GameState::P1_WIN:
 	      _turn = Game::Turn::PLAYER1;
@@ -134,8 +137,8 @@ void					Game::_handleGame()
 	      break;
 	    default:
 	      break;
-
 	    }
+          std::cout << "turn : " << _turn << std::endl;
 	}
     }
   catch (const std::exception &e)

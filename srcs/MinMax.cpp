@@ -45,27 +45,30 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
   unsigned int		actionScore = 0;
   Map::CaseState	enemyColor = color == Map::WHITE ? Map::BLACK : Map::WHITE;
   unsigned int		testResult;
-  
+
   for (unsigned int i = 0; i <= 3; i++)
     {
       testResult = pow(testAlignementInDirection(GomokuReferee::directions[i],
 						 map,
 						 Action,
-						 color), 3);
-      // if (testResult == 25)
-      // 	testResult = 12345678;
+						 color), 4);
       actionScore += testResult;
       actionScore += pow(testAlignementInDirection(GomokuReferee::directions[i],
       						   map,
       						   Action,
       						   enemyColor), 3);
-      // if (actionScore == 16)
-      // 	actionScore = -12345678;
     }
   for (unsigned int i = 0; i <= 7; i++)
     {
-      // actionScore += testCaptureInDirection(GomokuReferee::directions[i], map, Action);
-      
+      if (testCaptureInDirection(map,
+				 GomokuReferee::directions[i],
+				 Action.y * MAP_WIDTH + Action.x,
+				 color))
+	{
+	  std::cout << "found capture for " << color << std::endl;
+	  actionScore += 20;
+	}
+	  
     }
   return actionScore;
 }
@@ -193,13 +196,13 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
       int nextCaseIndex;
       for (unsigned int index: pawnBoardIndexes)
 	{
-	  std::cout << "testing cases around case: " << index << std::endl;
+	  // std::cout << "testing cases around case: " << index << std::endl;
 	  for (unsigned int i = 0; i < 8; i++)
 	    {
 	      nextCaseIndex = index + GomokuReferee::directions[i];
 	      if (nextCaseIndex > 0 && nextCaseIndex < MAP_SIZE)
 		{
-		  std::cout << "testing case: " << nextCaseIndex << std::endl;
+		  // std::cout << "testing case: " << nextCaseIndex << std::endl;
 		  if (map.getCaseAtIndex(nextCaseIndex) == Map::EMPTY)
 		    {
 		      if (!_evaluateAction(map,
