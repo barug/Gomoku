@@ -247,8 +247,12 @@ void                    GomokuUI::unvalidStep(const unsigned int x,
   if (_gui.magnetTile(_gui.getMouseX(), _gui.getMouseY(),
                       IGui::offsetMapX + ((x) * IGui::offsetY),
                       IGui::offsetMapY + ((y) * IGui::offsetX))
+      && _map.getCaseAt(Map::Coordinates(x, y)) == Map::CaseState::EMPTY
       && _context == Context::GAME)
-    _gui.setTextureAt("./sprites/cercle_rouge.png",
-                      IGui::offsetMapX + ((x) * IGui::offsetX) - 9,
-                      IGui::offsetMapY + ((y) * IGui::offsetY) - 9, 0.1);
+    {
+      _gui.setTextureAt("./sprites/cercle_rouge.png",
+                        IGui::offsetMapX + ((x) * IGui::offsetX) - 9,
+                        IGui::offsetMapY + ((y) * IGui::offsetY) - 9, 0.1);
+      _gui.writeAt("UNVALID", 430, 115, 0xc60000, 1.3);
+    }
 }
