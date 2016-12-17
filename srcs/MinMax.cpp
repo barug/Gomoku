@@ -60,8 +60,8 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
     }
   for (unsigned int i = 0; i <= 7; i++)
     {
-      if (testCaptureInDirection(map,
-				 GomokuReferee::directions[i],
+      if (testCaptureInDirection(GomokuReferee::directions[i],
+				 map,
 				 Action.y * MAP_WIDTH + Action.x,
 				 color))
 	{

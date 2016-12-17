@@ -120,14 +120,14 @@ void				initIncDirection(GomokuReferee::Direction direction, int &xInc, int &yIn
 
 int				testAlignementInDirection(GomokuReferee::Direction direction,
 							  const Map &map,
-							  Map::Coordinates coordinates,
+							  int index,
 							  Map::CaseState color);
 bool				testCaptureInDirection(GomokuReferee::Direction direction,
 						       const Map &map,
 						       Map::Coordinates coordinates);
 
-bool				testCaptureInDirection(const Map &map,
-						       GomokuReferee::Direction direction,
+bool				testCaptureInDirection(GomokuReferee::Direction direction,
+						       const Map &map,
 						       int index,
 						       Map::CaseState color);
 

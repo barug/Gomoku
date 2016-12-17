@@ -727,23 +727,23 @@ int			GomokuReferee::getP2Score()
 */
 int			testAlignementInDirection(GomokuReferee::Direction direction,
 						  const Map &map,
-						  Map::Coordinates coordinates,
+						  int index,
 						  Map::CaseState color)
 {
-  int			index = coordinates.y * MAP_WIDTH + coordinates.x;
+  // int			index = coordinates.y * MAP_WIDTH + coordinates.x;
   int			nextCaseIndex;
   int				count = 0;
   const std::bitset<Map::boardSize>	&bitset = map.getBitSet(color);
 
-  if (!((coordinates.x == 18
-  	 && (direction == GomokuReferee::NORTH_EAST
-  	     || direction == GomokuReferee::SOUTH_EAST
-  	     || direction == GomokuReferee::EAST))
-  	|| (coordinates.x == 0
-  	    && (direction == GomokuReferee::NORTH_WEST
-  		|| direction == GomokuReferee::SOUTH_WEST
-  		|| direction == GomokuReferee::WEST))))
-  // if (abs(coordinates.x - (index + direction) % MAP_WIDTH) <= 1)
+  // if (!((coordinates.x == 18
+  // 	 && (direction == GomokuReferee::NORTH_EAST
+  // 	     || direction == GomokuReferee::SOUTH_EAST
+  // 	     || direction == GomokuReferee::EAST))
+  // 	|| (coordinates.x == 0
+  // 	    && (direction == GomokuReferee::NORTH_WEST
+  // 		|| direction == GomokuReferee::SOUTH_WEST
+  // 		|| direction == GomokuReferee::WEST))))
+  if (abs(index % MAP_WIDTH - (index + direction) % MAP_WIDTH) <= 1)
     {
       for (int i = 1; i <= 5; i++)
 	{
@@ -755,15 +755,15 @@ int			testAlignementInDirection(GomokuReferee::Direction direction,
 	  count++;
 	}
     }
-  if (!((coordinates.x == 18
-  	 && (-direction == GomokuReferee::NORTH_EAST
-  	     || -direction == GomokuReferee::SOUTH_EAST
-  	     || -direction == GomokuReferee::EAST))
-  	|| (coordinates.x == 0
-  	    && (-direction == GomokuReferee::NORTH_WEST
-  		|| -direction == GomokuReferee::SOUTH_WEST
-  		|| -direction == GomokuReferee::WEST))))
-  // if (abs(coordinates.x - (index - direction) % MAP_WIDTH) <= 1)
+  // if (!((coordinates.x == 18
+  // 	 && (-direction == GomokuReferee::NORTH_EAST
+  // 	     || -direction == GomokuReferee::SOUTH_EAST
+  // 	     || -direction == GomokuReferee::EAST))
+  // 	|| (coordinates.x == 0
+  // 	    && (-direction == GomokuReferee::NORTH_WEST
+  // 		|| -direction == GomokuReferee::SOUTH_WEST
+  // 		|| -direction == GomokuReferee::WEST))))
+  if (abs(index % MAP_WIDTH - (index - direction) % MAP_WIDTH) <= 1)
     {
       for (int i = 1; i <= 5; i++)
 	{
@@ -778,8 +778,8 @@ int			testAlignementInDirection(GomokuReferee::Direction direction,
   return count;
 }
 
-bool    testCaptureInDirection(const Map &map,
-			       GomokuReferee::Direction direction,
+bool    testCaptureInDirection(GomokuReferee::Direction direction,
+			       const Map &map,
 			       int index,
 			       Map::CaseState color)
 {
