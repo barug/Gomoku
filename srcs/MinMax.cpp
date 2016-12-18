@@ -44,15 +44,13 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
 {
   unsigned int		actionScore = 0;
   Map::CaseState	enemyColor = color == Map::WHITE ? Map::BLACK : Map::WHITE;
-  unsigned int		testResult;
 
   for (unsigned int i = 0; i <= 3; i++)
     {
-      testResult = pow(testAlignementInDirection(GomokuReferee::directions[i],
+      actionScore += pow(testAlignementInDirection(GomokuReferee::directions[i],
 						 map,
 						 index,
 						 color), 4);
-      actionScore += testResult;
       actionScore += pow(testAlignementInDirection(GomokuReferee::directions[i],
       						   map,
       						   index,
@@ -65,8 +63,7 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
 				 index,
 				 color))
 	{
-	  std::cout << "found capture for " << color << std::endl;
-	  actionScore += 30;
+	  actionScore += 40;
 	}
 	  
     }
@@ -89,7 +86,6 @@ bool			GomokuMinMax::_evaluateAction(const Map &map,
   Map::Coordinates	nextMove;
   int			resultScore;
   GomokuMinMax::Result	result;
-  IReferee::GameState	state;
     
   newMap = map;
   nextMove.x = i % MAP_WIDTH;
@@ -100,22 +96,12 @@ bool			GomokuMinMax::_evaluateAction(const Map &map,
       // newMap.mapDump();
       _referee.setMap(newMap);
       _referee.resetReferee();
-      state = _referee.validatePlayerAction(i % MAP_WIDTH,
-					    i / MAP_WIDTH,
-					    _iaColor);
-      if (state == IReferee::GameState::P2_WIN)
-	{
-	  bestResult.actionScore = 12345678;
-	  bestResult.coordinates.x = nextMove.x;
-	  bestResult.coordinates.y = nextMove.y;
-	  std::cout << "IA WINSTATE" << std::endl;
-	  return false;
-	}
-      if (state == IReferee::GameState::ONGOING)
+      if (!_referee.testDoubleThree(nextMove))
 	{
 	  resultScore = calculateActionScore(newMap,
 					     i,
 					     _iaColor);
+	  _referee.testCapture(nextMove);
 	  result = _minMax(newMap, depth, alpha, beta,
 			   nextTurn, actionScore + resultScore);
 	  if (result.actionScore > alpha)
@@ -135,22 +121,12 @@ bool			GomokuMinMax::_evaluateAction(const Map &map,
       // newMap.mapDump();
       _referee.setMap(newMap);
       _referee.resetReferee();
-      state = _referee.validatePlayerAction(i % MAP_WIDTH,
-					    i / MAP_WIDTH,
-					    _enemyColor);
-      if (state == IReferee::GameState::P1_WIN)
-	{
-	  bestResult.actionScore = -12345678;
-	  bestResult.coordinates.x = nextMove.x;
-	  bestResult.coordinates.y = nextMove.y;
-	  std::cout << "PLAYER WINSTATE" << std::endl;
-	  return false;
-	}
-      if (state == IReferee::GameState::ONGOING)
+      if (!_referee.testDoubleThree(nextMove))
 	{
 	  resultScore = calculateActionScore(newMap,
 					     i,
 					     _enemyColor);
+	  _referee.testCapture(nextMove);
 	  result = _minMax(newMap, depth, alpha, beta,
 			   nextTurn, actionScore - resultScore);
 	  if (result.actionScore < beta)
@@ -180,7 +156,6 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
   GomokuMinMax::Result	bestResult(0, 0,  12345678);
   GomokuMinMax::Result	result;
   int			resultScore;
-  IReferee::GameState	state;
 
   if (turn == GomokuMinMax::MIN)
     nextTurn = GomokuMinMax::MAX;
@@ -255,22 +230,12 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
 		  // newMap.mapDump();
 		  _referee.resetReferee();
 		  _referee.setMap(newMap);
-		  state = _referee.validatePlayerAction(i % MAP_WIDTH,
-							i / MAP_WIDTH,
-						        _iaColor);
-		  if (state == IReferee::GameState::P2_WIN)
-		    {
-		      bestResult.actionScore = 12345678;
-		      bestResult.coordinates.x = nextMove.x;
-		      bestResult.coordinates.y = nextMove.y;
-		      std::cout << "IA WINSTATE" << std::endl;
-		      return bestResult;
-		    }
-		  if (state == IReferee::GameState::ONGOING)
+		  if (!_referee.testDoubleThree(nextMove))
 		    {
 		      resultScore = calculateActionScore(newMap,
 							 i,
 							 _iaColor);
+		      _referee.testCapture(nextMove);
 		      if ((actionScore + resultScore) > alpha)
 			{
 			  alpha = actionScore + resultScore;
@@ -286,22 +251,12 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
 		  // newMap.mapDump();
 		  _referee.resetReferee();
 		  _referee.setMap(newMap);
-		  state = _referee.validatePlayerAction(i % MAP_WIDTH,
-							i / MAP_WIDTH,
-						        _enemyColor);
-		  if (state == IReferee::GameState::P1_WIN)
-		    {
-		      bestResult.actionScore = -12345678;
-		      bestResult.coordinates.x = nextMove.x;
-		      bestResult.coordinates.y = nextMove.y;
-		      std::cout << "PLAYER WINSTATE" << std::endl;
-		      return bestResult;
-		    }
-		  if (state == IReferee::GameState::ONGOING)
+		  if (!_referee.testDoubleThree(nextMove))
 		    {
 		      resultScore = calculateActionScore(newMap,
 							 i,
 							 _enemyColor);
+		      _referee.testCapture(nextMove);
 		      if ((actionScore - resultScore) < beta)
 			{
 			  beta = actionScore - resultScore;

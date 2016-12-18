@@ -76,12 +76,13 @@ public:
   virtual void			resetReferee();
   virtual int			getP1Score();
   virtual int			getP2Score();
+  bool				testDoubleThree(Map::Coordinates coordinates);
+  void				testCapture(Map::Coordinates coordinates);
 
 private:
   IReferee::GameState		testMap();
   void				setTurn(int CoordX, int CoordY, const bool turn);
 
-  void				testCapture(Map::Coordinates coordinates);
   void				testCaptureInDirection(GomokuReferee::Direction direction, Map::Coordinates coordinates);
   bool				hasCapture(Map::Coordinates coordinates, int xInc, int yInc);
   void				capturePieces(Map::Coordinates coordinates, int xInc, int yInc);
@@ -100,7 +101,6 @@ void				initIncDirection(GomokuReferee::Direction direction, int &xInc, int &yIn
   std::unique_ptr<std::vector<Map::Coordinates>> FindPattern3inLine(Map::Coordinates coordinates, Map::Coordinates forbiddenDir);
   std::unique_ptr<std::vector<Map::Coordinates>> FindPattern2inLine1Empty(Map::Coordinates coordinates);
   std::unique_ptr<std::vector<Map::Coordinates>> FindPattern2inLine1Empty(Map::Coordinates coordinates, Map::Coordinates forbiddenDir);
-  bool				testDoubleThree(Map::Coordinates coordinates);
   bool				checkPattern1(Map::Coordinates c, Map::Coordinates d);
   bool				checkPattern2(Map::Coordinates c, Map::Coordinates d);
   Map::Coordinates		Pattern1(Map::Coordinates c);
