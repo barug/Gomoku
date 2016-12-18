@@ -39,7 +39,7 @@ Map::Coordinates	*GomokuMinMax::computeNextAction(const Map &map)
 }
 
 unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
-							   Map::Coordinates Action,
+							   int index,
 							   Map::CaseState color)
 {
   unsigned int		actionScore = 0;
@@ -50,23 +50,23 @@ unsigned int		GomokuMinMax::calculateActionScore(const Map &map,
     {
       testResult = pow(testAlignementInDirection(GomokuReferee::directions[i],
 						 map,
-						 Action,
+						 index,
 						 color), 4);
       actionScore += testResult;
       actionScore += pow(testAlignementInDirection(GomokuReferee::directions[i],
       						   map,
-      						   Action,
+      						   index,
       						   enemyColor), 3);
     }
   for (unsigned int i = 0; i <= 7; i++)
     {
       if (testCaptureInDirection(GomokuReferee::directions[i],
 				 map,
-				 Action.y * MAP_WIDTH + Action.x,
+				 index,
 				 color))
 	{
 	  std::cout << "found capture for " << color << std::endl;
-	  actionScore += 20;
+	  actionScore += 30;
 	}
 	  
     }
@@ -114,7 +114,7 @@ bool			GomokuMinMax::_evaluateAction(const Map &map,
       if (state == IReferee::GameState::ONGOING)
 	{
 	  resultScore = calculateActionScore(newMap,
-					     nextMove,
+					     i,
 					     _iaColor);
 	  result = _minMax(newMap, depth, alpha, beta,
 			   nextTurn, actionScore + resultScore);
@@ -149,7 +149,7 @@ bool			GomokuMinMax::_evaluateAction(const Map &map,
       if (state == IReferee::GameState::ONGOING)
 	{
 	  resultScore = calculateActionScore(newMap,
-					     nextMove,
+					     i,
 					     _enemyColor);
 	  result = _minMax(newMap, depth, alpha, beta,
 			   nextTurn, actionScore - resultScore);
@@ -269,7 +269,7 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
 		  if (state == IReferee::GameState::ONGOING)
 		    {
 		      resultScore = calculateActionScore(newMap,
-							 nextMove,
+							 i,
 							 _iaColor);
 		      if ((actionScore + resultScore) > alpha)
 			{
@@ -300,7 +300,7 @@ GomokuMinMax::Result	GomokuMinMax::_minMax(const Map &map,
 		  if (state == IReferee::GameState::ONGOING)
 		    {
 		      resultScore = calculateActionScore(newMap,
-							 nextMove,
+							 i,
 							 _enemyColor);
 		      if ((actionScore - resultScore) < beta)
 			{

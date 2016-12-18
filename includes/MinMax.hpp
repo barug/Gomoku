@@ -33,7 +33,7 @@ class				GomokuMinMax : public IArtificialInteligence
 public:
   GomokuMinMax(Map::CaseState iaColor);
   unsigned int			calculateActionScore(const Map &map,
-						     Map::Coordinates coordinates,
+						     int index,
 						     Map::CaseState color);
   bool				_evaluateAction(const Map &map,
 						unsigned int &depth,

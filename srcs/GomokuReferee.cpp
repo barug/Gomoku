@@ -784,18 +784,26 @@ bool    testCaptureInDirection(GomokuReferee::Direction direction,
 			       Map::CaseState color)
 {
   Map::CaseState	enemyColor = color == Map::BLACK ? Map::WHITE : Map::BLACK;
-  
+
+  // std::cout << "test capture --------------" << std::endl;
+  // std::cout << "first difference: " << abs(index % MAP_WIDTH - (index + direction) % MAP_WIDTH)
+  // 	    << std::endl;
+  // std::cout << "second difference: " << abs(index % MAP_WIDTH - (index + 2 * direction) % MAP_WIDTH)
+  // 	    << std::endl;
+  // std::cout << "third difference: " << abs(index % MAP_WIDTH - (index + 3 * direction) % MAP_WIDTH)
+  // 	    << std::endl;
+
   if (abs(index % MAP_WIDTH - (index + direction) % MAP_WIDTH) > 1 ||
       index + direction < 0 ||
       index + direction > MAP_SIZE ||
       map.getCaseAtIndex(index + direction) != enemyColor)
     return false;
-  if (abs(index % MAP_WIDTH - (index + 2 * direction) % MAP_WIDTH) > 1 ||
+  if (abs(index % MAP_WIDTH - (index + 2 * direction) % MAP_WIDTH) > 2 ||
       index + 2 * direction < 0 ||
       index + 2 * direction > MAP_SIZE ||
       map.getCaseAtIndex(index + 2 * direction) != enemyColor)
     return false;
-  if (abs(index % MAP_WIDTH - (index + 3 * direction) % MAP_WIDTH) > 1 ||
+  if (abs(index % MAP_WIDTH - (index + 3 * direction) % MAP_WIDTH) > 3 ||
       index + 3 * direction < 0 ||
       index + 3 * direction > MAP_SIZE ||
       map.getCaseAtIndex(index + 3 * direction) != color)
